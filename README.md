@@ -5,7 +5,7 @@
 <img width="128" height="128" alt="icon" src="https://github.com/user-attachments/assets/407c0839-b1e4-42c7-866f-8ce6797173e3" />
 
 [![Release](https://img.shields.io/github/v/release/CoreDip/anilibria-tizen-wgt?label=последняя+версия&color=red)](https://github.com/CoreDip/anilibria-tizen-wgt/releases/latest)
-[![GitHub Pages](https://img.shields.io/badge/MediaStationX-открыть-blue)](https://aniliberty.netlify.app/)
+[![Netlify](https://img.shields.io/badge/Netlify-открыть-blue)](https://aniliberty.netlify.app/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ---
@@ -15,7 +15,8 @@
 | Платформа | |
 |-----------|---|
 | 📦 **Samsung TV (.wgt)** | [Скачать AniLiberty.wgt →](https://github.com/CoreDip/anilibria-tizen-wgt/releases/latest) |
-| 🌐 **MediaStationX / Браузер** | `https://aniliberty.netlify.app/` |
+| 🌐 **Браузер** | [aniliberty.netlify.app](https://aniliberty.netlify.app/) |
+| 📺 **MediaStationX** | `aniliberty.netlify.app/msx/start.json` |
 
 ---
 
@@ -28,7 +29,7 @@
 
 ### Вариант 2 — MediaStationX
 1. Открыть MediaStationX на TV
-2. Добавить Домен: `aniliberty.netlify.app`
+2. Добавить URL: `aniliberty.netlify.app/msx/start.json`
 
 ---
 
@@ -109,6 +110,8 @@ anilibria-tizen-wgt/
 │   └── style.css
 ├── images/
 │   └── tizen_32.png
+├── msx/
+│   └── start.json       ← конфиг для MediaStationX
 └── .github/workflows/
     └── build.yml        ← автосборка .wgt + GitHub Pages
 ```
