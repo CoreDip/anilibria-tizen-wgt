@@ -15,8 +15,8 @@
 | Платформа | |
 |-----------|---|
 | 📦 **Samsung TV (.wgt)** | [Скачать AniLiberty.wgt →](https://github.com/CoreDip/anilibria-tizen-wgt/releases/latest) |
-| 🌐 **Браузер** | [aniliberty.netlify.app](https://aniliberty.netlify.app/) |
-| 📺 **MediaStationX** | `aniliberty.netlify.app/msx/start.json` |
+| 🌐 **Браузер** | `https://aniliberty.netlify.app/` |
+| 📺 **MediaStationX** | `aniliberty.netlify.app` |
 
 ---
 
@@ -29,7 +29,7 @@
 
 ### Вариант 2 — MediaStationX
 1. Открыть MediaStationX на TV
-2. Добавить URL: `aniliberty.netlify.app/msx/start.json`
+2. Добавить URL: `aniliberty.netlify.app`
 
 ---
 
