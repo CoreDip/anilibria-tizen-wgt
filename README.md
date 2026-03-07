@@ -30,7 +30,12 @@
 
 ---
 ![main](https://github.com/user-attachments/assets/e6cde226-fbb3-4a8c-8aee-735f3621fdac)
+
 ![anipage](https://github.com/user-attachments/assets/b930a04a-30d3-42f2-a484-f17a1a865517)
+
+![collections](https://github.com/user-attachments/assets/d1ae2dd7-ff49-4937-9ac8-578e03556f11)
+
+![player](https://github.com/user-attachments/assets/8a2510ba-41b0-485e-a948-2229a3d384e2)
 
 
 ## ✨ Возможности
