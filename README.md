@@ -101,9 +101,14 @@ git clone https://github.com/CoreDip/anilibria-tizen-wgt.git
 ```
 anilibria-tizen-wgt/
 ├── index.html           ← всё приложение (single-file)
-├── tizen/
-│   ├── config.xml       ← Tizen манифест
-│   └── icon.png
+├── config.xml           ← Tizen манифест
+├── icon.png
+├── js/
+│   └── main.js          ← регистрация кнопок пульта
+├── css/
+│   └── style.css
+├── images/
+│   └── tizen_32.png
 └── .github/workflows/
     └── build.yml        ← автосборка .wgt + GitHub Pages
 ```
