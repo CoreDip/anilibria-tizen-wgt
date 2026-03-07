@@ -1,0 +1,17 @@
+{
+    "name": "AniLiberty TV",
+    "version": "1.0.0",
+    "parameter": "content:http:aniliberty.netlify.app/start.json",
+    "pages": [
+        {
+            "headline": "AniLiberty TV",
+            "items": [
+                {
+                    "label": "▶ Запустить AniLiberty",
+                    "type": "control",
+                    "action": "open:http:aniliberty.netlify.app"
+                }
+            ]
+        }
+    ]
+}
