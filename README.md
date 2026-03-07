@@ -1,5 +1,5 @@
-# 🎌 AniLiberty TV
-<img width="512" height="512" alt="icon" src="https://github.com/user-attachments/assets/407c0839-b1e4-42c7-866f-8ce6797173e3" />
+# 🎌 AniLiberty Samsung Tizen TV app
+<img width="128" height="128" alt="icon" src="https://github.com/user-attachments/assets/407c0839-b1e4-42c7-866f-8ce6797173e3" />
 
 
 > Неофициальный клиент [AniLibria](https://anilibria.tv) для **Samsung Smart TV (Tizen)** и **MediaStationX**
