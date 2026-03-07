@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1600">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <title>AniLiberty TV</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@700;900&family=Noto+Sans+JP:wght@300;400;700&display=swap');
@@ -11,11 +11,18 @@
   --bg:#090c14;--bg2:#0f1421;--bg3:#161c2e;--bg4:#1e2540;--bg5:#252d48;
   --red:#e8272f;--gold:#f5c842;--grn:#22c55e;
   --t1:#e8eaf0;--t2:#8892aa;--t3:#4a5270;
-  --hh:62px;--pad:68px;--cw:200px;
+  --hh:62px;--pad:68px;--cw:160px;
 }
 body{background:var(--bg);color:var(--t1);font-family:'Noto Sans JP',sans-serif;
   width:1600px;height:900px;overflow:hidden;cursor:none;}
 html{overflow:hidden;}
+/* Mobile overrides handled by @media below */
+
+/* Hide mobile nav on desktop */
+#mobileNav{display:none;}
+#mFltBtn{display:none;}
+#mFltOverlay{display:none;}
+
 body.mouse{cursor:default;}
 .ff{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;}
 
@@ -43,13 +50,24 @@ body.mouse{cursor:default;}
 .ntab.cur.foc{color:var(--red);border-color:var(--red);}
 #hdr-r{margin-left:auto;display:flex;align-items:center;gap:14px;}
 #loginBtn{padding:6px 16px;border-radius:8px;background:rgba(232,39,47,.14);color:var(--red);
-  border:1px solid rgba(232,39,47,.4);font-size:13px;font-weight:700;font-family:inherit;
-  cursor:pointer;outline:none;transition:color .15s,background .15s,border-color .15s;}
-#loginBtn.foc,body.mouse #loginBtn:hover{background:rgba(232,39,47,.28);border-color:var(--red);}
+  border:2px solid rgba(232,39,47,.4);font-size:13px;font-weight:700;font-family:inherit;
+  cursor:pointer;outline:none;transition:color .15s,background .15s,border-color .15s,box-shadow .15s,transform .15s;}
+#loginBtn.foc,body.mouse #loginBtn:hover{
+  background:var(--red);color:#fff;border-color:var(--red);
+  box-shadow:0 0 0 3px rgba(232,39,47,.4),0 4px 18px rgba(232,39,47,.5);
+  transform:scale(1.07);}
+#fsBtn{display:none;background:none;border:1px solid rgba(255,255,255,.15);cursor:pointer;color:var(--t2);padding:5px 10px;border-radius:8px;font-size:16px;line-height:1;transition:color .15s,background .15s;}
+#fsBtn:hover{color:var(--t1);background:var(--bg3);}
+body.mouse #fsBtn,body.is-mobile #fsBtn{display:inline-flex;align-items:center;}
 #userPill{display:none;align-items:center;gap:7px;padding:5px 14px;border-radius:20px;
-  color:var(--grn);border:1px solid rgba(34,197,94,.35);background:rgba(34,197,94,.08);
-  font-size:13px;font-weight:700;cursor:pointer;outline:none;}
+  color:var(--grn);border:2px solid rgba(34,197,94,.35);background:rgba(34,197,94,.08);
+  font-size:13px;font-weight:700;cursor:pointer;outline:none;
+  transition:color .15s,background .15s,border-color .15s,box-shadow .15s,transform .15s;}
 #userPill.on{display:flex;}
+#userPill.foc,body.mouse #userPill:hover{
+  background:rgba(34,197,94,.25);border-color:var(--grn);color:#fff;
+  box-shadow:0 0 0 3px rgba(34,197,94,.35),0 4px 18px rgba(34,197,94,.4);
+  transform:scale(1.07);}
 .udot{width:7px;height:7px;border-radius:50%;background:var(--grn);}
 #clk{font-size:15px;color:var(--t2);letter-spacing:3px;font-weight:300;flex-shrink:0;}
 
@@ -64,7 +82,7 @@ body.mouse{cursor:default;}
 .lp-inp{width:100%;padding:11px 14px;background:var(--bg3);border:2px solid var(--bg4);
   border-radius:8px;color:var(--t1);font-size:15px;font-family:inherit;outline:none;
   transition:border-color .15s;margin-bottom:12px;}
-.lp-inp.foc,.lp-inp:focus{border-color:var(--red);}
+.lp-inp.foc,.lp-inp:focus{border-color:var(--red);background:rgba(232,39,47,.07);box-shadow:0 0 0 3px rgba(232,39,47,.18);}
 #lpErr{font-size:12px;color:var(--red);min-height:18px;margin-bottom:8px;}
 .lp-row{display:flex;gap:8px;}
 
@@ -92,12 +110,27 @@ body.mouse{cursor:default;}
 .home-rows::-webkit-scrollbar{width:3px;}
 .home-rows::-webkit-scrollbar-thumb{background:var(--bg5);}
 .cards-sec{padding:0 0 2px;flex-shrink:0;}
+/* ── Row nav arrows (Netflix-style) ── */
+.track-wrap{position:relative;}
+.row-arr{position:absolute;top:50%;transform:translateY(-50%);
+  width:40px;height:76px;background:rgba(9,12,20,.85);border:none;
+  color:var(--t1);font-size:26px;cursor:pointer;z-index:20;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .18s,background .15s;
+  backdrop-filter:blur(4px);border-radius:6px;}
+.row-arr.arr-l{left:0;}
+.row-arr.arr-r{right:0;}
+.cards-sec.home-row:hover .row-arr{opacity:1;pointer-events:all;}
+.row-arr:hover{background:rgba(232,39,47,.88);}
+.row-arr.arr-hidden{opacity:0!important;pointer-events:none!important;}
+
 .row-hdr{display:flex;align-items:center;gap:10px;margin-bottom:4px;padding:0 28px;}
 .row-bar{width:3px;height:17px;background:var(--red);border-radius:2px;}
 .row-ttl{font-size:16px;font-weight:700;}
 .row-sub{font-size:11px;color:var(--t3);margin-left:auto;letter-spacing:.3px;}
 .track-wrap{overflow:visible;display:flex;align-items:center;padding:0 28px;clip-path:inset(-30px 0px);}
-.track{display:flex;gap:14px;padding:12px 0 10px;transition:transform .25s cubic-bezier(.4,0,.2,1);transform:translateZ(0);}
+.track{display:flex;gap:10px;padding:12px 0 10px;transition:transform .25s cubic-bezier(.4,0,.2,1);transform:translateZ(0);}
 
 /* ===== BADGES ===== */
 .bdg{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:5px;
@@ -136,10 +169,11 @@ body.mouse{cursor:default;}
 .c-prog-f{height:100%;background:var(--red);border-radius:0;transition:width .3s;}
 
 /* ── Context menu ──────────────────────────────── */
-#ctxOv{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;}
-#ctxOv.on{display:flex;}
-.ctx-box{background:var(--bg2);border-radius:14px;padding:0;overflow:hidden;min-width:300px;max-width:420px;
-  border:1.5px solid var(--bg4);}
+#ctxOv{position:fixed;inset:0;z-index:400;background:transparent;display:none;}
+#ctxOv.on{display:block;}
+.ctx-box{background:var(--bg2);border-radius:14px;padding:0;overflow:hidden;min-width:280px;max-width:360px;
+  border:1.5px solid var(--bg4);position:absolute;
+  box-shadow:0 8px 32px rgba(0,0,0,.7);}
 .ctx-hdr{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--bg4);}
 .ctx-poster{width:44px;height:62px;border-radius:6px;object-fit:cover;background:var(--bg3);flex-shrink:0;}
 .ctx-title{font-size:13px;font-weight:700;color:var(--t1);line-height:1.35;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;}
@@ -444,6 +478,164 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 .pre-bar-fill{height:100%;width:0%;background:var(--red);border-radius:2px;
   animation:preBar 1.8s cubic-bezier(.4,0,.6,1) forwards;}
 @keyframes preBar{0%{width:0%}60%{width:75%}100%{width:100%}}
+
+/* ══════════════════════════════════════════
+   MOBILE ADAPTATION  (@media ≤768px)
+══════════════════════════════════════════ */
+body.is-mobile{
+  /* Reset TV fixed size */
+  html,body{width:100%!important;height:100%!important;overflow:hidden!important;}
+  :root{--hh:54px;--pad:14px;--cw:130px;}
+
+  /* Header */
+  #hdr{padding:0 14px;gap:6px;}
+  .logo{font-size:20px;gap:6px;}
+  .logo-icon{width:22px;height:22px;}
+  #nav{margin-left:0;flex:1;overflow-x:auto;overflow-y:hidden;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch;
+    display:flex;gap:0;}
+  #nav::-webkit-scrollbar{display:none;}
+  .ntab{padding:6px 12px;font-size:13px;white-space:nowrap;flex-shrink:0;}
+  #hdr-r{gap:8px;flex-shrink:0;}
+  #clk{display:none;}
+  #loginBtn{padding:5px 10px;font-size:12px;}
+  #userPill{padding:4px 9px;font-size:12px;}
+
+
+  /* Login / profile panel */
+  #lp,#profilePanel{left:10px;right:10px;width:auto;padding:22px 20px;}
+
+  /* Main area fills screen */
+  #main{top:var(--hh);bottom:0;left:0;right:0;}
+
+  /* Home rows — smaller cards */
+  .home-rows{padding:4px 0 60px;}
+  .track-wrap{padding:0 10px;}
+  .row-hdr{padding:0 14px;}
+
+  /* Catalog */
+  #pgCatalog{padding-top:6px;}
+  .cat-main{padding:10px 14px 0;}
+  .cat-flt{width:100%;}
+
+  /* Detail overlay */
+  #detOv{flex-direction:column;}
+  .det-side{width:100%;height:200px;flex-shrink:0;}
+  .det-body{padding:16px 16px 80px;}
+  .det-ttl{font-size:22px;}
+
+  /* Player controls */
+  .ply-ctrl{padding:12px 14px;}
+  .ply-ttl{font-size:16px;}
+  .pb{width:44px;height:44px;}
+  .pb.big{width:54px;height:54px;}
+  #skipBtn{right:14px;bottom:90px;}
+
+
+  /* ── Bottom navigation ── */
+  #nav{display:none!important;}
+  #mobileNav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;z-index:200;
+    background:rgba(9,12,20,.97);border-top:1px solid var(--bg4);
+    height:56px;padding-bottom:env(safe-area-inset-bottom);
+  }
+  .mnav-btn{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:3px;background:none;border:none;color:var(--t2);cursor:pointer;
+    font-size:9px;font-family:inherit;font-weight:600;letter-spacing:.3px;
+    padding:6px 0;transition:color .15s;
+  }
+  .mnav-btn svg{width:20px;height:20px;flex-shrink:0;}
+  .mnav-btn.cur{color:var(--red);}
+  .mnav-btn.cur svg{stroke:var(--red);}
+  /* push content above bottom bar */
+  #main{bottom:56px!important;}
+  .home-rows{padding-bottom:8px!important;}
+
+
+  /* ── Catalog mobile ── */
+  #pgCatalog{flex-direction:column!important;overflow:visible!important;}
+  .cat-main{padding:10px 12px 0!important;}
+  #catQ{font-size:15px!important;}
+  #mFltBtn{display:flex;align-items:center;justify-content:center;
+    background:none;border:none;color:var(--t2);cursor:pointer;padding:6px;flex-shrink:0;}
+  .cat-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))!important;gap:10px!important;}
+
+  /* Filter panel → handled by JS drawer (see bottom of script) */
+  #mFltOverlay{display:none;position:fixed;inset:0;z-index:499;background:rgba(0,0,0,.5);}
+  #mFltOverlay.on{display:block;}
+
+  /* Context menu */
+  .ctx-box{min-width:260px;}
+
+  /* Collections */
+  #pgCollections{padding:0 14px;}
+  .coll-tabs{padding:12px 0 10px;}
+
+  /* Schedule */
+  #pgSchedule{padding:10px 8px 0;}
+}
+
+/* ── Mobile filter drawer (top-level, not inside media) ── */
+#catFlt.mob-drawer{
+  position:fixed!important;bottom:0!important;left:0!important;right:0!important;
+  width:100%!important;max-height:75vh!important;z-index:1000!important;
+  border-left:none!important;border-top:1px solid var(--bg4)!important;
+  border-radius:18px 18px 0 0!important;
+  transform:translateY(110%)!important;
+  transition:transform .3s cubic-bezier(.4,0,.2,1)!important;
+  background:var(--bg2)!important;
+  display:flex!important;flex-direction:column!important;
+}
+#catFlt.mob-drawer::before{
+  content:'';display:block;width:40px;height:4px;border-radius:2px;
+  background:var(--bg5);margin:10px auto 4px;flex-shrink:0;
+}
+#catFlt.mob-drawer .cat-flt-in{
+  max-height:calc(75vh - 80px)!important;overflow-y:auto!important;
+}
+#catFlt.mob-drawer .cat-flt-foot{
+  padding:10px 16px calc(16px + env(safe-area-inset-bottom))!important;
+  flex-shrink:0!important;
+}
+#catFlt.mob-drawer .cat-flt-foot .btn{
+  flex:1!important;padding:13px!important;font-size:15px!important;
+}
+#catFlt.mob-drawer.mob-open{
+  transform:translateY(0)!important;
+}
+
+/* ── Player back button (top-left) ── */
+.ply-back-btn{
+  position:absolute;top:20px;left:var(--pad);z-index:10;
+  display:flex;align-items:center;justify-content:center;
+  width:46px;height:46px;border-radius:50%;
+  background:rgba(0,0,0,.55);border:2px solid rgba(255,255,255,.2);
+  color:#fff;cursor:pointer;outline:none;
+  transition:background .15s,border-color .15s,box-shadow .15s,transform .15s;
+  backdrop-filter:blur(6px);
+}
+.ply-back-btn:hover,.ply-back-btn.foc{
+  background:var(--red);border-color:var(--red);
+  box-shadow:0 0 0 3px rgba(232,39,47,.35);transform:scale(1.1);
+}
+
+/* ── Video fit modes ── */
+#vid.fit-contain{object-fit:contain;}
+#vid.fit-cover{object-fit:cover;}
+
+
+/* ── Fit button active indicator ── */
+.ply-fit-btn{position:relative;}
+.ply-fit-btn .fit-label{
+  position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);
+  font-size:9px;font-weight:700;letter-spacing:.5px;color:var(--gold);
+  white-space:nowrap;pointer-events:none;
+}
+
+/* ── Tizen TV scale +30% ── */
+html.tizen-tv{ zoom:1.3; }
+body.tizen-tv{ width:calc(1600px / 1.3)!important; height:calc(900px / 1.3)!important; }
 </style>
 </head>
 <body>
@@ -452,7 +644,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   <div class="pre-logo">
     <svg class="pre-svg" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 1174 1174"><path d="M698 245c0-7 8-12 14-9l169 77c4 2 6 6 6 9v395c0 6 4 10 10 10h248c6 0 11 6 9 12-25.3 94.2-73.6 180.7-140.7 251.5-67.1 70.9-150.8 123.9-243.5 154.2-92.7 30.4-191.5 37.2-287.5 19.8-96-17.4-186.2-58.5-262.3-119.5-3-3-4-8-2-12l34-58c3-5 10-7 15-3 51.5 43.1 111.1 75.4 175.4 94.9 64.2 19.6 131.7 25.9 198.5 18.7 66.7-7.2 131.4-27.8 190-60.5 58.6-32.8 110-77 151.1-130.1 5-7 1-16-8-16h-93c-4 0-7-2-9-5L699 574l-1-5z"></path><path d="M422 240c4-7 14-7 18 0l360 624c4 7-1 15-8 15H628c-4 0-7-2-9-5l-43-75c-2-3-5-5-9-5H373c-7 0-12-8-8-15l65-113c1-3 5-5 8-5h41c7 0 12-8 8-15l-47-83c-4-7-14-7-18 0L211 929v1l-23 39-1 1-10 19c-4 6-12 7-16 2-36-38-67-82-92-128-2-3-2-7 0-10l10-19 2-2v-1z"></path><path d="M587 0c83.2.1 165.5 17.8 241.3 52.1 75.8 34.3 143.5 84.2 198.5 146.7 55.1 62.4 96.2 135.8 120.7 215.3s31.8 163.3 21.5 245.9c0 5-4 9-9 9h-67c-6 0-11-6-10-12 20.8-146.3-24-294.3-122.5-404.5C862.1 142.4 720 81.3 572.3 85.6 424.6 90 286.3 159.3 194.5 275 102.7 390.8 66.6 541.2 96 686l-1 7-47 81c-5 7-15 6-18-2C.5 683.8-7.6 589.8 6.4 497.8c14-91.9 49.6-179.2 104.1-254.7 54.4-75.4 126-136.8 208.9-179.1C402.2 21.7 494-.2 587 0z"></path></svg>
     <div class="pre-wordmark"><span class="la">Ani</span><span class="lb">Lib</span><span class="lc">erty</span></div>
-    <span class="pre-badge">Samsung TV</span>
+    
   </div>
   <div class="pre-bar"><div class="pre-bar-fill"></div></div>
 </div>
@@ -470,7 +662,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   </div>
 </div>
 <header id="hdr">
-  <div class="logo"><svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 1174 1174"><path d="M698 245c0-7 8-12 14-9l169 77c4 2 6 6 6 9v395c0 6 4 10 10 10h248c6 0 11 6 9 12-25.3 94.2-73.6 180.7-140.7 251.5-67.1 70.9-150.8 123.9-243.5 154.2-92.7 30.4-191.5 37.2-287.5 19.8-96-17.4-186.2-58.5-262.3-119.5-3-3-4-8-2-12l34-58c3-5 10-7 15-3 51.5 43.1 111.1 75.4 175.4 94.9 64.2 19.6 131.7 25.9 198.5 18.7 66.7-7.2 131.4-27.8 190-60.5 58.6-32.8 110-77 151.1-130.1 5-7 1-16-8-16h-93c-4 0-7-2-9-5L699 574l-1-5z"></path><path d="M422 240c4-7 14-7 18 0l360 624c4 7-1 15-8 15H628c-4 0-7-2-9-5l-43-75c-2-3-5-5-9-5H373c-7 0-12-8-8-15l65-113c1-3 5-5 8-5h41c7 0 12-8 8-15l-47-83c-4-7-14-7-18 0L211 929v1l-23 39-1 1-10 19c-4 6-12 7-16 2-36-38-67-82-92-128-2-3-2-7 0-10l10-19 2-2v-1z"></path><path d="M587 0c83.2.1 165.5 17.8 241.3 52.1 75.8 34.3 143.5 84.2 198.5 146.7 55.1 62.4 96.2 135.8 120.7 215.3s31.8 163.3 21.5 245.9c0 5-4 9-9 9h-67c-6 0-11-6-10-12 20.8-146.3-24-294.3-122.5-404.5C862.1 142.4 720 81.3 572.3 85.6 424.6 90 286.3 159.3 194.5 275 102.7 390.8 66.6 541.2 96 686l-1 7-47 81c-5 7-15 6-18-2C.5 683.8-7.6 589.8 6.4 497.8c14-91.9 49.6-179.2 104.1-254.7 54.4-75.4 126-136.8 208.9-179.1C402.2 21.7 494-.2 587 0z"></path></svg><span class="logo-name"><span class="la">Ani</span><span class="lb">Lib</span><span class="lc">erty</span></span><span class="logo-badge">Samsung TV</span></div>
+  <div class="logo"><svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 1174 1174"><path d="M698 245c0-7 8-12 14-9l169 77c4 2 6 6 6 9v395c0 6 4 10 10 10h248c6 0 11 6 9 12-25.3 94.2-73.6 180.7-140.7 251.5-67.1 70.9-150.8 123.9-243.5 154.2-92.7 30.4-191.5 37.2-287.5 19.8-96-17.4-186.2-58.5-262.3-119.5-3-3-4-8-2-12l34-58c3-5 10-7 15-3 51.5 43.1 111.1 75.4 175.4 94.9 64.2 19.6 131.7 25.9 198.5 18.7 66.7-7.2 131.4-27.8 190-60.5 58.6-32.8 110-77 151.1-130.1 5-7 1-16-8-16h-93c-4 0-7-2-9-5L699 574l-1-5z"></path><path d="M422 240c4-7 14-7 18 0l360 624c4 7-1 15-8 15H628c-4 0-7-2-9-5l-43-75c-2-3-5-5-9-5H373c-7 0-12-8-8-15l65-113c1-3 5-5 8-5h41c7 0 12-8 8-15l-47-83c-4-7-14-7-18 0L211 929v1l-23 39-1 1-10 19c-4 6-12 7-16 2-36-38-67-82-92-128-2-3-2-7 0-10l10-19 2-2v-1z"></path><path d="M587 0c83.2.1 165.5 17.8 241.3 52.1 75.8 34.3 143.5 84.2 198.5 146.7 55.1 62.4 96.2 135.8 120.7 215.3s31.8 163.3 21.5 245.9c0 5-4 9-9 9h-67c-6 0-11-6-10-12 20.8-146.3-24-294.3-122.5-404.5C862.1 142.4 720 81.3 572.3 85.6 424.6 90 286.3 159.3 194.5 275 102.7 390.8 66.6 541.2 96 686l-1 7-47 81c-5 7-15 6-18-2C.5 683.8-7.6 589.8 6.4 497.8c14-91.9 49.6-179.2 104.1-254.7 54.4-75.4 126-136.8 208.9-179.1C402.2 21.7 494-.2 587 0z"></path></svg><span class="logo-name"><span class="la">Ani</span><span class="lb">Lib</span><span class="lc">erty</span></span></div>
   <nav id="nav">
     <button class="ntab cur" data-pg="home">Главная</button>
     <button class="ntab" data-pg="catalog">Каталог</button>
@@ -479,11 +671,33 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
   </nav>
   <div id="hdr-r">
     <button id="loginBtn">🔑 Войти</button>
+    <button id="fsBtn" title="Полный экран">⛶</button>
     <div id="userPill" tabindex="-1"><div class="udot"></div><span id="uname"></span></div>
     <div id="clk">--:--</div>
   </div>
 </header>
 
+<!-- Mobile bottom navigation -->
+<nav id="mobileNav">
+  <button class="mnav-btn cur" data-pg="home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Главная</span>
+  </button>
+  <button class="mnav-btn" data-pg="catalog">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <span>Каталог</span>
+  </button>
+  <button class="mnav-btn" data-pg="schedule">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span>Расписание</span>
+  </button>
+  <button class="mnav-btn" data-pg="collections">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+    <span>Коллекции</span>
+  </button>
+</nav>
+
+<div id="mFltOverlay"></div>
 <div id="ctxOv">
   <div class="ctx-box" id="ctxBox">
     <div class="ctx-hdr">
@@ -528,12 +742,15 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
       <div class="cat-srch" id="catSrch">
         <span class="cat-srch-icon">🔍</span>
         <input id="catQ" placeholder="Поиск по каталогу...">
+        <button id="mFltBtn" title="Фильтры">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="20" height="20"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+        </button>
       </div>
       <div class="cat-grid" id="catGrid">
         <div class="cat-info">Выберите фильтры или введите запрос</div>
       </div>
     </div>
-    <div class="cat-flt">
+    <div class="cat-flt" id="catFlt">
       <div class="cat-flt-in" id="catFltIn">
         <div class="f-sec"><div class="f-ttl">Тип</div>
           <div class="f-chips" id="fTypes">
@@ -690,6 +907,10 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
     <video id="vid" autoplay playsinline></video>
     <div class="ply-spin" id="plySpin"><div class="spin"></div><div style="color:var(--t2);font-size:13px">Загрузка...</div></div>
     <div class="ply-ui">
+      <!-- Top-left back button -->
+      <button class="ply-back-btn" id="pcClose">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
       <div class="ply-ctrl">
         <div class="ply-ttl" id="plyTtl"></div>
         <div class="ply-ep" id="plyEpL"></div>
@@ -701,7 +922,12 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
           <span class="ply-time" id="plyTime">0:00 / 0:00</span>
           <div class="ply-eps" id="plyEps"></div>
           <button class="ply-qual-btn" id="pcQual" style="margin-left:auto">1080p</button>
-          <button class="pb" id="pcClose"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+          <button class="pb ply-fit-btn" id="pcFit" title="Растяжение">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M3 15h18" stroke-dasharray="3 3"/></svg>
+          </button>
+          <button class="pb" id="pcFullscreen" title="Полный экран">
+            <svg id="pcFsIco" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -718,6 +944,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 <script>
 'use strict';
 const _isTizen=!!window.tizen||/Tizen/i.test(navigator.userAgent);
+if(_isTizen){ document.documentElement.classList.add('tizen-tv'); document.body.classList.add('tizen-tv'); }
 
 // scrollIntoView wrapper — 'smooth' на Tizen надто дорого
 function siv(el, opts){
@@ -838,6 +1065,12 @@ const Store = {
     c.history=c.history.filter(x=>x!==id);
     c.history.unshift(id);
     if(c.history.length>100) c.history=c.history.slice(0,100);
+    this.set('alv_coll',c);
+  },
+  removeHistory(id){
+    if(!id) return;
+    const c=this.getColl();
+    c.history=c.history.filter(x=>x!==id);
     this.set('alv_coll',c);
   },
   toggleColl(type, id){
@@ -1080,9 +1313,9 @@ const homeRows=[];
 let activeRowI=0;
 const rowPos=[]; // per-row last card index
 
-const CARD_WIN=10;      // cards rendered in DOM per row
+const CARD_WIN=15;      // cards rendered in DOM per row
 const ROW_PRELOAD=2;    // rows to preload ahead of current
-const CARDS_PER_PAGE=10;// cards fetched per API call
+const CARDS_PER_PAGE=15;// cards fetched per API call
 
 function buildRow(title, list, isNew){
   if(!list.length) return null;
@@ -1090,8 +1323,14 @@ function buildRow(title, list, isNew){
   const idx=homeRows.length;
   homeRows.push({releases:list, el:null, winStart:0, hasMore:false, nextPage:2, filters:null, loading:false});
   sec.innerHTML=`<div class="row-hdr"><div class="row-bar"></div><div class="row-ttl">${title}</div></div>
-    <div class="track-wrap"><div class="track" id="track-${idx}"></div></div>`;
+    <div class="track-wrap">
+      <button class="row-arr arr-l arr-hidden" tabindex="-1" data-ri="${idx}">&#8249;</button>
+      <div class="track" id="track-${idx}"></div>
+      <button class="row-arr arr-r" tabindex="-1" data-ri="${idx}">&#8250;</button>
+    </div>`;
   homeRows[idx].el=sec;
+  sec.querySelector('.arr-l').addEventListener('click',e=>{e.stopPropagation();const ri=parseInt(e.currentTarget.dataset.ri);activeRowI=ri;nav.rowI=ri;nav.zone='home.cards';focCard(Math.max(0,(rowPos[ri]??0)-3),ri);updateRowArrows(ri);});
+  sec.querySelector('.arr-r').addEventListener('click',e=>{e.stopPropagation();const ri=parseInt(e.currentTarget.dataset.ri);activeRowI=ri;nav.rowI=ri;nav.zone='home.cards';const row=homeRows[ri];focCard(Math.min((row?.releases?.length??1)-1,(rowPos[ri]??0)+3),ri);updateRowArrows(ri);});
   renderCardWindow(idx,0);
   return sec;
 }
@@ -1106,7 +1345,7 @@ function renderCardWindow(rowI, focusIdx){
   row.winStart=start;
   const track=document.getElementById('track-'+rowI); if(!track) return;
   track.innerHTML='';
-  const cw=200+14;
+  const cw=160+10;
   if(start>0){
     const sp=document.createElement('div');
     sp.style.cssText=`width:${start*cw}px;flex-shrink:0`;
@@ -1149,7 +1388,7 @@ function scrollRowTo(rowI, ci){
   const trackEl=document.getElementById('track-'+rowI);
   if(!trackEl) return;
   if(!_rowWrapW) _rowWrapW=trackEl.parentElement?.offsetWidth||1280;
-  const cw=214;
+  const cw=170;
   const off=Math.max(0,ci*cw-(_rowWrapW/2-cw/2));
   trackEl.style.transform=`translateX(-${off}px)`;
 }
@@ -1182,16 +1421,35 @@ function focCard(i, rowI){
   if(rowI===0&&list[i]&&!_isTizen){
     clearTimeout(window._heroT);
   }
+  updateRowArrows(rowI);
 }
 
+function visiblePageSize(rowI){
+  const trackEl=document.getElementById('track-'+rowI);
+  if(!trackEl) return 5;
+  const wrapW=trackEl.parentElement?.offsetWidth||1280;
+  const cw=170; // card + gap
+  return Math.max(1, Math.floor(wrapW/cw));
+}
+function updateRowArrows(rowI){
+  const row=homeRows[rowI]; if(!row||!row.el) return;
+  const ci=rowPos[rowI]??0;
+  const n=(row.releases||[]).length-1;
+  const btnL=row.el.querySelector('.arr-l');
+  const btnR=row.el.querySelector('.arr-r');
+  if(btnL) btnL.classList.toggle('arr-hidden', ci<=0);
+  if(btnR) btnR.classList.toggle('arr-hidden', ci>=n&&!row.hasMore);
+}
 function navHomeCards(k){
   const row=homeRows[activeRowI]; if(!row||row.stub) return;
   const n=Math.max(0,row.releases.length-1);
   if(k==='ArrowRight') focCard(Math.min(nav.ci+1,n));
   else if(k==='ArrowLeft') focCard(Math.max(nav.ci-1,0));
   else if(k==='ArrowDown'){
-    if(activeRowI<homeRows.length-1){
-      activeRowI++; nav.rowI=activeRowI;
+    let next=activeRowI+1;
+    while(next<homeRows.length && homeRows[next]?.failed) next++;
+    if(next<homeRows.length){
+      activeRowI=next; nav.rowI=next;
       ensureRowsLoaded(activeRowI);
       if(homeRows[activeRowI]?.stub) loadLazyRow(activeRowI);
       else focCard(rowPos[activeRowI]??0,activeRowI);
@@ -1199,7 +1457,9 @@ function navHomeCards(k){
   }
   else if(k==='ArrowUp'){
     if(activeRowI>0){
-      activeRowI--; nav.rowI=activeRowI;
+      let prev=activeRowI-1;
+      while(prev>0 && homeRows[prev]?.failed) prev--;
+      activeRowI=prev; nav.rowI=prev;
       ensureRowsLoaded(activeRowI);
       if(homeRows[activeRowI]?.stub) loadLazyRow(activeRowI);
       else focCard(rowPos[activeRowI]??0,activeRowI);
@@ -1308,6 +1568,12 @@ function _cardDelegation(container){
   });
   container.addEventListener('mouseup', cancelHold);
   container.addEventListener('mouseleave', cancelHold);
+  container.addEventListener('contextmenu', e=>{
+    const card=e.target.closest('.card');
+    if(!card||!card._r) return;
+    e.preventDefault();
+    openCtxMenu(card._r, e.clientX, e.clientY);
+  });
 }
 function appendCatCard(r){
   const el=document.createElement('div');
@@ -1487,7 +1753,6 @@ async function openDetail(idx){ openDetailRelease(releases[idx]); }
 
 async function openDetailRelease(r){
   if(!r) return;
-  Store.addHistory(r.id); Store.cacheRelease(r);
   detRelease=r; Store.cacheRelease(r);
   const url=getPoster(r);
   $('detImg').style.backgroundImage=url?`url(${url})`:'linear-gradient(135deg,#180a14,#0c0f1e)';
@@ -1527,6 +1792,22 @@ async function openDetailRelease(r){
       const added=Store.toggleColl(type,r.id);
       b.classList.toggle('in',added);
       syncCollToAPI(type,r.id,added);
+      // Одразу оновити collGrid якщо відкрита ця колекція
+      if(type===curCollTab){
+        const grid=$('collGrid');
+        if(!added){
+          // Видалити картку
+          grid.querySelectorAll(`.card[data-rid="${r.id}"]`).forEach(el=>el.remove());
+          if(!grid.querySelector('.card'))
+            grid.innerHTML=`<div class="coll-empty"><div class="coll-empty-ic">📂</div><div>Коллекция пуста</div></div>`;
+        } else {
+          // Додати картку якщо її ще нема
+          if(!grid.querySelector(`.card[data-rid="${r.id}"]`)){
+            grid.querySelector('.coll-empty')?.remove();
+            appendCollCard(r, type);
+          }
+        }
+      }
     });
   });
   // Check for resume progress
@@ -1538,6 +1819,7 @@ async function openDetailRelease(r){
     $('detActs').innerHTML=`<button class="btn btn-p det-play-btn" id="detPlay">▶ Смотреть</button>`;
   }
   $('detPlay').addEventListener('click',()=>{
+    if(r) Store.addHistory(r.id);
     if(hasProgress&&lastProg.epId){
       const idx=playerEps.findIndex(e=>String(e.id)===String(lastProg.epId));
       playerEpIdx=idx>=0?idx:0;
@@ -1546,6 +1828,13 @@ async function openDetailRelease(r){
   });
   $('detReset')?.addEventListener('click',()=>{
     Store.clearReleaseProgress(r.id);
+    Store.removeHistory(r.id);
+    // Remove from collGrid if history tab is open
+    if(curCollTab==='history'){
+      $('collGrid').querySelectorAll(`.card[data-rid="${r.id}"]`).forEach(el=>el.remove());
+      if(!$('collGrid').querySelector('.card'))
+        $('collGrid').innerHTML='<div class="coll-empty"><div class="coll-empty-ic">🕐</div><div>Вы ещё ничего не смотрели</div></div>';
+    }
     document.querySelectorAll(`.card[data-rid="${r.id}"] .c-prog`).forEach(b=>b.remove());
     refreshDetActBtn(r);
     if(playerEps.length) renderDetailEps(r.id, playerEps);
@@ -1735,7 +2024,9 @@ function renderDetailEps(releaseId, eps){
 $('detBack').addEventListener('click',closeDetail);
 function closeDetail(){
   $('detOv').classList.remove('on');
-  nav.zone=pg.cur==='home'?'home.cards':'cat.grid';
+  const zoneMap={home:'home.cards',catalog:'cat.grid',schedule:'sch',collections:'coll.grid'};
+  nav.zone=zoneMap[pg.cur]||'home.cards';
+  applyZoneFocus();
 }
 
 let hlsInst=null, ctrlTimer=null, saveTimer=null;
@@ -1891,7 +2182,14 @@ function _loadVideo(url, startTime, ep){
       $('skipBtn').classList.add('on');
     } else {
       $('skipBtn').classList.remove('on','foc');
-      if(nav.plyZone==='skip'){ nav.plyZone='video'; }
+      if(nav.plyZone==='back'){
+      if(k==='ArrowRight'||k==='Escape'||k==='Backspace'||k==='GoBack'){
+        $('pcClose')?.classList.remove('foc'); nav.plyZone='ctrl'; nav.plyBtn=0; applyPlyFoc(); e.preventDefault(); return;
+      }
+      if(k==='Enter'){ $('pcClose').click(); e.preventDefault(); return; }
+      e.preventDefault(); return;
+    }
+    if(nav.plyZone==='skip'){ nav.plyZone='video'; }
     }
   }); };
   v.onended=()=>{
@@ -1920,7 +2218,7 @@ function _loadVideo(url, startTime, ep){
   };
 }
 // ── Player zone helpers ────────────────────────────────────────────────────
-const PLY_BTNS = ['pcPrev','pcPlay','pcNext','pcQual','pcClose'];
+const PLY_BTNS = ['pcPrev','pcPlay','pcNext','pcQual','pcFit','pcFullscreen'];
 // Quality
 let currentEp=null, currentQual=null;
 const QUAL_LABELS={hls_1080:'1080p',hls_720:'720p',hls_480:'480p'};
@@ -2029,6 +2327,7 @@ function refreshDetActBtn(r){
     $('detActs').innerHTML=`<button class="btn btn-p det-play-btn" id="detPlay">▶ Смотреть</button>`;
   }
   $('detPlay').addEventListener('click',()=>{
+    if(r) Store.addHistory(r.id);
     if(hasProgress&&lastProg.epId){
       const idx=playerEps.findIndex(e=>String(e.id)===String(lastProg.epId));
       playerEpIdx=idx>=0?idx:0;
@@ -2037,6 +2336,13 @@ function refreshDetActBtn(r){
   });
   $('detReset')?.addEventListener('click',()=>{
     Store.clearReleaseProgress(r.id);
+    Store.removeHistory(r.id);
+    // Remove from collGrid if history tab is open
+    if(curCollTab==='history'){
+      $('collGrid').querySelectorAll(`.card[data-rid="${r.id}"]`).forEach(el=>el.remove());
+      if(!$('collGrid').querySelector('.card'))
+        $('collGrid').innerHTML='<div class="coll-empty"><div class="coll-empty-ic">🕐</div><div>Вы ещё ничего не смотрели</div></div>';
+    }
     document.querySelectorAll(`.card[data-rid="${r.id}"] .c-prog`).forEach(b=>b.remove());
     refreshDetActBtn(r);
     if(playerEps.length) renderDetailEps(r.id, playerEps);
@@ -2102,8 +2408,13 @@ function _seekAccel(dir){
   _seekTimer=setTimeout(()=>{ _seekDir=0; _seekCount=0; },800);
 }
 $('pcPrev').addEventListener('click',()=>{if(playerEpIdx>0){playerEpIdx--;openPlayerEp(playerEps[playerEpIdx]);}});
-$('pcNext').addEventListener('click',()=>{if(playerEpIdx<playerEps.length-1){playerEpIdx++;openPlayerEp(playerEps[playerEpIdx]);}});
+$('pcNext').addEventListener('click',()=>{if(playerEpIdx<playerEps.length-1){playerEpIdx++;openPlayerEp(playerEps[playerEpIdx]);}})
+$('pcQual').addEventListener('click',()=>{ openQualMenu(); });;
 $('plyOv').addEventListener('mousemove',showCtrl);
+$('plyOv').addEventListener('click',e=>{
+  if($('plyQualMenu').classList.contains('on')&&!e.target.closest('#plyQualMenu')&&!e.target.closest('#pcQual'))
+    closeQualMenu();
+});
 // ── Timeline scrub (mouse + touch + TV remote) ──────────────────────────
 (()=>{
   const bar=$('plyBar'), tip=$('seekTip');
@@ -2168,6 +2479,7 @@ function lpApplyFoc(){
   });
 }
 function openLogin(){
+  if(authToken){ openProfilePanel(); return; }
   $('lp').classList.add('on');
   nav.zone='login';
   nav.loginI=0;
@@ -2180,6 +2492,9 @@ function closeLogin(){
   nav.zone=pg.cur==='home'?'home.cards':'cat.grid';
 }
 $('loginBtn').addEventListener('click',openLogin);
+document.querySelectorAll('#mobileNav .mnav-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>switchPage(btn.dataset.pg));
+});
 $('lpX').addEventListener('click',closeLogin);
 // после системной клавиатуры — возвращаем nav зону в login
 ['lpL','lpP'].forEach((id,i)=>{
@@ -2194,15 +2509,28 @@ function openProfilePanel(){
   const user=Store.get('alv_user',null);
   const nick=user?.nickname||user?.login||'Пользователь';
   $('profileName').textContent='👤 '+nick;
-  $('profileStatus').textContent='Вы вошли в аккаунт AniLibria';
+  $('profileStatus').textContent='✅ Вы вошли в аккаунт AniLibria';
   $('profilePanel').classList.add('on');
+  nav.zone='profile';
+  nav.profileI=0;
+  ppApplyFoc();
 }
-$('profileClose').addEventListener('click',()=>{ $('profilePanel').classList.remove('on'); });
+function ppApplyFoc(){
+  ['profileClose','profileLogout'].forEach((id,i)=>{
+    $(id)?.classList.toggle('foc', i===nav.profileI);
+  });
+}
+function closeProfilePanel(){
+  $('profilePanel').classList.remove('on');
+  nav.zone=pg.cur==='home'?'home.cards':'cat.grid';
+  ['profileClose','profileLogout'].forEach(id=>$(id)?.classList.remove('foc'));
+}
+$('profileClose').addEventListener('click',closeProfilePanel);
 $('profileLogout').addEventListener('click',async()=>{
   try{await api('/accounts/users/auth/logout',{method:'POST'});}catch(_){}
   authToken=null;
   Store.set('alv_token',null); Store.set('alv_user',null);
-  $('profilePanel').classList.remove('on');
+  closeProfilePanel();
   $('userPill').classList.remove('on'); $('loginBtn').style.display='';
   setStatus('ok','Вы вышли из аккаунта');
 });
@@ -2233,6 +2561,7 @@ function switchPage(name){
   const map={home:'pgHome',catalog:'pgCatalog',schedule:'pgSchedule',collections:'pgCollections'};
   const el=$(map[name]); if(el) el.classList.add('on');
   document.querySelectorAll('#nav .ntab').forEach(t=>{t.classList.toggle('cur',t.dataset.pg===name);t.classList.remove('foc');});
+  document.querySelectorAll('#mobileNav .mnav-btn').forEach(t=>t.classList.toggle('cur',t.dataset.pg===name));
   pg.cur=name;
   // bg dimming for content pages
   // lazy load
@@ -2256,13 +2585,30 @@ const CTX_COLLS=[
 ];
 let ctxRelease=null, ctxItems=[], ctxIdx=0;
 
-function openCtxMenu(r){
+function _getCardAnchor(r){
+  // Try focused card first
+  let el=document.querySelector('.card.foc[data-rid="'+r.id+'"]')
+    ||document.querySelector('.card[data-rid="'+r.id+'"]')
+    ||document.querySelector('.card.foc');
+  if(!el){
+    // fallback: schedule item
+    el=document.querySelector('.sch-item.foc');
+  }
+  if(el){
+    const rect=el.getBoundingClientRect();
+    return {x:rect.right+8, y:rect.top};
+  }
+  return {x:200, y:200};
+}
+function openCtxMenu(r, anchorX, anchorY){
   if(!r){ return; }
   ctxRelease=r;
   nav.zone='ctx.menu';
-  // Force visibility
   const ov=$('ctxOv');
-  ov.style.cssText='display:flex!important;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.8);align-items:center;justify-content:center;';
+  const box=$('ctxBox');
+  ov.style.cssText='';
+  // Use mouse coords or find card position
+  window._ctxAnchor=(anchorX!=null)?{x:anchorX,y:anchorY}:_getCardAnchor(r);
   const coll=Store.getColl();
   const url=getPoster(r);
   $('ctxPoster').src=url||'';
@@ -2303,7 +2649,18 @@ function openCtxMenu(r){
     el.appendChild(d);
   });
   ctxIdx=0; applyCtxFoc();
-  $('ctxOv').classList.add('on'); $('ctxOv').style.display='flex';
+  const ov2=$('ctxOv'); const box2=$('ctxBox');
+  ov2.classList.add('on');
+  requestAnimationFrame(()=>{
+    const bw=box2.offsetWidth||300, bh=box2.offsetHeight||200;
+    const sw=window.innerWidth||1600, sh=window.innerHeight||900;
+    let x=(window._ctxAnchor?.x||200), y=(window._ctxAnchor?.y||200);
+    if(x+bw+10>sw) x=x-bw-16; // flip to left if no space
+    if(x<8) x=8;
+    if(y+bh+10>sh) y=sh-bh-10;
+    if(y<8) y=8;
+    box2.style.left=x+'px'; box2.style.top=y+'px';
+  });
 }
 function closeCtxMenu(){
   $('ctxOv').style.cssText=''; $('ctxOv').classList.remove('on');
@@ -2315,6 +2672,7 @@ function closeCtxMenu(){
   else if(pg.cur==='schedule') nav.zone='sch';
   else nav.zone='home.cards';
 }
+$('ctxOv').addEventListener('click',e=>{ if(!e.target.closest('#ctxBox')) closeCtxMenu(); });
 function applyCtxFoc(){
   document.querySelectorAll('.ctx-item').forEach(el=>el.classList.remove('foc'));
   // find real item by idx (skipping separators)
@@ -2353,6 +2711,13 @@ function execCtxAction(i){
   }
   if(item.action==='reset'){
     Store.clearReleaseProgress(r.id);
+    Store.removeHistory(r.id);
+    // Remove from collGrid if history tab is open
+    if(curCollTab==='history'){
+      $('collGrid').querySelectorAll(`.card[data-rid="${r.id}"]`).forEach(el=>el.remove());
+      if(!$('collGrid').querySelector('.card'))
+        $('collGrid').innerHTML='<div class="coll-empty"><div class="coll-empty-ic">🕐</div><div>Вы ещё ничего не смотрели</div></div>';
+    }
     document.querySelectorAll(`.card[data-rid="${r.id}"] .c-prog`).forEach(b=>b.remove());
     closeCtxMenu();
     return;
@@ -2470,7 +2835,14 @@ function handleKey(e){
 
     // ── Режим кнопок (⏮ ▶ ⏭ ✕) ─────────────────────
     if(nav.plyZone==='ctrl'){
-      if(k==='ArrowLeft') { nav.plyBtn=Math.max(nav.plyBtn-1,0); applyPlyFoc(); e.preventDefault(); return; }
+      if(k==='ArrowLeft'){
+        if(nav.plyBtn===0){
+          PLY_BTNS.forEach(id=>$(id)?.classList.remove('foc'));
+          $('pcClose')?.classList.add('foc');
+          nav.plyZone='back'; e.preventDefault(); return;
+        }
+        nav.plyBtn=Math.max(nav.plyBtn-1,0); applyPlyFoc(); e.preventDefault(); return;
+      }
       if(k==='ArrowRight'){ nav.plyBtn=Math.min(nav.plyBtn+1,PLY_BTNS.length-1); applyPlyFoc(); e.preventDefault(); return; }
       if(k==='ArrowDown'){
         const peps=[...$('plyEps').querySelectorAll('.pep')];
@@ -2508,6 +2880,13 @@ function handleKey(e){
     }
 
     // ── Кнопка пропустити опенінг ──────────────────────
+    if(nav.plyZone==='back'){
+      if(k==='ArrowRight'||k==='Escape'||k==='Backspace'||k==='GoBack'){
+        $('pcClose')?.classList.remove('foc'); nav.plyZone='ctrl'; nav.plyBtn=0; applyPlyFoc(); e.preventDefault(); return;
+      }
+      if(k==='Enter'){ $('pcClose').click(); e.preventDefault(); return; }
+      e.preventDefault(); return;
+    }
     if(nav.plyZone==='skip'){
       if(k==='Enter'||k===' '){ $('skipBtn').click(); nav.plyZone='ctrl'; applyPlyFoc(); e.preventDefault(); return; }
       if(k==='ArrowDown'||k==='Escape'||k==='Backspace'||k==='GoBack'){ nav.plyZone='ctrl'; applyPlyFoc(); e.preventDefault(); return; }
@@ -2555,7 +2934,7 @@ function handleKey(e){
   if(k==='Escape'||k==='Backspace'||e.keyCode===10009){
     if($('detOv').classList.contains('on')){closeDetail();e.preventDefault();return;}
     if($('lp').classList.contains('on')){closeLogin();e.preventDefault();return;}
-    if($('profilePanel').classList.contains('on')){$('profilePanel').classList.remove('on');e.preventDefault();return;}
+    if($('profilePanel').classList.contains('on')){closeProfilePanel();e.preventDefault();return;}
     if(Z!=='home.nav'&&Z!=='cat.search'&&Z!=='sch'){
       const up={'home.cards':'home.nav','cat.grid':'cat.search','cat.flt':'cat.grid','coll.grid':'coll.tabs'};
       if(up[Z]){ nav.zone=up[Z]; applyZoneFocus(); e.preventDefault(); return; }
@@ -2573,6 +2952,13 @@ function handleKey(e){
     return;
   }
 
+  if(Z==='profile'){
+    if(k==='ArrowLeft'||k==='ArrowRight'){
+      nav.profileI=nav.profileI===0?1:0; ppApplyFoc(); e.preventDefault(); return;
+    }
+    if(k==='Enter'||k===' '){ nav.profileI===0?closeProfilePanel():$('profileLogout').click(); e.preventDefault(); return; }
+    e.preventDefault(); return;
+  }
   if(Z==='home.nav') navHomeNav(k);
   else if(Z==='home.login') navHomeLogin(k);
   else if(Z==='home.hero') navHomeHero(k);
@@ -2589,7 +2975,9 @@ function handleKey(e){
 
 function focLoginBtn(){
   document.querySelectorAll('#nav .ntab').forEach(t=>t.classList.remove('foc'));
-  $('loginBtn').classList.add('foc');
+  const pill=$('userPill'); const btn=$('loginBtn');
+  if(pill.classList.contains('on')){ pill.classList.add('foc'); btn.classList.remove('foc'); }
+  else { btn.classList.add('foc'); pill.classList.remove('foc'); }
   nav.zone='home.login';
 }
 function navHomeNav(k){
@@ -2612,9 +3000,24 @@ function navHomeNav(k){
   }
 }
 function navHomeLogin(k){
-  if(k==='ArrowLeft'){$('loginBtn').classList.remove('foc');focNavTab(nav.ni);}
-  else if(k==='Enter'){$('loginBtn').classList.remove('foc');openLogin();}
-  else if(k==='ArrowDown'){$('loginBtn').classList.remove('foc');document.querySelectorAll('#nav .ntab').forEach(t=>t.classList.remove('foc'));nav.zone='home.cards';focCard(nav.ci);}
+  function _clearLogin(){ $('loginBtn').classList.remove('foc'); $('userPill').classList.remove('foc'); }
+  if(k==='ArrowLeft'){
+    _clearLogin();
+    // Always go to last nav tab (Коллекции)
+    const tabs=[...document.querySelectorAll('#nav .ntab')];
+    nav.ni=tabs.length-1;
+    nav.zone='home.nav'; // must set zone BEFORE focNavTab — it checks nav.zone
+    focNavTab(nav.ni);
+  }
+  else if(k==='ArrowDown'){
+    _clearLogin();
+    document.querySelectorAll('#nav .ntab').forEach(t=>t.classList.remove('foc'));
+    if(pg.cur==='catalog'){ focCatSearch(); }
+    else if(pg.cur==='schedule'){nav.zone='sch';applyZoneFocus();}
+    else if(pg.cur==='collections'){nav.zone='coll.tabs';applyZoneFocus();}
+    else{nav.zone='home.cards';focCard(nav.ci);}
+  }
+  else if(k==='Enter'){ _clearLogin(); openLogin(); }
 }
 function navHomeHero(k){
   if(k==='ArrowRight') focHeroBtn(Math.min(nav.hi+1,1));
@@ -3064,6 +3467,14 @@ window.addEventListener('gamepadconnected',()=>setStatus('ok','Геймпад п
 requestAnimationFrame(pollGamepad);
 
 document.addEventListener('mousemove',()=>document.body.classList.add('mouse'));
+$('fsBtn').addEventListener('click', toggleFullscreen);
+document.addEventListener('fullscreenchange',()=>{
+  const b=$('fsBtn'); if(b) b.textContent=document.fullscreenElement?'✕':'⛶';
+});
+$('fsBtn').addEventListener('click', toggleFullscreen);
+document.addEventListener('fullscreenchange',()=>{
+  const b=$('fsBtn'); if(b) b.textContent=document.fullscreenElement?'✕':'⛶';
+});
 // Delegation for cards
 _cardDelegation($('homeRows'));
 _cardDelegation($('catGrid'));
@@ -3239,12 +3650,17 @@ async function loadRowByQueueIdx(qi){
   const rowI=homeRows.findIndex(r=>r.qi===qi);
   if(rowI<0) return;
   const row=homeRows[rowI];
-  if(!row.stub||row._loading||row.releases.length) return;
+  if(!row.stub||row.releases.length) return; // already loaded
+  if(row._loading){
+    // Already in flight — wait for it to finish
+    await new Promise(res=>{ const t=setInterval(()=>{ if(!row.stub||row.releases.length||row.failed){clearInterval(t);res();} },80); setTimeout(()=>{clearInterval(t);res();},5000); });
+    return;
+  }
   row._loading=true;
   const desc=window._rowQueue[qi];
   try{
     const {list,hasMore}=await fetchRowPage(desc.filters, 1, CARDS_PER_PAGE);
-    if(!list||list.length<2){ row._loading=false; return; }
+    if(!list||list.length<2){ row._loading=false; row.failed=true; row.el?.remove(); return; }
     row.releases=list;
     row.hasMore=hasMore;
     row.nextPage=2;
@@ -3253,7 +3669,13 @@ async function loadRowByQueueIdx(qi){
     const ph=row.el;
     const sec=document.createElement('div'); sec.className='cards-sec home-row';
     sec.innerHTML=`<div class="row-hdr"><div class="row-bar"></div><div class="row-ttl">${desc.title}</div></div>
-      <div class="track-wrap"><div class="track" id="track-${rowI}"></div></div>`;
+      <div class="track-wrap">
+        <button class="row-arr arr-l arr-hidden" tabindex="-1" data-ri="${rowI}">&#8249;</button>
+        <div class="track" id="track-${rowI}"></div>
+        <button class="row-arr arr-r" tabindex="-1" data-ri="${rowI}">&#8250;</button>
+      </div>`;
+    sec.querySelector('.arr-l').addEventListener('click',e=>{e.stopPropagation();const ri=parseInt(e.currentTarget.dataset.ri);activeRowI=ri;nav.rowI=ri;nav.zone='home.cards';focCard(Math.max(0,(rowPos[ri]??0)-3),ri);updateRowArrows(ri);});
+    sec.querySelector('.arr-r').addEventListener('click',e=>{e.stopPropagation();const ri=parseInt(e.currentTarget.dataset.ri);activeRowI=ri;nav.rowI=ri;nav.zone='home.cards';const row=homeRows[ri];focCard(Math.min((row?.releases?.length??1)-1,(rowPos[ri]??0)+3),ri);updateRowArrows(ri);});
     row.el=sec;
     ph.parentNode?.replaceChild(sec, ph);
     renderCardWindow(rowI, 0);
@@ -3265,8 +3687,19 @@ async function loadRowByQueueIdx(qi){
 async function loadLazyRow(rowI){
   const row=homeRows[rowI]; if(!row) return;
   await loadRowByQueueIdx(row.qi);
-  setTimeout(()=>focCard(rowPos[rowI]??0,rowI),80);
-  // Pre-load ROW_PRELOAD rows ahead
+  // Wait until row renders or fails
+  let waited=0;
+  while(homeRows[rowI]?.stub && !homeRows[rowI]?.failed && waited<4000){
+    await new Promise(r=>setTimeout(r,80)); waited+=80;
+  }
+  // If still stub/failed — skip to next available row
+  if(homeRows[rowI]?.stub||homeRows[rowI]?.failed){
+    const dir=rowI>activeRowI?1:-1;
+    const next=rowI+dir;
+    if(next>=0&&next<homeRows.length){ activeRowI=next; nav.rowI=next; loadLazyRow(next); }
+    return;
+  }
+  focCard(rowPos[rowI]??0,rowI);
   ensureRowsLoaded(rowI+1);
 }
 
@@ -3293,11 +3726,193 @@ function _cacheDOM(){
   _$plyEps=$('plyEps');
 }
 init().then(_cacheDOM).catch(_cacheDOM);
+
+// ═══════════════════════════════════════════════════════════
+// TOUCH & WHEEL ENHANCEMENTS  (PC mouse + mobile/phone)
+// ═══════════════════════════════════════════════════════════
+
+// При першому тачі — знімаємо mouse-режим (курсор)
+document.addEventListener('touchstart', ()=>document.body.classList.remove('mouse'), {passive:true});
+
+// ── Long-press на картках (touch) → контекстне меню ─────
+let _tHoldTimer=null, _tHoldR=null, _tHoldMoved=false;
+document.addEventListener('touchstart', e=>{
+  const card=e.target.closest('.card');
+  if(!card||!card._r) return;
+  _tHoldMoved=false; _tHoldR=card._r;
+  _tHoldTimer=setTimeout(()=>{ if(!_tHoldMoved) openCtxMenu(_tHoldR); _tHoldR=null; }, 550);
+},{passive:true});
+document.addEventListener('touchmove',  ()=>{ _tHoldMoved=true; clearTimeout(_tHoldTimer); },{passive:true});
+document.addEventListener('touchend',   ()=>{ clearTimeout(_tHoldTimer); },{passive:true});
+document.addEventListener('touchcancel',()=>{ clearTimeout(_tHoldTimer); },{passive:true});
+
+// ── Горизонтальний свайп на треках карток (home) ────────
+(function(){
+  let sx=0, sy=0, rowI=-1, swiped=false;
+  function onTouchStart(e){
+    const tw=e.target.closest('.track-wrap'); if(!tw) return;
+    const tid=tw.querySelector('[id^="track-"]')?.id;
+    rowI=tid?parseInt(tid.replace('track-','')):-1;
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY; swiped=false;
+  }
+  function onTouchMove(e){
+    if(rowI<0) return;
+    const dx=e.touches[0].clientX-sx, dy=e.touches[0].clientY-sy;
+    if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>12) swiped=true;
+  }
+  function onTouchEnd(e){
+    if(rowI<0||!swiped){ rowI=-1; return; }
+    const dx=e.changedTouches[0].clientX-sx;
+    if(Math.abs(dx)>50){
+      activeRowI=rowI; nav.rowI=rowI; nav.zone='home.cards';
+      navHomeCards(dx<0?'ArrowRight':'ArrowLeft');
+    }
+    rowI=-1; swiped=false;
+  }
+  const hr=$('homeRows');
+  hr.addEventListener('touchstart', onTouchStart,{passive:true});
+  hr.addEventListener('touchmove',  onTouchMove, {passive:true});
+  hr.addEventListener('touchend',   onTouchEnd,  {passive:true});
+})();
+
+// Горизонтальний wheel вимкнено — використовуй кнопки ‹/› на рядах
+
+// ── IntersectionObserver: підвантажувати stub-рядки при скролі ──────────
+(function(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting) return;
+      const qi=parseInt(entry.target.dataset.qi);
+      if(isNaN(qi)) return;
+      const rowI=homeRows.findIndex(r=>r.qi===qi);
+      if(rowI<0) return;
+      const row=homeRows[rowI];
+      if(row&&row.stub&&!row._loading) loadRowByQueueIdx(qi);
+    });
+  },{root:$('homeRows'), rootMargin:'200px 0px'});
+
+  function observeStubs(){
+    document.querySelectorAll('.home-row.row-ph[data-qi]').forEach(el=>obs.observe(el));
+  }
+  observeStubs();
+
+  new MutationObserver(muts=>{
+    muts.forEach(m=>m.addedNodes.forEach(n=>{
+      if(n.nodeType===1&&n.classList&&n.classList.contains('row-ph')&&n.dataset&&n.dataset.qi!==undefined) obs.observe(n);
+    }));
+  }).observe($('homeRows'),{childList:true});
+})();
+
+// ── Свайп вправо → закрити Detail overlay ───────────────
+(function(){
+  const ov=$('detOv'); let sx=0,sy=0;
+  ov.addEventListener('touchstart',e=>{ sx=e.touches[0].clientX; sy=e.touches[0].clientY; },{passive:true});
+  ov.addEventListener('touchend',e=>{
+    if(!ov.classList.contains('on')) return;
+    const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+    if(dx>90&&Math.abs(dy)<100) closeDetail();
+  },{passive:true});
+})();
+
+// ── Плеєр: тап → показати/сховати контролі ──────────────
+$('plyOv').addEventListener('touchstart',e=>{
+  if(e.target.closest('.ply-bar,.pb,.pep,.ply-qual-btn,.ply-qual-menu,.ply-eps')) return;
+  showCtrl();
+},{passive:true});
 // Exit dialog — elements exist in DOM before script runs now
 function doExit(){ if(window.tizen) try{ tizen.application.getCurrentApplication().exit(); }catch(_){} else window.close(); }
 function closeExit(){ $('exitOv').style.display='none'; $('exitYes').classList.remove('foc'); $('exitNo').classList.remove('foc'); window._lastBack=0; }
 $('exitYes').addEventListener('click', doExit);
 $('exitNo').addEventListener('click', closeExit);
+
+
+// ── Mobile detection ─────────────────────────────────────────────────
+function _checkMobile(){
+  const mob=window.innerWidth<=900||('ontouchstart' in window&&window.innerWidth<=1100);
+  document.body.classList.toggle('is-mobile', mob);
+  const fltBtn=document.getElementById('mFltBtn');
+  if(fltBtn) fltBtn.style.display=mob?'flex':'none';
+}
+_checkMobile();
+window.addEventListener('resize',_checkMobile);
+
+// ── Mobile filter drawer ─────────────────────────────────────────────
+(function(){
+  const btn=document.getElementById('mFltBtn');
+  const flt=document.getElementById('catFlt');
+  const ov=document.getElementById('mFltOverlay');
+  if(!btn||!flt||!ov) return;
+  let movedToBody=false;
+
+  function ensureInBody(){
+    if(movedToBody) return;
+    document.body.appendChild(flt); // move out of flex container — fixes position:fixed
+    movedToBody=true;
+  }
+
+  function openDrawer(){
+    ensureInBody();
+    flt.classList.add('mob-drawer');
+    requestAnimationFrame(()=>flt.classList.add('mob-open'));
+    ov.classList.add('on');
+  }
+  function closeDrawer(){
+    flt.classList.remove('mob-open');
+    ov.classList.remove('on');
+  }
+  btn.addEventListener('click', openDrawer);
+  ov.addEventListener('click', closeDrawer);
+  document.getElementById('fltApply')?.addEventListener('click', closeDrawer);
+  document.getElementById('fltReset')?.addEventListener('click', closeDrawer);
+  // Swipe down to close
+  let sy=0;
+  flt.addEventListener('touchstart',e=>{ sy=e.touches[0].clientY; },{passive:true});
+  flt.addEventListener('touchend',e=>{
+    if(e.changedTouches[0].clientY - sy > 60) closeDrawer();
+  },{passive:true});
+})();
+
+// ── Video fit cycling ─────────────────────────────────────────────────
+const FIT_MODES=['contain','cover'];
+const FIT_LABELS={contain:'По рамке',cover:'Заполнить'};
+let fitIdx=0;
+function applyFit(){
+  const v=$('vid');
+  FIT_MODES.forEach(m=>v.classList.remove('fit-'+m));
+  v.classList.add('fit-'+FIT_MODES[fitIdx]);
+  const btn=$('pcFit');
+  if(btn){
+    let lbl=btn.querySelector('.fit-label');
+    if(!lbl){ lbl=document.createElement('span'); lbl.className='fit-label'; btn.appendChild(lbl); }
+    lbl.textContent=FIT_LABELS[FIT_MODES[fitIdx]];
+  }
+  try{ localStorage.setItem('videoFit',fitIdx); }catch(_){}
+}
+function cycleFit(){ fitIdx=(fitIdx+1)%FIT_MODES.length; applyFit(); showCtrl(); }
+$('pcFit').addEventListener('click', cycleFit);
+// restore saved fit
+try{ const s=localStorage.getItem('videoFit'); if(s!==null){ fitIdx=parseInt(s)||0; applyFit(); } }catch(_){}
+
+
+// ── Player fullscreen ─────────────────────────────────────────────────
+function togglePlyFs(){
+  const wrap=$('plyOv');
+  if(!document.fullscreenElement){
+    (wrap.requestFullscreen||wrap.webkitRequestFullscreen||wrap.mozRequestFullScreen).call(wrap);
+  } else {
+    (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen).call(document);
+  }
+}
+if(!_isTizen){ $('pcFullscreen').addEventListener('click', togglePlyFs); } else { $('pcFullscreen').style.display='none'; }
+document.addEventListener('fullscreenchange',()=>{
+  const ico=$('pcFsIco');
+  if(document.fullscreenElement){
+    ico.innerHTML='<polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="3" y2="21"/><line x1="21" y1="3" x2="14" y2="10"/>';
+  } else {
+    ico.innerHTML='<polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>';
+  }
+});
+
 </script>
 </body>
 </html>
