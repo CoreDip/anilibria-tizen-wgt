@@ -15,7 +15,7 @@
 | Платформа | |
 |-----------|---|
 | 📦 **Samsung TV (.wgt)** | [Скачать AniLiberty.wgt →](https://github.com/CoreDip/anilibria-tizen-wgt/releases/latest) |
-| 🌐 **MediaStationX / Браузер** | `https://coredip.github.io/anilibria-tizen-wgt/` |
+| 🌐 **MediaStationX / Браузер** | `https://aniliberty.netlify.app/` |
 
 ---
 
@@ -28,7 +28,7 @@
 
 ### Вариант 2 — MediaStationX
 1. Открыть MediaStationX на TV
-2. Добавить URL: `https://coredip.github.io/anilibria-tizen-wgt/`
+2. Добавить Домен: `aniliberty.netlify.app`
 
 ---
 
