@@ -1,4 +1,6 @@
 # 🎌 AniLiberty TV
+<img width="512" height="512" alt="icon" src="https://github.com/user-attachments/assets/407c0839-b1e4-42c7-866f-8ce6797173e3" />
+
 
 > Неофициальный клиент [AniLibria](https://anilibria.tv) для **Samsung Smart TV (Tizen)** и **MediaStationX**
 
@@ -27,6 +29,9 @@
 2. Добавить URL: `https://coredip.github.io/anilibria-tizen-wgt/`
 
 ---
+![main](https://github.com/user-attachments/assets/e6cde226-fbb3-4a8c-8aee-735f3621fdac)
+![anipage](https://github.com/user-attachments/assets/b930a04a-30d3-42f2-a484-f17a1a865517)
+
 
 ## ✨ Возможности
 
