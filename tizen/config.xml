@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:tizen="http://tizen.org/ns/widgets"
+        id="http://yourdomain/AniLibriaTizenApp"
+        version="1.0.0"
+        height="1080"
+        width="1920"
+        viewmodes="fullscreen">
+
+  <tizen:application id="872yxfxKm1.AniLibriaTizenApp"
+                     package="872yxfxKm1"
+                     required_version="2.3"/>
+
+  <author>Dipcore</author>
+  <content src="index.html"/>
+  <n>AniLiberty TV</n>
+  <icon src="icon.png"/>
+
+  <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
+
+  <!-- Привілеї -->
+  <tizen:privilege name="http://tizen.org/privilege/internet"/>
+  <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
+  <tizen:privilege name="http://developer.samsung.com/privilege/productinfo"/>
+
+  <!-- CSP — дозволяємо API, CDN, HLS стріми -->
+  <tizen:content-security-policy>
+    default-src * data: blob: 'unsafe-inline';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' cdnjs.cloudflare.com cdn.jsdelivr.net;
+    style-src 'self' 'unsafe-inline' fonts.googleapis.com;
+    font-src 'self' data: fonts.gstatic.com;
+    media-src * blob:;
+    connect-src *;
+    img-src * data: blob:;
+  </tizen:content-security-policy>
+
+  <tizen:metadata key="http://tizen.org/metadata/app_ui_type/base_screen_resolution" value="extensive"/>
+  <tizen:profile name="tv-samsung"/>
+  <tizen:setting screen-orientation="landscape"
+                 context-menu="disable"
+                 background-support="disable"
+                 encryption="disable"
+                 install-location="auto"
+                 hwkey-event="enable"/>
+
+</widget>

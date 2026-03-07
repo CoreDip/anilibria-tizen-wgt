@@ -1,0 +1,3303 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1600">
+<title>AniLiberty TV</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@700;900&family=Noto+Sans+JP:wght@300;400;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#090c14;--bg2:#0f1421;--bg3:#161c2e;--bg4:#1e2540;--bg5:#252d48;
+  --red:#e8272f;--gold:#f5c842;--grn:#22c55e;
+  --t1:#e8eaf0;--t2:#8892aa;--t3:#4a5270;
+  --hh:62px;--pad:68px;--cw:200px;
+}
+body{background:var(--bg);color:var(--t1);font-family:'Noto Sans JP',sans-serif;
+  width:1600px;height:900px;overflow:hidden;cursor:none;}
+html{overflow:hidden;}
+body.mouse{cursor:default;}
+.ff{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;}
+
+/* BG */
+
+
+
+
+/* HEADER */
+#hdr{position:fixed;top:0;left:0;right:0;height:var(--hh);z-index:100;
+  display:flex;align-items:center;padding:0 var(--pad);
+  background:linear-gradient(to bottom,rgba(9,12,20,.98) 65%,transparent);}
+.logo{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:28px;letter-spacing:1px;flex-shrink:0;user-select:none;display:flex;align-items:center;gap:10px;}
+.logo-icon{width:30px;height:30px;flex-shrink:0;}
+.logo .la{color:var(--t1)}.logo .lb{color:var(--red)}.logo .lc{color:var(--t2)}.logo-name{display:inline-flex;letter-spacing:1px;}
+.logo-badge{font-size:8px;font-weight:700;letter-spacing:3px;color:var(--red);
+  border:1px solid rgba(232,39,47,.4);background:rgba(232,39,47,.1);
+  padding:2px 6px;border-radius:4px;margin-left:8px;margin-top:4px;}
+#nav{display:flex;gap:2px;margin-left:48px;}
+.ntab{padding:7px 18px;border-radius:7px;font-size:14px;font-family:inherit;
+  color:var(--t2);background:transparent;border:2px solid transparent;
+  cursor:pointer;outline:none;transition:color .15s,background .15s,border-color .15s;letter-spacing:.2px;}
+.ntab.cur{color:var(--t1);font-weight:700;}
+.ntab.foc,body.mouse .ntab:hover{color:var(--t1);background:var(--bg3);border-color:rgba(232,39,47,.5);}
+.ntab.cur.foc{color:var(--red);border-color:var(--red);}
+#hdr-r{margin-left:auto;display:flex;align-items:center;gap:14px;}
+#loginBtn{padding:6px 16px;border-radius:8px;background:rgba(232,39,47,.14);color:var(--red);
+  border:1px solid rgba(232,39,47,.4);font-size:13px;font-weight:700;font-family:inherit;
+  cursor:pointer;outline:none;transition:color .15s,background .15s,border-color .15s;}
+#loginBtn.foc,body.mouse #loginBtn:hover{background:rgba(232,39,47,.28);border-color:var(--red);}
+#userPill{display:none;align-items:center;gap:7px;padding:5px 14px;border-radius:20px;
+  color:var(--grn);border:1px solid rgba(34,197,94,.35);background:rgba(34,197,94,.08);
+  font-size:13px;font-weight:700;cursor:pointer;outline:none;}
+#userPill.on{display:flex;}
+.udot{width:7px;height:7px;border-radius:50%;background:var(--grn);}
+#clk{font-size:15px;color:var(--t2);letter-spacing:3px;font-weight:300;flex-shrink:0;}
+
+/* LOGIN PANEL (top-right dropdown) */
+#lp,#profilePanel{position:fixed;top:calc(var(--hh) + 6px);right:var(--pad);width:400px;z-index:200;
+  background:var(--bg2);border:1px solid var(--bg5);border-radius:14px;padding:28px 32px;
+  
+  transform:translateY(-14px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;}
+#lp.on,#profilePanel.on{transform:translateY(0);opacity:1;pointer-events:all;}
+.lp-h{font-size:19px;font-weight:700;margin-bottom:18px;}
+.lp-lbl{font-size:10px;letter-spacing:1px;color:var(--t3);text-transform:uppercase;display:block;margin-bottom:5px;}
+.lp-inp{width:100%;padding:11px 14px;background:var(--bg3);border:2px solid var(--bg4);
+  border-radius:8px;color:var(--t1);font-size:15px;font-family:inherit;outline:none;
+  transition:border-color .15s;margin-bottom:12px;}
+.lp-inp.foc,.lp-inp:focus{border-color:var(--red);}
+#lpErr{font-size:12px;color:var(--red);min-height:18px;margin-bottom:8px;}
+.lp-row{display:flex;gap:8px;}
+
+/* BUTTONS */
+.btn.foc{outline:2px solid var(--red);outline-offset:2px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:10px 22px;border-radius:8px;font-size:14px;font-weight:700;font-family:inherit;
+  cursor:pointer;border:none;outline:none;transition:color .15s,background .15s,border-color .15s,opacity .15s;letter-spacing:.2px;white-space:nowrap;}
+.btn-p{background:var(--red);color:#fff;}
+.btn-s{background:rgba(255,255,255,.08);color:var(--t1);border:1px solid rgba(255,255,255,.13);}
+.btn-c{background:transparent;color:var(--t1);border:1.5px solid rgba(255,255,255,.22);}
+.btn-g{background:rgba(34,197,94,.14);color:var(--grn);border:1px solid rgba(34,197,94,.3);}
+.btn.foc,body.mouse .btn:hover{outline:3px solid rgba(232,39,47,.5);outline-offset:1px;transform:scale(1.03);}
+
+/* MAIN (content area between header and bar) */
+#main{position:fixed;top:var(--hh);bottom:0;left:0;right:0;overflow:hidden;z-index:5;}
+.pg{display:none;width:100%;height:100%;flex-direction:column;}
+.pg.on{display:flex;}
+
+/* ===== HOME PAGE ===== */
+/* hero content (bg is in bgLayer) */
+/* HOME ROWS */
+.home-rows{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;contain:strict;
+  padding:6px 0 8px;}
+.home-rows::-webkit-scrollbar{width:3px;}
+.home-rows::-webkit-scrollbar-thumb{background:var(--bg5);}
+.cards-sec{padding:0 0 2px;flex-shrink:0;}
+.row-hdr{display:flex;align-items:center;gap:10px;margin-bottom:4px;padding:0 28px;}
+.row-bar{width:3px;height:17px;background:var(--red);border-radius:2px;}
+.row-ttl{font-size:16px;font-weight:700;}
+.row-sub{font-size:11px;color:var(--t3);margin-left:auto;letter-spacing:.3px;}
+.track-wrap{overflow:visible;display:flex;align-items:center;padding:0 28px;clip-path:inset(-30px 0px);}
+.track{display:flex;gap:14px;padding:12px 0 10px;transition:transform .25s cubic-bezier(.4,0,.2,1);transform:translateZ(0);}
+
+/* ===== BADGES ===== */
+.bdg{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:5px;
+  font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;flex-shrink:0;}
+.bdg-tv{background:rgba(59,130,246,.2);color:#93c5fd;}
+.bdg-movie{background:rgba(168,85,247,.2);color:#d8b4fe;}
+
+.bdg-ona{background:rgba(20,184,166,.2);color:#5eead4;}
+.bdg-web{background:rgba(99,102,241,.2);color:#a5b4fc;}
+
+.bdg-ongoing{background:rgba(34,197,94,.18);color:var(--grn);}
+.bdg-fin{background:rgba(100,116,139,.18);color:#94a3b8;}
+
+.bdg-age{background:rgba(239,68,68,.14);color:#fca5a5;}
+
+/* ===== CARDS ===== */
+.card{width:var(--cw);border-radius:10px;flex-shrink:0;position:relative;
+  overflow:visible;background:var(--bg3);border:2px solid transparent;cursor:pointer;
+  display:flex;flex-direction:column;contain:layout style paint;
+  transition:transform .18s cubic-bezier(.4,0,.2,1),border-color .12s;}
+/* clip image inside radius but allow card to scale outside */
+.c-img,.c-ph{border-radius:8px 8px 0 0;overflow:hidden;}
+.c-img{width:100%;aspect-ratio:2/3;object-fit:cover;flex-shrink:0;display:block;}
+.c-ph{width:100%;aspect-ratio:2/3;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:40px;background:linear-gradient(135deg,var(--bg4),var(--bg2));}
+.c-body{padding:8px 9px;flex:1;display:flex;flex-direction:column;gap:3px;min-height:0;}
+.c-name{font-size:11px;font-weight:700;line-height:1.35;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.c-foot{display:flex;align-items:center;gap:5px;margin-top:auto;font-size:10px;color:var(--t3);flex-wrap:wrap;}
+.c-eps{color:var(--red);font-weight:700;}
+.c-rating{display:flex;align-items:center;gap:2px;color:var(--gold);font-size:10px;font-weight:700;margin-left:auto;}
+.c-new{position:absolute;top:6px;right:6px;background:var(--red);color:#fff;
+  font-size:8px;font-weight:700;padding:2px 5px;border-radius:3px;letter-spacing:.8px;}
+
+.c-prog{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.1);border-radius:0 0 10px 10px;overflow:hidden;}
+.c-prog-f{height:100%;background:var(--red);border-radius:0;transition:width .3s;}
+
+/* ── Context menu ──────────────────────────────── */
+#ctxOv{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;}
+#ctxOv.on{display:flex;}
+.ctx-box{background:var(--bg2);border-radius:14px;padding:0;overflow:hidden;min-width:300px;max-width:420px;
+  border:1.5px solid var(--bg4);}
+.ctx-hdr{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--bg4);}
+.ctx-poster{width:44px;height:62px;border-radius:6px;object-fit:cover;background:var(--bg3);flex-shrink:0;}
+.ctx-title{font-size:13px;font-weight:700;color:var(--t1);line-height:1.35;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;}
+.ctx-item{display:flex;align-items:center;gap:12px;padding:13px 18px;font-size:13px;font-weight:600;
+  color:var(--t2);cursor:pointer;transition:background .12s;}
+.ctx-item.foc{background:var(--bg3);color:var(--t1);}
+.ctx-item.active{color:var(--gold);}
+.ctx-item.danger{color:#ff6b6b;}
+.ctx-item .ctx-ic{font-size:16px;width:22px;text-align:center;flex-shrink:0;}
+.ctx-sep{height:1px;background:var(--bg4);margin:4px 0;}
+
+.card.foc{border-color:var(--red);transform:scale(1.06) translateY(-8px) translateZ(0);z-index:10;}
+body.mouse .card:hover{border-color:rgba(232,39,47,.5);transform:scale(1.03) translateY(-4px) translateZ(0);}
+/* skeleton */
+.skel{width:var(--cw);aspect-ratio:2/3;background:var(--bg3);border-radius:10px;flex-shrink:0;}
+
+/* ===== CATALOG ===== */
+#pgCatalog{flex-direction:row;background:var(--bg);padding-top:10px;}
+.cat-main{flex:1;min-width:0;display:flex;flex-direction:column;padding:20px var(--pad) 0;overflow:visible;}
+.cat-srch{display:flex;align-items:center;gap:12px;background:var(--bg2);
+  border:2px solid var(--bg4);border-radius:10px;padding:0 16px;margin-bottom:18px;flex-shrink:0;}
+.cat-srch.foc{border-color:var(--red);}
+.cat-srch-icon{font-size:17px;color:var(--t3);}
+#catQ{flex:1;background:transparent;border:none;color:var(--t1);font-size:17px;
+  font-family:inherit;outline:none;padding:13px 0;}
+#catQ::placeholder{color:var(--t3);}
+.cat-grid{flex:1;overflow-y:auto;overflow-x:visible;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:16px;padding:18px 8px 24px;align-content:start;margin-top:4px;}
+.cat-grid .card{width:auto;}
+.cat-grid::-webkit-scrollbar{width:4px;}
+.cat-grid::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:2px;}
+.cat-info{grid-column:1/-1;display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--t3);padding:40px 0;}
+.cat-load{grid-column:1/-1;display:flex;align-items:center;justify-content:center;padding:20px;}
+/* filter sidebar */
+.cat-flt{width:460px;flex-shrink:0;background:var(--bg2);border-left:1px solid var(--bg4);
+  display:flex;flex-direction:column;}
+.cat-flt-in{flex:1;overflow-y:auto;padding:20px 24px;}
+.cat-flt-in::-webkit-scrollbar{width:3px;}
+.cat-flt-in::-webkit-scrollbar-thumb{background:var(--bg5);}
+.f-sec{margin-bottom:20px;}
+.f-ttl{font-size:11px;font-weight:700;letter-spacing:.8px;color:var(--t2);
+  text-transform:uppercase;margin-bottom:8px;}
+.f-chips{display:flex;flex-wrap:wrap;gap:7px;}
+.fchip{padding:5px 13px;border-radius:6px;font-size:12px;font-weight:600;font-family:inherit;
+  cursor:pointer;outline:none;transition:color .13s,background .13s,border-color .13s;
+  background:var(--bg3);color:var(--t2);border:2px solid transparent;}
+.fchip.sel{background:rgba(232,39,47,.18);color:var(--t1);border-color:rgba(232,39,47,.5);}
+.fchip.foc,body.mouse .fchip:hover{border-color:var(--red);color:var(--t1);}
+.cat-flt-foot{padding:14px 24px;border-top:1px solid var(--bg4);display:flex;gap:8px;}
+.year-spin-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.year-spin-row{display:flex;flex-direction:row;align-items:center;gap:10px;}
+.ys-label{font-size:10px;color:var(--t3);letter-spacing:.5px;width:22px;text-align:right;flex-shrink:0;}
+.year-spin{display:flex;flex-direction:row;align-items:center;gap:4px;
+  background:var(--bg3);border:2px solid var(--bg5);border-radius:8px;padding:6px 8px;
+  min-width:100px;transition:border-color .15s;}
+.year-spin.foc{border-color:var(--red);}
+.ys-arr{color:var(--t3);font-size:10px;transition:color .1s;}
+.year-spin.foc .ys-arr{color:var(--red);}
+.ys-val{font-size:15px;font-weight:700;color:var(--t1);min-width:44px;text-align:center;
+  padding:0;letter-spacing:.5px;}
+.cat-flt-foot .btn{flex:1;}
+
+/* ===== SCHEDULE ===== */
+#pgSchedule{background:var(--bg);padding:20px var(--pad) 0;overflow:hidden;flex-direction:column;}
+.sch-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;flex:1;overflow:hidden;}
+.sch-day{display:flex;flex-direction:column;gap:0;overflow:hidden;height:100%;}
+.sch-dh{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--t1);padding:6px 0;border-bottom:2px solid var(--bg4);flex-shrink:0;}
+.sch-dh.today{color:var(--red);border-color:var(--red);}
+.sch-items{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:5px;padding:4px 0 8px;}
+.sch-items::-webkit-scrollbar{width:2px;}
+.sch-items::-webkit-scrollbar-thumb{background:var(--bg5);}
+.sch-item{background:var(--bg2);border-radius:7px;cursor:pointer;
+  border:2px solid transparent;outline:none;transition:color .13s,background .13s,border-color .13s;text-align:left;
+  display:flex;gap:0;flex-direction:column;flex-shrink:0;}
+.sch-item-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;flex-shrink:0;
+  background:var(--bg3);border-radius:5px 5px 0 0;overflow:hidden;}
+.sch-item-ph{width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;
+  font-size:22px;background:linear-height(135deg,var(--bg4),var(--bg3));flex-shrink:0;
+  background:var(--bg4);}
+.sch-item-info{padding:6px 8px;}
+.sch-item .sin{font-size:11px;font-weight:700;line-height:1.3;color:var(--t1);margin-bottom:2px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.sch-item .sie{font-size:10px;color:var(--red);font-weight:600;}
+.sch-item.foc,body.mouse .sch-item:hover{border-color:var(--red);}
+
+/* ===== COLLECTIONS ===== */
+#pgCollections{background:var(--bg);padding:0 var(--pad);overflow:hidden;flex-direction:column;}
+.coll-tabs{display:flex;gap:5px;padding:18px 0 14px;flex-shrink:0;}
+.ctab{padding:7px 18px;border-radius:8px;font-size:14px;font-weight:600;font-family:inherit;
+  cursor:pointer;outline:none;transition:color .15s,background .15s,border-color .15s;
+  background:var(--bg2);color:var(--t2);border:2px solid transparent;}
+.ctab.cur{color:var(--t1);border-color:rgba(232,39,47,.5);background:var(--bg3);}
+.ctab.foc,body.mouse .ctab:hover{border-color:var(--red);color:var(--t1);}
+.coll-grid{flex:1;overflow-y:auto;overflow-x:visible;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;
+  padding:28px 8px 16px;align-content:start;}
+.coll-grid::-webkit-scrollbar{width:3px;}
+.coll-grid::-webkit-scrollbar-track{background:transparent;}
+.coll-grid::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:3px;}
+/* collection cards fill their grid cell */
+.coll-grid .card{width:100%;min-width:0;}
+.coll-empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:10px;padding:50px 0;color:var(--t3);}
+.coll-empty-ic{font-size:44px;opacity:.35;}
+
+/* ===== DETAIL OVERLAY ===== */
+#detOv{position:fixed;inset:0;z-index:150;
+  background:rgba(9,12,20,.98);
+  display:none;overflow:hidden;}
+#detOv.on{display:flex;}
+.det-side{width:38%;flex-shrink:0;position:relative;overflow:hidden;}
+.det-side-img{position:absolute;inset:0;background-size:cover;background-position:center top;}
+.det-side-grad{position:absolute;inset:0;
+  background:linear-gradient(to right,transparent 30%,rgba(9,12,20,.99)),
+  linear-gradient(to top,rgba(9,12,20,.7) 0%,transparent 30%);}
+.det-body{flex:1;padding:28px 52px 32px 40px;overflow-y:auto;display:flex;flex-direction:column;gap:0;
+  max-height:100%;}
+.det-body::-webkit-scrollbar{width:3px;}
+.det-body::-webkit-scrollbar-thumb{background:var(--bg5);}
+
+/* ── Back button ── */
+.det-back-top{align-self:flex-start;margin-bottom:16px;}
+
+/* ── Header block: title + english + badges ── */
+.det-header-block{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+.det-ttl{font-size:34px;line-height:1.15;margin:0;}
+.det-en{font-size:15px;color:var(--t2);font-weight:300;}
+.det-bdgs{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px;}
+
+/* ── Description block ── */
+.det-desc-block{margin-bottom:18px;}
+.det-desc{font-size:13px;line-height:1.8;color:var(--t2);}
+
+/* ── Meta block ── */
+.det-meta-block{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;padding:14px 18px;margin-bottom:20px;}
+.det-meta{display:grid;grid-template-columns:auto 1fr;gap:6px 22px;font-size:13px;}
+.det-meta-k{color:var(--t3);white-space:nowrap;}
+.det-meta-v{color:var(--t1);font-weight:600;}
+
+/* ── Play button block ── */
+.det-acts-block{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.det-acts{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.det-play-btn{padding:16px 44px;font-size:17px;font-weight:800;letter-spacing:.3px;
+  border-radius:12px;min-width:220px;}
+.det-reset-btn{font-size:12px;opacity:.6;padding:8px 18px;}
+
+/* ── Collection row block ── */
+.det-coll-block{border-top:1px solid rgba(255,255,255,.07);padding-top:16px;margin-bottom:20px;}
+.det-coll-lbl{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--t3);margin-bottom:8px;}
+.det-coll-row{display:flex;gap:7px;flex-wrap:wrap;}
+.det-cbtn{padding:7px 15px;border-radius:8px;font-size:12px;font-weight:700;font-family:inherit;
+  cursor:pointer;outline:none;transition:color .13s,background .13s,border-color .13s;
+  background:var(--bg3);color:var(--t2);border:2px solid transparent;}
+.det-cbtn.in{border-color:var(--gold);color:var(--gold);background:rgba(245,200,66,.1);}
+.det-cbtn.foc,body.mouse .det-cbtn:hover{border-color:var(--red);color:var(--t1);}
+
+/* ── Episodes block ── */
+.det-eps-block{border-top:1px solid rgba(255,255,255,.07);padding-top:16px;margin-bottom:20px;}
+.det-eps-hdr{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--t3);margin-bottom:10px;}
+.det-eps{display:flex;flex-wrap:wrap;gap:7px;max-height:220px;overflow-y:auto;}
+.det-eps::-webkit-scrollbar{height:3px;}
+
+/* ── Related releases block ── */
+.det-related-block{border-top:1px solid rgba(255,255,255,.07);padding-top:16px;display:none;}
+.det-sec-hdr{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--t3);margin-bottom:12px;}
+.det-related{display:flex;gap:12px;flex-wrap:wrap;padding-bottom:4px;}
+.det-related::-webkit-scrollbar{height:2px;}
+.det-related::-webkit-scrollbar-thumb{background:var(--bg5);}
+.det-rel-card{width:110px;flex-shrink:0;border-radius:10px;overflow:hidden;cursor:pointer;position:relative;
+  background:var(--bg3);border:2px solid transparent;transition:border-color .13s;}
+.det-rel-card.drc-current{border-color:var(--red);cursor:default;}
+.drc-now{position:absolute;top:6px;left:6px;background:var(--red);color:#fff;
+  font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.5px;}
+.det-rel-card img,.det-rel-card .drc-ph{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;}
+.det-rel-card .drc-ph{display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--bg4);}
+.det-rel-card .drc-info{padding:7px 8px;}
+.det-rel-card .drc-type{font-size:9px;font-weight:700;letter-spacing:.4px;color:var(--red);text-transform:uppercase;margin-bottom:2px;}
+.det-rel-card .drc-n{font-size:10px;font-weight:600;line-height:1.3;color:var(--t1);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.det-rel-card .drc-year{font-size:10px;color:var(--t3);margin-top:3px;font-weight:600;}
+body.mouse .det-rel-card:not(.drc-current):hover,.det-rel-card.foc{border-color:var(--red);}
+.dep{padding:7px 13px;border-radius:7px;font-size:12px;font-weight:600;font-family:inherit;
+  cursor:pointer;outline:none;transition:color .13s,background .13s,border-color .13s;min-width:70px;text-align:center;
+  background:var(--bg3);color:var(--t2);border:2px solid transparent;position:relative;}
+/* watched = green border; partial = red progress bar; current = gold */
+.dep.ep-done{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:rgba(134,239,172,.9);}
+.dep.ep-partial{background:rgba(234,179,8,.1);border-color:rgba(234,179,8,.4);color:rgba(253,224,71,.9);}
+.dep.ep-current{border-color:var(--gold);color:var(--gold);}
+.dep.foc,body.mouse .dep:hover{border-color:var(--red);color:var(--t1);background:rgba(232,39,47,.15);}
+.dep-pb{position:absolute;bottom:0;left:0;right:0;height:2px;border-radius:0 0 5px 5px;background:rgba(255,255,255,.08);}
+.dep-pf{height:100%;background:var(--red);}
+
+/* ===== PLAYER ===== */
+#plyOv{position:fixed;inset:0;z-index:300;background:#000;display:none;flex-direction:column;}
+#plyOv.on{display:flex;}
+.ply-wrap{flex:1;position:relative;overflow:hidden;}
+video{width:100%;height:100%;object-fit:contain;display:block;}
+.ply-spin{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:12px;}
+.spin{width:52px;height:52px;border:4px solid rgba(255,255,255,.1);
+  border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ply-ui{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
+  background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,0) 45%);
+  opacity:0;transition:opacity .22s;pointer-events:none;}
+#plyOv.ctrl .ply-ui{opacity:1;pointer-events:all;}
+.ply-ctrl{padding:20px var(--pad);}
+.ply-ttl{font-size:24px;font-weight:700;margin-bottom:2px;}
+.ply-ep{font-size:13px;color:var(--t2);margin-bottom:12px;}
+.ply-bar{height:20px;background:transparent;border-radius:2px;margin-bottom:14px;
+  cursor:pointer;position:relative;display:flex;align-items:center;}
+.ply-bar::before{content:'';position:absolute;left:0;right:0;height:4px;
+  background:rgba(255,255,255,.2);border-radius:2px;pointer-events:none;}
+.ply-fill{height:4px;background:var(--red);border-radius:2px;position:relative;
+  transition:width .1s linear;pointer-events:none;}
+.ply-bar.scrubbing .ply-fill{transition:none;}
+.ply-fill::after{content:'';position:absolute;right:-9px;top:-8px;width:20px;height:20px;
+  background:#fff;border-radius:50%;transform:scale(.7);transition:transform .15s;}
+.ply-bar:hover .ply-fill::after,.ply-bar.scrubbing .ply-fill::after{transform:scale(1);}
+.seek-tooltip{position:absolute;bottom:28px;transform:translateX(-50%);
+  background:rgba(0,0,0,.85);color:#fff;font-size:11px;padding:2px 7px;
+  border-radius:4px;pointer-events:none;white-space:nowrap;display:none;}
+.ply-bar.scrubbing .seek-tooltip,.ply-bar:hover .seek-tooltip{display:block;}
+.ply-row{display:flex;align-items:center;gap:12px;}
+.pb{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.15);color:#fff;cursor:pointer;
+  outline:none;display:flex;align-items:center;justify-content:center;
+  padding:0;line-height:1;
+  transition:color .15s,opacity .15s;font-family:inherit;flex-shrink:0;}
+.pb svg{display:block;pointer-events:none;}
+.pb.big{width:66px;height:66px;}
+.pb.foc,body.mouse .pb:hover{background:var(--red);border-color:var(--red);}
+.ply-time{font-size:13px;color:var(--t2);letter-spacing:.7px;flex-shrink:0;}
+.ply-eps{display:flex;gap:5px;flex-wrap:nowrap;margin-left:12px;align-items:center;}
+.pep{padding:4px 10px;border-radius:5px;font-size:11px;font-weight:600;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:var(--t2);
+  cursor:pointer;outline:none;font-family:inherit;flex-shrink:0;transition:color .13s,background .13s,border-color .13s;}
+.pep.cur{border-color:var(--gold);color:var(--gold);}
+.pep.ep-done{border-color:rgba(34,197,94,.4);color:rgba(34,197,94,.7);}
+.pep.foc,body.mouse .pep:hover{background:var(--red);border-color:var(--red);color:#fff;}
+.pep-dots{color:var(--t3);font-size:14px;padding:0 2px;line-height:1;}
+#skipBtn{position:absolute;bottom:105px;right:var(--pad);
+  padding:9px 22px;background:rgba(232,39,47,.88);color:#fff;
+  border-radius:8px;font-size:14px;font-weight:700;font-family:inherit;
+  border:none;cursor:pointer;outline:none;
+  opacity:0;transition:opacity .18s;pointer-events:none;}
+#skipBtn.on{opacity:1;pointer-events:all;}
+#skipBtn.foc{outline:3px solid rgba(232,39,47,.5);}
+/* Quality selector */
+.ply-qual-btn{padding:6px 14px;border-radius:6px;font-size:13px;font-weight:700;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  color:var(--t1);cursor:pointer;outline:none;font-family:inherit;flex-shrink:0;
+  transition:color .13s,background .13s,border-color .13s;margin-left:auto;}
+.ply-qual-btn.foc,body.mouse .ply-qual-btn:hover{background:var(--red);border-color:var(--red);}
+.ply-qual-menu{position:absolute;bottom:90px;right:var(--pad);
+  background:var(--bg2);border:1px solid var(--bg4);border-radius:10px;
+  padding:6px;display:none;flex-direction:column;gap:4px;z-index:10;}
+.ply-qual-menu.on{display:flex;}
+.ply-qual-opt{padding:8px 22px;border-radius:6px;font-size:14px;font-weight:700;
+  background:none;border:2px solid transparent;color:var(--t2);
+  cursor:pointer;outline:none;font-family:inherit;text-align:center;
+  transition:color .12s,background .12s,border-color .12s;}
+.ply-qual-opt.cur{color:var(--red);border-color:rgba(232,39,47,.3);}
+.ply-qual-opt.foc,body.mouse .ply-qual-opt:hover{background:var(--red);border-color:var(--red);color:#fff;}
+
+/* ===== HINT BAR ===== */
+#hbar{display:none;}
+#hbar-r{display:none;}
+.sdot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blk 2s infinite;}
+.sdot.ok{background:var(--grn);animation:none;}
+.sdot.warn{background:#f59e0b;animation:none;}
+@keyframes blk{0%,100%{opacity:1}50%{opacity:.22}}
+
+/* ===== PRELOADER ===== */
+#preloader{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+#preloader.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.pre-logo{display:flex;align-items:center;gap:14px;user-select:none;}
+.pre-svg{width:64px;height:64px;animation:preSpin 1.8s cubic-bezier(.4,0,.2,1) infinite;}
+@keyframes preSpin{
+  0%{transform:rotate(0deg);opacity:1;}
+  50%{transform:rotate(180deg);opacity:.5;}
+  100%{transform:rotate(360deg);opacity:1;}
+}
+.pre-wordmark{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:32px;letter-spacing:2px;}
+.pre-wordmark .la{color:var(--t1)}.pre-wordmark .lb{color:var(--red)}.pre-wordmark .lc{color:var(--t2)}
+.pre-badge{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--red);
+  border:1px solid rgba(232,39,47,.4);background:rgba(232,39,47,.1);
+  padding:2px 7px;border-radius:4px;margin-left:8px;margin-top:6px;align-self:flex-end;margin-bottom:6px;}
+.pre-bar{width:180px;height:2px;background:var(--bg4);border-radius:2px;overflow:hidden;}
+.pre-bar-fill{height:100%;width:0%;background:var(--red);border-radius:2px;
+  animation:preBar 1.8s cubic-bezier(.4,0,.6,1) forwards;}
+@keyframes preBar{0%{width:0%}60%{width:75%}100%{width:100%}}
+</style>
+</head>
+<body>
+
+<div id="preloader">
+  <div class="pre-logo">
+    <svg class="pre-svg" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 1174 1174"><path d="M698 245c0-7 8-12 14-9l169 77c4 2 6 6 6 9v395c0 6 4 10 10 10h248c6 0 11 6 9 12-25.3 94.2-73.6 180.7-140.7 251.5-67.1 70.9-150.8 123.9-243.5 154.2-92.7 30.4-191.5 37.2-287.5 19.8-96-17.4-186.2-58.5-262.3-119.5-3-3-4-8-2-12l34-58c3-5 10-7 15-3 51.5 43.1 111.1 75.4 175.4 94.9 64.2 19.6 131.7 25.9 198.5 18.7 66.7-7.2 131.4-27.8 190-60.5 58.6-32.8 110-77 151.1-130.1 5-7 1-16-8-16h-93c-4 0-7-2-9-5L699 574l-1-5z"></path><path d="M422 240c4-7 14-7 18 0l360 624c4 7-1 15-8 15H628c-4 0-7-2-9-5l-43-75c-2-3-5-5-9-5H373c-7 0-12-8-8-15l65-113c1-3 5-5 8-5h41c7 0 12-8 8-15l-47-83c-4-7-14-7-18 0L211 929v1l-23 39-1 1-10 19c-4 6-12 7-16 2-36-38-67-82-92-128-2-3-2-7 0-10l10-19 2-2v-1z"></path><path d="M587 0c83.2.1 165.5 17.8 241.3 52.1 75.8 34.3 143.5 84.2 198.5 146.7 55.1 62.4 96.2 135.8 120.7 215.3s31.8 163.3 21.5 245.9c0 5-4 9-9 9h-67c-6 0-11-6-10-12 20.8-146.3-24-294.3-122.5-404.5C862.1 142.4 720 81.3 572.3 85.6 424.6 90 286.3 159.3 194.5 275 102.7 390.8 66.6 541.2 96 686l-1 7-47 81c-5 7-15 6-18-2C.5 683.8-7.6 589.8 6.4 497.8c14-91.9 49.6-179.2 104.1-254.7 54.4-75.4 126-136.8 208.9-179.1C402.2 21.7 494-.2 587 0z"></path></svg>
+    <div class="pre-wordmark"><span class="la">Ani</span><span class="lb">Lib</span><span class="lc">erty</span></div>
+    <span class="pre-badge">Samsung TV</span>
+  </div>
+  <div class="pre-bar"><div class="pre-bar-fill"></div></div>
+</div>
+
+</div>
+
+<div id="exitOv" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.85);align-items:center;justify-content:center;">
+  <div style="background:var(--bg2);border:1px solid var(--bg5);border-radius:14px;padding:32px 40px;text-align:center;width:340px;">
+    <div style="font-size:20px;font-weight:700;margin-bottom:10px;">Выйти из приложения?</div>
+    <div style="color:var(--t2);font-size:14px;margin-bottom:24px;">Нажмите ещё раз для подтверждения</div>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button class="btn btn-p" id="exitYes">Выйти</button>
+      <button class="btn btn-s" id="exitNo">Отмена</button>
+    </div>
+  </div>
+</div>
+<header id="hdr">
+  <div class="logo"><svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 1174 1174"><path d="M698 245c0-7 8-12 14-9l169 77c4 2 6 6 6 9v395c0 6 4 10 10 10h248c6 0 11 6 9 12-25.3 94.2-73.6 180.7-140.7 251.5-67.1 70.9-150.8 123.9-243.5 154.2-92.7 30.4-191.5 37.2-287.5 19.8-96-17.4-186.2-58.5-262.3-119.5-3-3-4-8-2-12l34-58c3-5 10-7 15-3 51.5 43.1 111.1 75.4 175.4 94.9 64.2 19.6 131.7 25.9 198.5 18.7 66.7-7.2 131.4-27.8 190-60.5 58.6-32.8 110-77 151.1-130.1 5-7 1-16-8-16h-93c-4 0-7-2-9-5L699 574l-1-5z"></path><path d="M422 240c4-7 14-7 18 0l360 624c4 7-1 15-8 15H628c-4 0-7-2-9-5l-43-75c-2-3-5-5-9-5H373c-7 0-12-8-8-15l65-113c1-3 5-5 8-5h41c7 0 12-8 8-15l-47-83c-4-7-14-7-18 0L211 929v1l-23 39-1 1-10 19c-4 6-12 7-16 2-36-38-67-82-92-128-2-3-2-7 0-10l10-19 2-2v-1z"></path><path d="M587 0c83.2.1 165.5 17.8 241.3 52.1 75.8 34.3 143.5 84.2 198.5 146.7 55.1 62.4 96.2 135.8 120.7 215.3s31.8 163.3 21.5 245.9c0 5-4 9-9 9h-67c-6 0-11-6-10-12 20.8-146.3-24-294.3-122.5-404.5C862.1 142.4 720 81.3 572.3 85.6 424.6 90 286.3 159.3 194.5 275 102.7 390.8 66.6 541.2 96 686l-1 7-47 81c-5 7-15 6-18-2C.5 683.8-7.6 589.8 6.4 497.8c14-91.9 49.6-179.2 104.1-254.7 54.4-75.4 126-136.8 208.9-179.1C402.2 21.7 494-.2 587 0z"></path></svg><span class="logo-name"><span class="la">Ani</span><span class="lb">Lib</span><span class="lc">erty</span></span><span class="logo-badge">Samsung TV</span></div>
+  <nav id="nav">
+    <button class="ntab cur" data-pg="home">Главная</button>
+    <button class="ntab" data-pg="catalog">Каталог</button>
+    <button class="ntab" data-pg="schedule">Расписание</button>
+    <button class="ntab" data-pg="collections">Коллекции</button>
+  </nav>
+  <div id="hdr-r">
+    <button id="loginBtn">🔑 Войти</button>
+    <div id="userPill" tabindex="-1"><div class="udot"></div><span id="uname"></span></div>
+    <div id="clk">--:--</div>
+  </div>
+</header>
+
+<div id="ctxOv">
+  <div class="ctx-box" id="ctxBox">
+    <div class="ctx-hdr">
+      <img class="ctx-poster" id="ctxPoster" src="" alt="">
+      <div class="ctx-title" id="ctxTitleEl"></div>
+    </div>
+    <div id="ctxItems"></div>
+  </div>
+</div>
+
+<div id="profilePanel">
+  <div class="lp-h" id="profileName">Профиль</div>
+  <div id="profileStatus" style="color:var(--t2);font-size:13px;margin-bottom:18px;"></div>
+  <div class="lp-row">
+    <button class="btn btn-p" id="profileClose">✓ Закрыть</button>
+    <button class="btn btn-s" id="profileLogout">⏏ Выйти</button>
+  </div>
+</div>
+<div id="lp">
+  <div class="lp-h">Вход</div>
+  <label class="lp-lbl">Логин или Email</label>
+  <input type="text" class="lp-inp" id="lpL" placeholder="animeshnik_488" autocomplete="off">
+  <label class="lp-lbl">Пароль</label>
+  <input type="password" class="lp-inp" id="lpP" placeholder="••••••••">
+  <div id="lpErr"></div>
+  <div class="lp-row">
+    <button class="btn btn-p" id="lpOk">Войти</button>
+    <button class="btn btn-s" id="lpX">Отмена</button>
+  </div>
+</div>
+
+<main id="main">
+
+  
+  <div class="pg on" id="pgHome">
+    <div class="home-rows" id="homeRows"></div>
+  </div>
+
+  
+  <div class="pg" id="pgCatalog">
+    <div class="cat-main">
+      <div class="cat-srch" id="catSrch">
+        <span class="cat-srch-icon">🔍</span>
+        <input id="catQ" placeholder="Поиск по каталогу...">
+      </div>
+      <div class="cat-grid" id="catGrid">
+        <div class="cat-info">Выберите фильтры или введите запрос</div>
+      </div>
+    </div>
+    <div class="cat-flt">
+      <div class="cat-flt-in" id="catFltIn">
+        <div class="f-sec"><div class="f-ttl">Тип</div>
+          <div class="f-chips" id="fTypes">
+            <button class="fchip" data-k="types" data-v="tv">ТБ</button>
+            <button class="fchip" data-k="types" data-v="ona">ONA</button>
+            <button class="fchip" data-k="types" data-v="web">WEB</button>
+            <button class="fchip" data-k="types" data-v="ova">OVA</button>
+            <button class="fchip" data-k="types" data-v="oad">OAD</button>
+            <button class="fchip" data-k="types" data-v="movie">Фильм</button>
+            <button class="fchip" data-k="types" data-v="dorama">Дорама</button>
+            <button class="fchip" data-k="types" data-v="special">Спешл</button>
+          </div>
+        </div>
+        <div class="f-sec"><div class="f-ttl">Статус выхода</div>
+          <div class="f-chips" id="fPublish">
+            <button class="fchip" data-k="publish_statuses" data-v="IS_ONGOING">Онгоинг</button>
+            <button class="fchip" data-k="publish_statuses" data-v="IS_NOT_ONGOING">Завершён</button>
+          </div>
+        </div>
+        <div class="f-sec"><div class="f-ttl">Статус озвучки</div>
+          <div class="f-chips" id="fProd">
+            <button class="fchip" data-k="production_statuses" data-v="in_progress">В озвучке</button>
+            <button class="fchip" data-k="production_statuses" data-v="IS_NOT_IN_PRODUCTION">Озвучка завершена</button>
+          </div>
+        </div>
+        <div class="f-sec"><div class="f-ttl">Сезон</div>
+          <div class="f-chips" id="fSeasons">
+            <button class="fchip" data-k="seasons" data-v="winter">Зима</button>
+            <button class="fchip" data-k="seasons" data-v="spring">Весна</button>
+            <button class="fchip" data-k="seasons" data-v="summer">Лето</button>
+            <button class="fchip" data-k="seasons" data-v="autumn">Осень</button>
+          </div>
+        </div>
+        <div class="f-sec"><div class="f-ttl">Возрастная отметка</div>
+          <div class="f-chips" id="fAge">
+            <button class="fchip" data-k="age_ratings" data-v="r0">0+</button>
+            <button class="fchip" data-k="age_ratings" data-v="r6">6+</button>
+            <button class="fchip" data-k="age_ratings" data-v="r12">12+</button>
+            <button class="fchip" data-k="age_ratings" data-v="r16">16+</button>
+            <button class="fchip" data-k="age_ratings" data-v="r18">18+</button>
+          </div>
+        </div>
+        <div class="f-sec"><div class="f-ttl">Год выхода</div>
+          <div class="f-chips f-year-group" data-year="1" style="display:flex;flex-direction:column;gap:6px;margin-top:4px">
+            <div class="year-spin-row">
+              <span class="ys-label">ОТ</span>
+              <div class="year-spin" id="fYearFromSpin" data-field="from">
+                <span class="ys-arr">◄</span>
+                <div class="ys-val" id="fYearFromVal">—</div>
+                <span class="ys-arr">►</span>
+              </div>
+            </div>
+            <div class="year-spin-row">
+              <span class="ys-label">ДО</span>
+              <div class="year-spin" id="fYearToSpin" data-field="to">
+                <span class="ys-arr">◄</span>
+                <div class="ys-val" id="fYearToVal">—</div>
+                <span class="ys-arr">►</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="f-sec"><div class="f-ttl">Сортировка</div>
+          <div class="f-chips" id="fSort">
+            <button class="fchip" data-k="sorting" data-v="FRESH_AT_DESC" data-single>Новинки</button>
+            <button class="fchip" data-k="sorting" data-v="RATING_DESC" data-single>Рейтинг</button>
+            <button class="fchip" data-k="sorting" data-v="YEAR_DESC" data-single>Год</button>
+            <button class="fchip" data-k="sorting" data-v="FRESH_AT_DESC" data-single>Серий</button>
+          </div>
+        </div>
+        <div class="f-sec"><div class="f-ttl">Жанры</div>
+          <div class="f-chips" id="fGenres"></div>
+        </div>
+      </div>
+      <div class="cat-flt-foot">
+        <button class="btn btn-p" id="fltApply">✓ Применить</button>
+        <button class="btn btn-s" id="fltReset">✕ Сбросить</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="pg" id="pgSchedule">
+    <div class="sch-h ff" style="font-size:18px;font-weight:700;padding:18px var(--pad) 10px;flex-shrink:0;">Расписание недели</div>
+    <div style="flex:1;overflow:hidden;padding:0 var(--pad) 8px;"><div class="sch-grid" id="schGrid" style="height:100%;"></div></div>
+  </div>
+
+  
+  <div class="pg" id="pgCollections">
+    <div class="coll-tabs" id="collTabs">
+      <button class="ctab cur" data-c="favorites">❤ Избранное</button>
+      <button class="ctab" data-c="watching">👁 Смотрю</button>
+      <button class="ctab" data-c="planned">📅 Запланировано</button>
+      <button class="ctab" data-c="completed">✓ Просмотрено</button>
+      <button class="ctab" data-c="abandoned">✕ Брошено</button>
+      <button class="ctab" data-c="history">🕐 История</button>
+    </div>
+    <div class="coll-grid" id="collGrid"></div>
+  </div>
+
+</main>
+
+<div id="detOv">
+  <div class="det-side"><div class="det-side-img" id="detImg"></div><div class="det-side-grad"></div></div>
+  <div class="det-body">
+    <button class="btn btn-s det-back-top" id="detBack">← Назад</button>
+
+    
+    <div class="det-header-block">
+      <h2 class="det-ttl ff" id="detTtl"></h2>
+      <div class="det-en" id="detEn"></div>
+      <div class="det-bdgs" id="detBdgs"></div>
+    </div>
+
+    
+    <div class="det-desc-block">
+      <div class="det-desc" id="detDesc"></div>
+    </div>
+
+    
+    <div class="det-meta-block">
+      <div class="det-meta" id="detMeta"></div>
+    </div>
+
+    
+    <div class="det-acts-block">
+      <div class="det-acts" id="detActs">
+        <button class="btn btn-p det-play-btn" id="detPlay">▶ Смотреть</button>
+      </div>
+    </div>
+
+    
+    <div class="det-coll-block">
+      <div class="det-coll-lbl">В коллекцию</div>
+      <div class="det-coll-row" id="detColl"></div>
+    </div>
+
+    
+    <div class="det-eps-block">
+      <div class="det-eps-hdr">Серии</div>
+      <div class="det-eps" id="detEps"></div>
+    </div>
+
+    
+    <div class="det-related-block" id="detRelBlock">
+      <div class="det-sec-hdr">Связанные релизы</div>
+      <div class="det-related" id="detRelated"></div>
+    </div>
+  </div>
+</div>
+
+<div id="plyOv">
+  <div class="ply-wrap">
+    <video id="vid" autoplay playsinline></video>
+    <div class="ply-spin" id="plySpin"><div class="spin"></div><div style="color:var(--t2);font-size:13px">Загрузка...</div></div>
+    <div class="ply-ui">
+      <div class="ply-ctrl">
+        <div class="ply-ttl" id="plyTtl"></div>
+        <div class="ply-ep" id="plyEpL"></div>
+        <div class="ply-bar" id="plyBar"><div class="ply-fill" id="plyFill"></div><span class="seek-tooltip" id="seekTip"></span></div>
+        <div class="ply-row">
+          <button class="pb" id="pcPrev"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
+          <button class="pb big" id="pcPlay"><svg id="pcPlayIco" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg></button>
+          <button class="pb" id="pcNext"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6zm8.5 0H18V6h-3.5z"/></svg></button>
+          <span class="ply-time" id="plyTime">0:00 / 0:00</span>
+          <div class="ply-eps" id="plyEps"></div>
+          <button class="ply-qual-btn" id="pcQual" style="margin-left:auto">1080p</button>
+          <button class="pb" id="pcClose"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="ply-qual-menu" id="plyQualMenu"></div>
+    <button id="skipBtn">⏩ Пропустить опенинг</button>
+  </div>
+</div>
+
+<div id="hbar">
+  <div id="hbar-r"><div class="sdot" id="sdot"></div><span id="stxt">Подключение...</span></div>
+</div>
+
+<!-- hls.js loaded on demand -->
+<script>
+'use strict';
+const _isTizen=!!window.tizen||/Tizen/i.test(navigator.userAgent);
+
+// scrollIntoView wrapper — 'smooth' на Tizen надто дорого
+function siv(el, opts){
+  if(!el) return;
+  if(_isTizen) el.scrollIntoView({block:opts?.block||'nearest',inline:opts?.inline||'nearest'});
+  else el.scrollIntoView(opts||{block:'nearest',behavior:'smooth'});
+}
+const BASE  = 'https://aniliberty.top/api/v1';
+const BASE2 = 'https://api.anilibria.app/api/v1';
+const CDN   = 'https://aniliberty.top';
+// Days: API uses 0=Sun,1=Mon,...6=Sat; we display Mon→Sun
+const DAYS_UK = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+const DAYS_API = [1,2,3,4,5,6,0]; // display order → API day value
+
+const Store = {
+  get(k, def=null){ try{ const v=localStorage.getItem(k); return v!=null?JSON.parse(v):def; }catch{return def;} },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch{} },
+
+  // Progress: {time, duration, epId, epOrdinal, updated}
+  _writeProgress(releaseId, epId, time, duration, epOrdinal, epsTotal=0){
+    const key=`alv_p_${releaseId}_${epId}`;
+    const now=Date.now();
+    // Update _epsCount hint on cached release if we know ordinal
+    if(epOrdinal>0){
+      const cr=this._rc[String(releaseId)];
+      if(cr&&!(cr.episodes_total>0)&&epOrdinal>(cr._epsCount||0)){
+        cr._epsCount=epOrdinal; cr._pct=null; // invalidate so bar recalculates
+      }
+    }
+    // Tizen TV has small localStorage quota — clean old entries if write fails
+    try{
+      localStorage.setItem(key, JSON.stringify({time,duration,epOrdinal,epsTotal,updated:now}));
+    }catch(e){
+      if(e.name==='QuotaExceededError'||e.code===22){
+        // Remove oldest progress entries to free space
+        const pkeys=[];
+        for(let i=0;i<localStorage.length;i++){
+          const k=localStorage.key(i);
+          if(k&&k.startsWith('alv_p_')) pkeys.push(k);
+        }
+        // Sort by updated time, remove oldest half
+        pkeys.sort((a,b)=>{
+          try{ return (JSON.parse(localStorage.getItem(a)||'{}').updated||0)-(JSON.parse(localStorage.getItem(b)||'{}').updated||0); }catch{return 0;}
+        });
+        pkeys.slice(0, Math.max(1, Math.floor(pkeys.length/2))).forEach(k=>localStorage.removeItem(k));
+        this._pidx=null; // rebuild index
+        try{ localStorage.setItem(key, JSON.stringify({time,duration,epOrdinal,updated:now})); }catch(_){}
+      }
+    }
+    this._dirtyIdx(String(releaseId));
+    this._lastSave={key,t:now};
+    // Invalidate cached _pct on release object
+    const cached=this._rc[String(releaseId)];
+    if(cached) cached._pct=null;
+  },
+  saveProgress(releaseId, epId, time, duration, epOrdinal, epsTotal=0){
+    const now=Date.now();
+    const key=`alv_p_${releaseId}_${epId}`;
+    // debounce LS writes: max once per 5s per episode
+    if(this._lastSave&&this._lastSave.key===key&&now-this._lastSave.t<5000) return;
+    this._writeProgress(releaseId, epId, time, duration, epOrdinal, epsTotal);
+  },
+  forceSaveProgress(releaseId, epId, time, duration, epOrdinal, epsTotal=0){
+    // Always saves — used on player close, episode switch (no debounce)
+    if(!releaseId||!epId||!time) return;
+    this._writeProgress(releaseId, epId, time, duration, epOrdinal, epsTotal);
+  },
+  getProgress(releaseId, epId){ return this.get(`alv_p_${releaseId}_${epId}`); },
+  // Returns {pct: 0-100} across all episodes, counting partial ep time
+  // In-memory progress index — built lazily, avoids O(N) localStorage scans
+  _pidx: null,
+  _buildIdx(){
+    if(this._pidx) return;
+    this._pidx={};
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k&&k.startsWith('alv_p_')){
+        const parts=k.split('_'); // alv_p_{rid}_{epId}
+        const rid=parts[2];
+        if(!this._pidx[rid]) this._pidx[rid]=[];
+        this._pidx[rid].push(k);
+      }
+    }
+  },
+  _dirtyIdx(releaseId){ this._pidx=null; }, // null entire index → forces full rebuild on next access
+  getTotalProgress(releaseId, episodesTotal){
+    const prog=this.getReleaseProgress(releaseId);
+    if(!prog) return 0;
+    const total=episodesTotal||prog.epsTotal||0;
+    if(!(total>0)) return 0;
+    const ordinal=prog.epOrdinal||Number(prog.epId)||1;
+    return Math.min(100, Math.round(ordinal/total*100));
+  },
+  getReleaseProgress(releaseId){
+    this._buildIdx();
+    const keys=(this._pidx[releaseId]||[]);
+    const prefix=`alv_p_${releaseId}_`;
+    let best=null, bestTime=0;
+    for(const k of keys){
+      const v=this.get(k);
+      if(v&&v.updated>bestTime){ bestTime=v.updated; best={...v,epId:k.slice(prefix.length)}; }
+    }
+    return best;
+  },
+  clearReleaseProgress(releaseId){
+    this._buildIdx();
+    const keys=[...(this._pidx[releaseId]||[])];
+    keys.forEach(k=>localStorage.removeItem(k));
+    this._dirtyIdx(releaseId);
+  },
+
+  // Collections: {favorites:[], watching:[], planned:[], completed:[], abandoned:[]}
+  getColl(){ const d=this.get('alv_coll',{}); if(!d.favorites)d.favorites=[]; if(!d.watching)d.watching=[]; if(!d.planned)d.planned=[]; if(!d.completed)d.completed=[]; if(!d.abandoned)d.abandoned=[]; if(!d.history)d.history=[]; return d; },
+  inColl(type, id){ return (this.getColl()[type]||[]).includes(id); },
+  addHistory(id){
+    if(!id) return;
+    const c=this.getColl();
+    c.history=c.history.filter(x=>x!==id);
+    c.history.unshift(id);
+    if(c.history.length>100) c.history=c.history.slice(0,100);
+    this.set('alv_coll',c);
+  },
+  toggleColl(type, id){
+    const c=this.getColl();
+    if(!c[type]) c[type]=[];
+    const idx=c[type].indexOf(id);
+    if(idx===-1) c[type].unshift(id); else c[type].splice(idx,1);
+    this.set('alv_coll',c);
+    return idx===-1;
+  },
+  _rc:{}, _rcKeys:[],
+  cacheRelease(r){
+    if(!r?.id) return;
+    const id=String(r.id);
+    if(!this._rc[id]) this._rcKeys.push(id);
+    this._rc[id]=r;
+    if(r.alias) try{ localStorage.setItem('alv_al_'+id, r.alias); }catch(_){}
+    if(this._rcKeys.length>200){ delete this._rc[this._rcKeys.shift()]; }
+  },
+  getCachedRelease(id){ return this._rc[String(id)]||null; },
+  getAlias(id){ try{ return localStorage.getItem('alv_al_'+String(id)); }catch(_){ return null; } },
+};
+
+let authToken = Store.get('alv_token',null);
+async function api(path, opts={}){
+  const headers={'Content-Type':'application/json'};
+  if(authToken) headers['Authorization']='Bearer '+authToken;
+  for(const base of [BASE, BASE2]){
+    try{
+      const r=await fetch(base+path,{
+        method:opts.method||'GET', headers,
+        body:opts.body||undefined,
+        signal:AbortSignal.timeout(8000)
+      });
+      if(r.status===401){ const e=new Error('Unauthorized'); e.code=401; throw e; }
+      if(r.status===422){ const e=new Error('Validation'); e.code=422; throw e; }
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return await r.json();
+    }catch(e){
+      if(e.code===401||e.code===422) throw e;
+      if(base===BASE2) throw e;
+    }
+  }
+}
+
+// sync progress to API
+async function syncProgress(epId, time, isWatched=false){
+  if(!authToken) return;
+  try{ await api('/accounts/users/me/views/timecodes',{
+    method:'POST', body:JSON.stringify([{release_episode_id:epId, time:Math.floor(time), is_watched:isWatched}])
+  }); }catch(_){}
+}
+
+// Map internal collection keys → API enum values
+const COLL_TYPE_MAP={
+  favorites: null,            // handled separately via /favorites endpoint
+  watching:  'WATCHING',
+  planned:   'PLANNED',
+  completed: 'WATCHED',       // API uses WATCHED, we call it completed
+  abandoned: 'ABANDONED',
+};
+
+
+// Завантажує всі колекції з API + кешує релізи (при логіні та при запуску)
+async function syncCollFromAPI(){
+  if(!authToken) return;
+  const c=Store.getColl();
+  const API_TO_LOCAL={'WATCHING':'watching','PLANNED':'planned','WATCHED':'completed','ABANDONED':'abandoned','POSTPONED':'abandoned'};
+  // 1. Favorites
+  try{
+    const favs=await api('/accounts/users/me/favorites/releases');
+    const list=Array.isArray(favs)?favs:(favs?.data||[]);
+    if(list.length){
+      c.favorites=[...new Set([...c.favorites,...list.map(r=>r.id)])];
+      list.forEach(r=>Store.cacheRelease(r));
+    }
+  }catch(_){}
+  // 2. Решта колекцій
+  try{
+    const colls=await api('/accounts/users/me/collections/releases?limit=200');
+    const list=Array.isArray(colls)?colls:(colls?.data||colls?.list||[]);
+    list.forEach(item=>{
+      const r=item?.release||item;
+      const localType=API_TO_LOCAL[item?.type_of_collection||item?.collection_type];
+      if(r?.id && localType){
+        if(!c[localType]) c[localType]=[];
+        if(!c[localType].includes(r.id)) c[localType].push(r.id);
+        Store.cacheRelease(r);
+      }
+    });
+  }catch(_){}
+  Store.set('alv_coll',c);
+}
+// sync collection to API
+async function syncCollToAPI(type, id, add){
+  if(!authToken) return;
+  try{
+    if(type==='favorites'){
+      const endpoint='/accounts/users/me/favorites';
+      if(add) await api(endpoint,{method:'POST', body:JSON.stringify([{release_id:id}])});
+      else     await api(endpoint,{method:'DELETE',body:JSON.stringify([{release_id:id}])});
+    } else {
+      const apiType=COLL_TYPE_MAP[type];
+      if(!apiType) return;
+      const endpoint='/accounts/users/me/collections';
+      if(add) await api(endpoint,{method:'POST', body:JSON.stringify([{release_id:id, type_of_collection:apiType}])});
+      else     await api(endpoint,{method:'DELETE',body:JSON.stringify([{release_id:id, type_of_collection:apiType}])});
+    }
+  }catch(_){}
+}
+
+const MOCK=[];
+const EMJ=['⚔️','🔥','🌸','✨','🌊','💀','🐉','⭐','🎌','👾'];
+
+let releases=[], detRelease=null, playerEps=[], playerEpIdx=0;
+const pg = { cur:'home' };
+const nav = {
+  zone:'home.cards',  // home.nav | home.cards | cat.search | cat.grid | cat.flt | sch | coll.tabs | coll.grid | det.acts | det.coll | det.eps | player | login
+  ni:0, hi:0, ci:0,
+  cg:{r:0,c:0}, cf:{g:0,i:0},
+  schD:0, schI:0,
+  collTab:0, collI:0,
+  detSec:'acts', detAct:0, detColl:0, detEp:0, detRel:0,
+  plyBtn:1, plyZone:'video', plyEp:0,
+};
+
+function $(id){return document.getElementById(id);}
+function fmt(s){const t=Math.floor(s),m=Math.floor(t/60),sc=t%60;return m+':'+(sc<10?'0':'')+sc;}
+function getPoster(r){
+  const s=r?.poster?.optimized?.preview||r?.poster?.preview||r?.poster?.thumbnail;
+  if(!s) return null;
+  return s.startsWith('http')?s:CDN+s;
+}
+function rName(r){return r?.name?.main||'—';}
+function rEn(r){return r?.name?.english||r?.name?.alternative||'';}
+function rEps(r){
+  const t=r?.episodes_total;
+  if(t!=null&&t>0) return t;
+  if(r?._epsCount>0) return r._epsCount;
+  // fallback: check saved progress for stored epsTotal
+  const prog=Store.getReleaseProgress(r?.id);
+  if(prog?.epsTotal>0){ r._epsCount=prog.epsTotal; return prog.epsTotal; }
+  return '?';
+}
+function rTypeBadge(r){
+  const v=r?.type?.value||'';
+  const map={tv:'bdg-tv',movie:'bdg-movie',ova:'bdg-ova',ona:'bdg-ona',web:'bdg-web',
+    oad:'bdg-ova',special:'bdg-special',dorama:'bdg-web'};
+  const lbl=r?.type?.description||v.toUpperCase()||'ТБ';
+  return `<span class="bdg ${map[v]||'bdg-tv'}">${lbl}</span>`;
+}
+function rStatusBadge(r){
+  if(r?.is_ongoing) return '<span class="bdg bdg-ongoing">● Онгоинг</span>';
+  return '<span class="bdg bdg-fin">✓ Завершено</span>';
+}
+function rAgeBadge(r){
+  const lbl=r?.age_rating?.label;
+  if(!lbl) return '';
+  return `<span class="bdg bdg-age">${lbl}</span>`;
+}
+function setStatus(s,txt){
+  const d=$('sdot'); d.className='sdot'+(s==='ok'?' ok':s==='warn'?' warn':'');
+  $('stxt').textContent=txt;
+}
+function tick(){const n=new Date();$('clk').textContent=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');}
+tick(); setInterval(tick,60000);
+
+function clearFoc(sel){(sel==='.card'?(_$homeRows||$('homeRows')):document).querySelectorAll(sel+'.foc').forEach(e=>e.classList.remove('foc'));}
+function foc(el){if(el) el.classList.add('foc');}
+function focIdx(sel, idx){
+  const els=[...document.querySelectorAll(sel)];
+  els.forEach(e=>e.classList.remove('foc'));
+  if(els[idx]) els[idx].classList.add('foc');
+  return els.length;
+}
+
+
+let _hlsLoaded=false;
+function ensureHls(cb){
+  if(_isTizen||typeof Hls!=='undefined'){ cb(); return; }
+  if(_hlsLoaded){ setTimeout(cb,10); return; }
+  const s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.12/hls.min.js';
+  s.onload=()=>{ _hlsLoaded=true; cb(); };
+  document.head.appendChild(s);
+}
+
+const YEAR_MIN=1990, YEAR_MAX=new Date().getFullYear();
+window.yearState={from:2000,to:YEAR_MAX};
+function updateYearDisplay(){
+  $('fYearFromVal').textContent = yearState.from ? String(yearState.from) : '—';
+  $('fYearToVal').textContent   = yearState.to   ? String(yearState.to)   : '—';
+}
+function yearStep(field, delta){
+  const cur = yearState[field] || (field==='from' ? 2000 : YEAR_MAX);
+  const next = Math.max(YEAR_MIN, Math.min(YEAR_MAX, cur + delta));
+  yearState[field] = next;
+  updateYearDisplay();
+}
+function yearClear(field){ yearState[field]=null; updateYearDisplay(); }
+
+function rRating(r){
+  const n=r?.added_in_users_favorites||0;
+  if(!n) return '';
+  if(n>=1000) return '★ '+(n/1000).toFixed(1)+'k';
+  return '★ '+n;
+}
+
+function buildCardInner(r, opts={}){
+  const url = getPoster(r);
+  const _epsTot=(r.episodes_total||r._epsCount||0);
+  const pct = Store.getTotalProgress(r.id, _epsTot);
+  const rating = rRating(r);
+  const ph = EMJ[(r.id||0)%EMJ.length];
+  return `
+    ${url?`<img class="c-img" decoding="async" src="${url}" alt="" loading="lazy">`:`<div class="c-ph">${ph}</div>`}
+    ${opts.isNew?'<div class="c-new">NEW</div>':''}
+    <div class="c-body">
+      <div class="c-name">${rName(r)}</div>
+      <div class="c-foot">
+        ${rTypeBadge(r)}
+        <span>${r?.year||''}</span>
+        ${rEps(r)!='?'?`<span class="c-eps">${rEps(r)} эп.</span>`:''}
+        ${rating?`<span class="c-rating">${rating}</span>`:''}
+      </div>
+    </div>
+    ${pct>0?`<div class="c-prog"><div class="c-prog-f" style="width:${pct}%"></div></div>`:''}`;
+}
+function makeCard(r, onClick, isNew){
+  const el=document.createElement('div'); el.className='card';
+  el.dataset.rid=r.id; el.dataset.rdata=JSON.stringify({id:r.id,alias:r.alias||r.id});
+  el._onClick=onClick; el._r=r;
+  el.innerHTML=buildCardInner(r,{isNew});
+  return el;
+}
+
+// ── Multi-row home page ──────────────────────────────────────────────────────
+// nav.rows tracks [{releases, offset}] for each visible row
+const homeRows=[];
+let activeRowI=0;
+const rowPos=[]; // per-row last card index
+
+const CARD_WIN=10;      // cards rendered in DOM per row
+const ROW_PRELOAD=2;    // rows to preload ahead of current
+const CARDS_PER_PAGE=10;// cards fetched per API call
+
+function buildRow(title, list, isNew){
+  if(!list.length) return null;
+  const sec=document.createElement('div'); sec.className='cards-sec home-row';
+  const idx=homeRows.length;
+  homeRows.push({releases:list, el:null, winStart:0, hasMore:false, nextPage:2, filters:null, loading:false});
+  sec.innerHTML=`<div class="row-hdr"><div class="row-bar"></div><div class="row-ttl">${title}</div></div>
+    <div class="track-wrap"><div class="track" id="track-${idx}"></div></div>`;
+  homeRows[idx].el=sec;
+  renderCardWindow(idx,0);
+  return sec;
+}
+
+function renderCardWindow(rowI, focusIdx){
+  const row=homeRows[rowI]; if(!row||row.stub) return;
+  const list=row.releases;
+  const half=Math.floor(CARD_WIN/2);
+  const start=Math.max(0, focusIdx-half);
+  const end=Math.min(list.length, start+CARD_WIN);
+  if(row.winStart===start && document.getElementById('track-'+rowI)?.children.length) return;
+  row.winStart=start;
+  const track=document.getElementById('track-'+rowI); if(!track) return;
+  track.innerHTML='';
+  const cw=200+14;
+  if(start>0){
+    const sp=document.createElement('div');
+    sp.style.cssText=`width:${start*cw}px;flex-shrink:0`;
+    track.appendChild(sp);
+  }
+  for(let i=start;i<end;i++){
+    const r=list[i];
+    const el=makeCard(r,()=>{ activeRowI=rowI; nav.ci=i; nav.rowI=rowI; openDetailRelease(r); },false);
+    el.dataset.ri=rowI; el.dataset.ci=i;
+    track.appendChild(el);
+  }
+  const remaining=list.length-end;
+  if(remaining>0){
+    const sp=document.createElement('div');
+    sp.style.cssText=`width:${remaining*cw}px;flex-shrink:0`;
+    track.appendChild(sp);
+  }
+}
+
+// Fetch more cards for a row when user nears the end
+async function maybeLoadMoreCards(rowI){
+  const row=homeRows[rowI];
+  if(!row||row.stub||row.loading||!row.hasMore||!row.filters) return;
+  row.loading=true;
+  try{
+    const {list,hasMore,nextPage}=await fetchRowPage(row.filters, row.nextPage, CARDS_PER_PAGE);
+    if(list.length){
+      row.releases.push(...list);
+      row.hasMore=hasMore;
+      row.nextPage=nextPage;
+    } else {
+      row.hasMore=false;
+    }
+  }finally{ row.loading=false; }
+}
+
+
+let _rowWrapW=0;
+function scrollRowTo(rowI, ci){
+  const trackEl=document.getElementById('track-'+rowI);
+  if(!trackEl) return;
+  if(!_rowWrapW) _rowWrapW=trackEl.parentElement?.offsetWidth||1280;
+  const cw=214;
+  const off=Math.max(0,ci*cw-(_rowWrapW/2-cw/2));
+  trackEl.style.transform=`translateX(-${off}px)`;
+}
+
+function scrollHomeToRow(rowI){
+  const wrap=_$homeRows||$('homeRows');
+  if(!wrap) return;
+  const row=homeRows[rowI]; if(!row||!row.el) return;
+  const target=Math.max(0, row.el.offsetTop-30);
+  wrap.scrollTo({top:target,behavior:_isTizen?'auto':'smooth'});
+}
+
+function focCard(i, rowI){
+  rowI=rowI??activeRowI;
+  const row=homeRows[rowI]; if(!row||row.stub) return;
+  const list=row.releases; i=Math.max(0,Math.min(i,list.length-1));
+  rowPos[rowI]=i;
+  nav.ci=i; nav.rowI=rowI;
+  renderCardWindow(rowI,i);
+  document.querySelectorAll('.card.foc').forEach(c=>c.classList.remove('foc'));
+  const trackEl=document.getElementById('track-'+rowI);
+  if(trackEl){
+    const card=trackEl.querySelector(`.card[data-ci="${i}"]`);
+    if(card) card.classList.add('foc');
+    scrollRowTo(rowI,i);
+  }
+  scrollHomeToRow(rowI);
+  // Preload more cards if near end
+  if(i>=list.length-3) maybeLoadMoreCards(rowI);
+  if(rowI===0&&list[i]&&!_isTizen){
+    clearTimeout(window._heroT);
+  }
+}
+
+function navHomeCards(k){
+  const row=homeRows[activeRowI]; if(!row||row.stub) return;
+  const n=Math.max(0,row.releases.length-1);
+  if(k==='ArrowRight') focCard(Math.min(nav.ci+1,n));
+  else if(k==='ArrowLeft') focCard(Math.max(nav.ci-1,0));
+  else if(k==='ArrowDown'){
+    if(activeRowI<homeRows.length-1){
+      activeRowI++; nav.rowI=activeRowI;
+      ensureRowsLoaded(activeRowI);
+      if(homeRows[activeRowI]?.stub) loadLazyRow(activeRowI);
+      else focCard(rowPos[activeRowI]??0,activeRowI);
+    }
+  }
+  else if(k==='ArrowUp'){
+    if(activeRowI>0){
+      activeRowI--; nav.rowI=activeRowI;
+      ensureRowsLoaded(activeRowI);
+      if(homeRows[activeRowI]?.stub) loadLazyRow(activeRowI);
+      else focCard(rowPos[activeRowI]??0,activeRowI);
+    }
+    else{ clearFoc('.card'); nav.zone='home.nav'; focNavTab(0); }
+  }
+  else if(k==='Enter'&&row.releases.length){ openDetailRelease(homeRows[activeRowI].releases[nav.ci]); }
+  else if(k==='ContextMenu'){ openCtxMenu(homeRows[activeRowI]?.releases[nav.ci]); }
+}
+
+// Ensure current + ROW_PRELOAD rows ahead are loaded
+function ensureRowsLoaded(fromRowI){
+  for(let i=fromRowI; i<=fromRowI+ROW_PRELOAD && i<homeRows.length; i++){
+    const row=homeRows[i];
+    if(row?.stub&&!row._loading) loadRowByQueueIdx(row.qi);
+  }
+}
+
+function focHeroBtn(i){
+  nav.hi=i;
+  clearFoc('.h-btns .btn');
+  [...document.querySelectorAll('.h-btns .btn')].forEach((b,j)=>b.classList.toggle('foc',j===i));
+}
+let _navTabs=null;
+function _getNT(){ return _navTabs||(_navTabs=[...document.querySelectorAll('#nav .ntab')]); }
+function focNavTab(i){
+  nav.ni=i;
+  _getNT().forEach((t,j)=>t.classList.toggle('foc',j===i&&nav.zone==='home.nav'));
+}
+function clearNavFoc(){ _getNT().forEach(t=>t.classList.remove('foc')); }
+
+async function loadGenres(){
+  try{
+    const d=await api('/anime/genres');
+    const list=Array.isArray(d)?d:(d?.data||[]);
+    const wrap=$('fGenres'); wrap.innerHTML='';
+    list.forEach(g=>{
+      const b=document.createElement('button');
+      b.className='fchip'; b.dataset.k='genres'; b.dataset.v=g.id;
+      b.textContent=g.name; wrap.appendChild(b);
+    });
+    return list;
+  }catch(_){ return []; }
+}
+async function loadSchedule(){
+  try{
+    const d=await api('/anime/schedule/week');
+    const items=Array.isArray(d)?d:(d?.data||[]);
+    renderSchedule(items);
+  }catch(_){renderSchedule([]);}
+}
+
+let catFilters={}, catPage=1, catLoading=false, catQuery='';
+let catSearchTimeout=null;
+let catReleases=[];
+
+function getFilterParams(){
+  const p=new URLSearchParams();
+  const multi=['types','seasons','age_ratings','genres','publish_statuses','production_statuses'];
+  multi.forEach(k=>{ if(catFilters[k]&&catFilters[k].length) catFilters[k].forEach(v=>p.append(`f[${k}][]`,v)); });
+  if(catFilters.sorting) p.set('f[sorting]',catFilters.sorting);
+  if(catQuery) p.set('f[search]',catQuery);
+  // year range
+  if(window.yearState?.from) p.set('f[years][from_year]',window.yearState.from);
+  if(window.yearState?.to)   p.set('f[years][to_year]',  window.yearState.to);
+  p.set('page',catPage);
+  p.set('limit',24);
+  return p.toString();
+}
+
+async function loadCatalog(reset=false){
+  if(catLoading) return;
+  catLoading=true;
+  if(reset){ catPage=1; catReleases=[]; $('catGrid').innerHTML='<div class="cat-info">⏳ Загрузка...</div>'; }
+  try{
+    const data=await api('/anime/catalog/releases?'+getFilterParams());
+    const list=Array.isArray(data)?data:(data?.data||data?.list||[]);
+    if(reset) $('catGrid').innerHTML='';
+    if(!list.length&&reset){
+      $('catGrid').innerHTML='<div class="cat-info">Ничего не найдено</div>';
+      // возвращаем фокус на строку поиска
+      if(pg.cur==='catalog'){ focCatSearch(); }
+      return;
+    }
+    list.forEach(r=>{ Store.cacheRelease(r); catReleases.push(r); appendCatCard(r); });
+    catPage++;
+    // после reset — фокус на первую карточку (если были в каталоге)
+    if(reset && pg.cur==='catalog'){ focCatGrid(0,0); }
+  }catch(e){
+    if(reset) $('catGrid').innerHTML='<div class="cat-info">Ошибка загрузки</div>';
+    if(reset && pg.cur==='catalog'){ focCatSearch(); }
+  }finally{ catLoading=false; }
+}
+
+// ── Global event delegation для всіх карток ────────────────────────────────
+function _cardDelegation(container){
+  container.addEventListener('click', e=>{
+    const card=e.target.closest('.card');
+    if(!card) return;
+    if(card._onClick) card._onClick();
+    else if(card._r) openDetailRelease(card._r);
+  });
+  container.addEventListener('mousedown', e=>{
+    const card=e.target.closest('.card');
+    if(card&&card._r) startHold(card._r);
+  });
+  container.addEventListener('mouseup', cancelHold);
+  container.addEventListener('mouseleave', cancelHold);
+}
+function appendCatCard(r){
+  const el=document.createElement('div');
+  el.className='card'; el.style.cssText=''; el.dataset.rid=r.id;
+  el._r=r;
+  el.innerHTML=buildCardInner(r);
+  $('catGrid').appendChild(el);
+}
+
+// catalog infinite scroll
+document.getElementById('catGrid').addEventListener('scroll',e=>{
+  const g=e.target;
+  if(g.scrollTop+g.clientHeight>g.scrollHeight-200) loadCatalog();
+});
+
+// catalog search
+$('catQ').addEventListener('focus',()=>{ nav.zone='cat.search'; $('catSrch').classList.add('foc'); });
+$('catQ').addEventListener('blur',()=>{
+  // системная клавиатура закрыта — возвращаем nav зону
+  if(nav.zone==='cat.search'){
+    catQuery=$('catQ').value.trim();
+    if(catQuery) loadCatalog(true);
+    // loadCatalog переведёт фокус на грид; без запроса — оставляем на строке
+  }
+});
+$('catQ').addEventListener('input',e=>{
+  clearTimeout(catSearchTimeout);
+  catQuery=e.target.value.trim();
+  catSearchTimeout=setTimeout(()=>loadCatalog(true),500);
+});
+
+// filter chip toggle — called after genres load
+function bindFchips(){
+  document.querySelectorAll('.fchip').forEach(ch=>{
+    // avoid double-binding
+    if(ch._bound) return; ch._bound=true;
+    ch.addEventListener('click',()=>{
+      const k=ch.dataset.k, v=String(ch.dataset.v), single='single' in ch.dataset;
+      if(single){
+        ch.closest('.f-chips').querySelectorAll('.fchip').forEach(c=>c.classList.remove('sel'));
+        if(catFilters[k]===v){ delete catFilters[k]; ch.classList.remove('sel'); }
+        else{ catFilters[k]=v; ch.classList.add('sel'); }
+      } else {
+        if(!catFilters[k]) catFilters[k]=[];
+        const vv=k==='genres'?Number(v):v;
+        const idx=catFilters[k].indexOf(vv);
+        if(idx===-1){ catFilters[k].push(vv); ch.classList.add('sel'); }
+        else{ catFilters[k].splice(idx,1); ch.classList.remove('sel'); }
+      }
+    });
+  });
+}
+$('fltApply').addEventListener('click',()=>loadCatalog(true));
+$('fltReset').addEventListener('click',()=>{
+  catFilters={}; catQuery=''; $('catQ').value='';
+  window.yearState={from:2000,to:YEAR_MAX}; updateYearDisplay();
+  document.querySelectorAll('.fchip.sel').forEach(c=>c.classList.remove('sel'));
+  loadCatalog(true);
+});
+
+function renderSchedule(items){
+  const grid=$('schGrid'); grid.innerHTML='';
+  const todayJS=new Date().getDay(); // 0=Sun
+  for(let di=0;di<7;di++){
+    const apiDay=DAYS_API[di]; // 1=Mon...0=Sun
+    const isToday=apiDay===todayJS;
+    const col=document.createElement('div'); col.className='sch-day';
+    const hdr=document.createElement('div'); hdr.className='sch-dh'+(isToday?' today':'');
+    hdr.textContent=DAYS_UK[di]+(isToday?' — Сегодня':'');
+    col.appendChild(hdr);
+    const itemsDiv=document.createElement('div'); itemsDiv.className='sch-items';
+    const dayItems=items.filter(it=>Number(it?.release?.publish_day?.value)===apiDay);
+    if(dayItems.length){
+      dayItems.forEach(it=>{
+        const r=it.release; if(!r) return;
+        const url=getPoster(r);
+        const el=document.createElement('button'); el.className='sch-item';
+
+        // image or placeholder
+        if(url){
+          const img=document.createElement('img');
+          img.className='sch-item-img'; img.src=url; img.alt=''; img.loading='lazy';
+          el.appendChild(img);
+        } else {
+          const ph=document.createElement('div');
+          ph.className='sch-item-ph'; ph.textContent=EMJ[r.id%EMJ.length];
+          el.appendChild(ph);
+        }
+
+        // info section — always append, avoid template literal issues
+        const info=document.createElement('div'); info.className='sch-item-info';
+        const nameDiv=document.createElement('div'); nameDiv.className='sin';
+        nameDiv.textContent=rName(r)||'—';
+        const epDiv=document.createElement('div'); epDiv.className='sie';
+        const ep=it.published_release_episode;
+        epDiv.textContent=(ep?'Серия '+ep.ordinal+' · ':'')+String(r.year||'');
+        info.appendChild(nameDiv); info.appendChild(epDiv);
+        el.appendChild(info);
+
+        el.addEventListener('click',()=>openDetailRelease(r));
+        itemsDiv.appendChild(el);
+        Store.cacheRelease(r);
+      });
+    } else {
+      itemsDiv.innerHTML='<div style="font-size:11px;color:var(--t3);padding:6px 0">—</div>';
+    }
+    col.appendChild(itemsDiv); grid.appendChild(col);
+  }
+}
+
+let curCollTab='favorites';
+async function renderCollTab(type){
+  curCollTab=type;
+  const grid=$('collGrid'); grid.innerHTML='';
+  const coll=Store.getColl();
+  const ids=coll[type]||[];
+  const emptyMsg=type==='history'?'Вы ещё ничего не смотрели':'Коллекция пуста';
+  if(!ids.length){
+    grid.innerHTML=`<div class="coll-empty"><div class="coll-empty-ic">${type==='history'?'🕐':'📂'}</div><div>${emptyMsg}</div></div>`;
+    return;
+  }
+  // Показуємо skeleton поки грузиться
+  ids.forEach(()=>{ const el=document.createElement('div'); el.className='card skel'; grid.appendChild(el); });
+  // Завантажуємо відсутні релізи по 4 паралельно
+  const missing=ids.filter(id=>!Store.getCachedRelease(id));
+  if(missing.length){
+    const CHUNK=4;
+    for(let i=0;i<missing.length;i+=CHUNK){
+      await Promise.allSettled(
+        missing.slice(i,i+CHUNK).map(id=>{
+          const key=Store.getAlias(id)||id;
+          return api('/anime/releases/'+key)
+            .then(r=>{ if(r?.id) Store.cacheRelease(r); })
+            .catch(()=>{});
+        })
+      );
+    }
+  }
+  grid.innerHTML='';
+  ids.forEach(id=>{
+    const r=Store.getCachedRelease(id);
+    if(r) appendCollCard(r,type);
+    else{ const el=document.createElement('div'); el.className='card skel'; grid.appendChild(el); }
+  });
+}
+function appendCollCard(r, type){
+  const el=document.createElement('div'); el.className='card';
+  el.innerHTML=buildCardInner(r);
+  // History: show last watched episode + time
+  if(type==='history'){
+    const prog=Store.getReleaseProgress(r.id);
+    if(prog&&prog.time>0){
+      // Insert time badge into footer row, before other foot content
+      const foot=el.querySelector('.c-foot');
+      if(foot){
+        const badge=document.createElement('span');
+        badge.style.cssText='color:var(--red);font-size:10px;font-weight:600;margin-right:4px;';
+        badge.textContent='▶ '+fmt(prog.time);
+        foot.insertBefore(badge,foot.firstChild);
+      }
+    }
+  }
+  el.dataset.rid=r.id; el._r=r;
+  el.addEventListener('mouseup',cancelHold);
+  el.addEventListener('mouseleave',cancelHold);
+  $('collGrid').appendChild(el);
+}
+document.querySelectorAll('.ctab').forEach((t,i)=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.ctab').forEach(x=>x.classList.remove('cur','foc'));
+    t.classList.add('cur'); nav.collTab=i;
+    renderCollTab(t.dataset.c);
+  });
+});
+
+async function openDetail(idx){ openDetailRelease(releases[idx]); }
+
+async function openDetailRelease(r){
+  if(!r) return;
+  Store.addHistory(r.id); Store.cacheRelease(r);
+  detRelease=r; Store.cacheRelease(r);
+  const url=getPoster(r);
+  $('detImg').style.backgroundImage=url?`url(${url})`:'linear-gradient(135deg,#180a14,#0c0f1e)';
+  $('detTtl').textContent=rName(r);
+  $('detEn').textContent=rEn(r);
+  $('detDesc').textContent=r?.description||'';
+  // badges
+  let bdgs='';
+  if(r?.year) bdgs+=`<span class="bdg bdg-year">${r.year}</span>`;
+  bdgs+=rTypeBadge(r)+rStatusBadge(r)+rAgeBadge(r);
+  // Add popularity as a badge inline
+  const fav0=r?.added_in_users_favorites;
+  if(fav0) bdgs+=`<span class="bdg" style="background:rgba(245,200,66,.15);color:var(--gold);border:1px solid rgba(245,200,66,.3)">★ ${fav0>=1000?(fav0/1000).toFixed(1)+'k':fav0}</span>`;
+  $('detBdgs').innerHTML=bdgs;
+  // meta table — no year/type (already shown in badges)
+  const seasonMap={winter:'Зима',spring:'Весна',summer:'Лето',autumn:'Осень'};
+  const seasonName=seasonMap[r?.season?.value]||r?.season?.description||'';
+  const genres=(r?.genres||[]).map(g=>g.name).join(' • ')||'—';
+  const dur=r?.average_duration_of_episode;
+  const durStr=(dur&&dur>0)?`~${Math.round(dur/60)} мин`:null;
+  const epsTotal=r?.episodes_total;
+  const epsStr=epsTotal?`${epsTotal} эп.`:'?';
+  $('detMeta').innerHTML=`
+    ${seasonName?`<span class="det-meta-k">Сезон:</span><span class="det-meta-v">${seasonName}</span>`:''}
+    <span class="det-meta-k">Жанры:</span><span class="det-meta-v">${genres}</span>
+    ${durStr?`<span class="det-meta-k">Длительность:</span><span class="det-meta-v">${durStr} / серия</span>`:''}
+    <span class="det-meta-k">Всего серий:</span><span class="det-meta-v">${epsStr}</span>
+`;
+  // collection buttons
+  const COLLS=[{k:'favorites',l:'❤ Избранное'},{k:'watching',l:'👁 Смотрю'},
+    {k:'planned',l:'📅 Запланировано'},{k:'completed',l:'✓ Просмотрено'},{k:'abandoned',l:'✕ Брошено'}];
+  $('detColl').innerHTML=COLLS.map(c=>`
+    <button class="det-cbtn${Store.inColl(c.k,r.id)?' in':''}" data-coll="${c.k}">${c.l}</button>`).join('');
+  document.querySelectorAll('.det-cbtn').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const type=b.dataset.coll;
+      const added=Store.toggleColl(type,r.id);
+      b.classList.toggle('in',added);
+      syncCollToAPI(type,r.id,added);
+    });
+  });
+  // Check for resume progress
+  const lastProg=Store.getReleaseProgress(r.id);
+  const hasProgress=lastProg&&lastProg.time>60;
+  if(hasProgress){
+    $('detActs').innerHTML=`<button class="btn btn-p det-play-btn" id="detPlay">▶ Продолжить</button><button class="btn btn-s det-reset-btn" id="detReset">↺ Сбросить прогресс</button>`;
+  } else {
+    $('detActs').innerHTML=`<button class="btn btn-p det-play-btn" id="detPlay">▶ Смотреть</button>`;
+  }
+  $('detPlay').addEventListener('click',()=>{
+    if(hasProgress&&lastProg.epId){
+      const idx=playerEps.findIndex(e=>String(e.id)===String(lastProg.epId));
+      playerEpIdx=idx>=0?idx:0;
+    }
+    startPlayer();
+  });
+  $('detReset')?.addEventListener('click',()=>{
+    Store.clearReleaseProgress(r.id);
+    document.querySelectorAll(`.card[data-rid="${r.id}"] .c-prog`).forEach(b=>b.remove());
+    refreshDetActBtn(r);
+    if(playerEps.length) renderDetailEps(r.id, playerEps);
+  });
+  $('detEps').innerHTML='<div style="color:var(--t3);font-size:13px">Загрузка серий...</div>';
+  $('detRelated').innerHTML=''; $('detRelBlock').style.display='none';
+  $('detOv').classList.add('on');
+  nav.zone='det.acts'; nav.detAct=0;
+  clearFoc('.det-acts .btn'); $('detPlay').classList.add('foc');
+  // load episodes
+  // Load timecodes from API for this release (sync progress across devices)
+  if(authToken){
+    try{
+      const tc=await api('/accounts/users/me/views/timecodes?release_id='+r.id);
+      const list=Array.isArray(tc)?tc:(tc?.data||tc?.list||[]);
+      list.forEach(t=>{
+        if(!t?.episode_id&&!t?.release_episode_id) return;
+        const epId=String(t.release_episode_id||t.episode_id);
+        const time=t.time||t.current_time||0;
+        const dur=t.duration||0;
+        if(time>0){
+          // Only update if newer than local or local missing
+          const existing=Store.getProgress(r.id, epId);
+          if(!existing||time>existing.time){
+            Store.set(`alv_p_${r.id}_${epId}`,{time,duration:dur,epOrdinal:t.ordinal||0,updated:Date.now()});
+            Store._dirtyIdx(String(r.id));
+          }
+        }
+      });
+    }catch(_){}
+  }
+  try{
+    const detail=await api('/anime/releases/'+(r.alias||r.id));
+    const eps=detail?.episodes||[];
+    // patch real episode count from loaded data
+    const realTotal=detail?.episodes_total||eps.length||0;
+    if(realTotal>0){
+      r.episodes_total=realTotal;
+      r._epsCount=realTotal;
+      Store.cacheRelease(r);
+      // update "Всего серий" in meta
+      const metaEl=$('detMeta');
+      metaEl.innerHTML=metaEl.innerHTML.replace(
+        /<span class="det-meta-k">Всего серий:<\/span><span class="det-meta-v">[^<]*<\/span>/,
+        `<span class="det-meta-k">Всего серий:</span><span class="det-meta-v">${realTotal} эп.</span>`
+      );
+      // update episode count on all visible cards with this release id
+      document.querySelectorAll(`.card[data-rid="${r.id}"]`).forEach(card=>{
+        const epsEl=card.querySelector('.c-eps');
+        if(epsEl) epsEl.textContent=realTotal+' эп.';
+        else{
+          const foot=card.querySelector('.c-foot');
+          if(foot){
+            const sp=document.createElement('span');
+            sp.className='c-eps'; sp.textContent=realTotal+' эп.';
+            // insert before rating
+            const rating=foot.querySelector('.c-rating');
+            if(rating) foot.insertBefore(sp,rating); else foot.appendChild(sp);
+          }
+        }
+      });
+    }
+    // update duration if detail has more data
+    if(detail?.average_duration_of_episode&&(!dur||dur<=0)){
+      const d2=detail.average_duration_of_episode;
+      if(d2>0){
+        const durStr2=`~${Math.round(d2/60)} мин`;
+        const metaEl=$('detMeta');
+        // insert Длительность before Всего серий if not present
+        if(!metaEl.querySelector('[data-mt="dur"]')){
+          const allK=[...metaEl.querySelectorAll('.det-meta-k')];
+          const totalK=allK.find(s=>s.textContent.includes('Всего'));
+          if(totalK){
+            const dk=document.createElement('span'); dk.className='det-meta-k'; dk.dataset.mt='dur'; dk.textContent='Длительность:';
+            const dv=document.createElement('span'); dv.className='det-meta-v'; dv.textContent=durStr2+' / серия';
+            metaEl.insertBefore(dv, totalK);
+            metaEl.insertBefore(dk, dv);
+          }
+        }
+      }
+    }
+    renderDetailEps(r.id, eps);
+    playerEps=eps;
+    // Refresh button now that episodes are loaded — progress epId can now be matched
+    refreshDetActBtn(r);
+  }catch(_){
+    $('detEps').innerHTML=`<div style="color:var(--t3);font-size:13px">${authToken?'Не удалось загрузить серии':'Нужна авторизация для серий'}</div>`;
+    playerEps=[];
+  }
+  // load related (franchises)
+  try{
+    const fr=await api('/anime/franchises/release/'+r.id);
+    // ── Normalise every possible AniLibria response shape ────────────────
+    // Shape A: [ {franchise:{}, releases:[{release:{},sort_order:N},...]} ]
+    // Shape B: {data:[ ... same ... ]}
+    // Shape C: {list:[ ... same ... ]}
+    // Shape D: releases are bare objects (no nested .release key)
+    let franchises=[];
+    if(Array.isArray(fr))                              franchises=fr;
+    else if(fr?.data  && Array.isArray(fr.data))       franchises=fr.data;
+    else if(fr?.list  && Array.isArray(fr.list))       franchises=fr.list;
+    else if(fr && typeof fr==='object')                franchises=[fr];
+
+    const relMap=new Map();
+    franchises.forEach((f,fi)=>{
+      // releases array may live at different keys
+      let rels=f?.franchise_releases||f?.releases||f?.release_list||f?.items||[];
+      if(!Array.isArray(rels)) rels=[];
+      rels.forEach((rel,idx)=>{
+        // rel may be {release:{...}, sort_order:N}  OR bare release object
+        const rr = (rel?.release && typeof rel.release==='object') ? rel.release : rel;
+        if(!rr?.id) return;
+        const key=String(rr.id);
+        if(!relMap.has(key)){
+          const ord = rel.sort_order ?? rel.ordinal ?? rel.position ?? fi*1000+idx;
+          relMap.set(key,{rr,ord,isCurrent:String(rr.id)===String(r.id)});
+        }
+      });
+    });
+
+    // ── Fallback: if still empty, API might return flat list of releases ─
+    if(relMap.size===0 && Array.isArray(fr)){
+      fr.forEach((rel,idx)=>{
+        const rr = (rel?.release && typeof rel.release==='object') ? rel.release : rel;
+        if(!rr?.id) return;
+        relMap.set(String(rr.id),{rr, ord:rel.sort_order??rel.ordinal??idx, isCurrent:String(rr.id)===String(r.id)});
+      });
+    }
+
+    const allItems=[...relMap.values()].sort((a,b)=>{
+      if(a.ord!==b.ord) return a.ord-b.ord;
+      return (a.rr.year||0)-(b.rr.year||0);
+    });
+
+    if(allItems.length>1){
+      $('detRelBlock').style.display='block';
+      $('detRelated').innerHTML='';
+      allItems.forEach(({rr:rel,isCurrent})=>{
+        Store.cacheRelease(rel);
+        const rurl=getPoster(rel);
+        const typeLabel=rel?.type?.description||rel?.type?.value||'';
+        const el=document.createElement('div');
+        el.className='det-rel-card'+(isCurrent?' drc-current':'');
+        el.innerHTML=`
+          ${rurl?`<img src="${rurl}" alt="">`:`<div class="drc-ph">${EMJ[rel.id%10]}</div>`}
+          ${isCurrent?'<div class="drc-now">▶ Сейчас</div>':''}
+          <div class="drc-info">
+            ${typeLabel?`<div class="drc-type">${typeLabel}</div>`:''}
+            <div class="drc-n">${rName(rel)}</div>
+            ${rel.year?`<div class="drc-year">${rel.year}</div>`:''}
+          </div>`;
+        if(!isCurrent) el.addEventListener('click',()=>openDetailRelease(rel));
+        $('detRelated').appendChild(el);
+      });
+    }
+  }catch(e){ console.error('[related] error:', e); }
+}
+
+function renderDetailEps(releaseId, eps){
+  const wrap=$('detEps'); wrap.innerHTML='';
+  if(!eps.length){ wrap.innerHTML='<div style="color:var(--t3);font-size:13px">Серии не найдены</div>'; return; }
+  const lastProg=Store.getReleaseProgress(releaseId);
+  eps.forEach((ep,i)=>{
+    const epId=ep.id;
+    const prog=Store.getProgress(releaseId,epId);
+    const pct=prog&&prog.duration>0?(prog.time/prog.duration*100):0;
+    // "done" = watched to within 90s of end OR >95%
+    const isDone=prog&&prog.duration>0&&(prog.time>=prog.duration-60||pct>95);
+    // "partial" = started but not done, and more than 60s in
+    const isPartial=prog&&prog.time>60&&!isDone;
+    const isCur=lastProg&&String(lastProg.epId)===String(epId);
+    const b=document.createElement('button');
+    b.className='dep'+(isDone?' ep-done':isPartial?' ep-partial':'')+(isCur?' ep-current':'');
+    let inner=`Серия ${ep.ordinal||i+1}`;
+    if(isPartial&&prog.duration>0){
+      inner+=`<br><span style="font-size:9px;opacity:.7">${fmt(prog.time)}</span>`;
+      inner+=`<div class="dep-pb"><div class="dep-pf" style="width:${pct.toFixed(0)}%"></div></div>`;
+    }
+    if(isDone) inner+=`<br><span style="font-size:9px;opacity:.7">✓</span>`;
+    b.innerHTML=inner;
+    b.addEventListener('click',()=>{ playerEpIdx=i; startPlayer(); });
+    wrap.appendChild(b);
+  });
+}
+
+// detPlay/detResume are bound dynamically in openDetailRelease
+$('detBack').addEventListener('click',closeDetail);
+function closeDetail(){
+  $('detOv').classList.remove('on');
+  nav.zone=pg.cur==='home'?'home.cards':'cat.grid';
+}
+
+let hlsInst=null, ctrlTimer=null, saveTimer=null;
+
+function startPlayer(){
+  if(!playerEps.length){
+    // no episodes — still open player UI
+    $('plyTtl').textContent=rName(detRelease)||'';
+    $('plyOv').classList.add('on');
+    $('plySpinner').style.display='none'; // actually show it
+    $('plySpin').style.display='flex';
+    $('plyEpL').textContent=authToken?'Не удалось загрузить серии':'Авторизуйтесь для просмотра';
+    nav.zone='player'; nav.plyZone='video'; nav.plyBtn=1; showCtrl();
+    return;
+  }
+  const ep=playerEps[playerEpIdx]; if(!ep) return;
+  openPlayerEp(ep);
+}
+function openPlayerEp(ep){
+  const r=detRelease;
+  // Save current position before switching, then cancel pending timer
+  const v=$('vid');
+  if(currentEp&&r&&v.currentTime>5) Store.forceSaveProgress(r.id,currentEp.id,v.currentTime,v.duration,currentEp.ordinal,playerEps.length||r.episodes_total||0);
+  clearTimeout(saveTimer); saveTimer=null;
+  currentEp=ep;
+  $('plyTtl').textContent=rName(r)||'';
+  $('plyEpL').textContent=`Серия ${ep.ordinal||playerEpIdx+1}${ep.name?' — '+ep.name:''}`;
+  $('plySpin').style.display='flex';
+  $('plyOv').classList.add('on');
+  nav.zone='player'; nav.plyZone='video'; nav.plyBtn=1;
+  buildEpStrip();
+  buildQualBtn(ep);
+  // check saved progress
+  const prog=r&&ep?Store.getProgress(r.id,ep.id):null;
+  const url=currentEp[currentQual]||ep.hls_1080||ep.hls_720||ep.hls_480;
+  if(url){ loadVideo(url.startsWith('http')?url:CDN+url, prog?.time||0, ep); }
+  else{
+    $('plySpin').style.display='none';
+    $('plyEpL').textContent='HLS URL отсутствует (нужен токен)';
+    showCtrl();
+  }
+}
+// Rebuild strip if nav.plyEp scrolled outside the current window
+function _ensureEpInStrip(){
+  const strip=_$plyEps||$('plyEps');
+  const existing=strip.querySelector(`.pep[data-gi="${nav.plyEp}"]`);
+  if(!existing) buildEpStrip(); // re-center on nav.plyEp
+}
+function buildEpStrip(){
+  const strip=_$plyEps||$('plyEps'); strip.innerHTML='';
+  const r=detRelease;
+  const half=7;
+  const center=nav.plyEp>=0?nav.plyEp:playerEpIdx;
+  const start=Math.max(0, center-half);
+  const end=Math.min(playerEps.length, start+15);
+  // "..." before
+  if(start>0){
+    const d=document.createElement('span');
+    d.className='pep-dots'; d.textContent='…'; strip.appendChild(d);
+  }
+  for(let realI=start;realI<end;realI++){
+    const ep=playerEps[realI];
+    const prog=r?Store.getProgress(r.id,ep.id):null;
+    const isDone=prog&&prog.duration>0&&(prog.time>=prog.duration-60||prog.time/prog.duration>0.95);
+    const b=document.createElement('button');
+    b.className='pep'+(realI===playerEpIdx?' cur':isDone?' ep-done':'');
+    b.dataset.gi=realI;
+    b.textContent=ep.ordinal||realI+1;
+    b.addEventListener('click',()=>{playerEpIdx=realI;nav.plyEp=realI;openPlayerEp(playerEps[realI]);});
+    strip.appendChild(b);
+  }
+  // "..." after
+  if(end<playerEps.length){
+    const d=document.createElement('span');
+    d.className='pep-dots'; d.textContent='…'; strip.appendChild(d);
+  }
+}
+function loadVideo(url, startTime, ep){
+  ensureHls(()=>_loadVideo(url, startTime, ep));
+}
+function _loadVideo(url, startTime, ep){
+  const v=$('vid');
+  if(hlsInst){hlsInst.destroy();hlsInst=null;}
+
+  // Samsung Tizen TV поддерживает HLS нативно.
+  // hls.js на Tizen падает из-за Web Workers в .wgt пакете.
+  const isTizen = !!window.tizen || /Tizen/i.test(navigator.userAgent);
+  const nativeHls = v.canPlayType('application/vnd.apple.mpegurl') || isTizen;
+
+  if(!isTizen && typeof Hls!=='undefined' && Hls.isSupported()){
+    // PC / Android — используем hls.js без воркера
+    hlsInst=new Hls({
+      maxBufferLength:30,
+      maxMaxBufferLength:90,
+      enableWorker:false,      // ← воркер отключён — безопасно для любой среды
+      lowLatencyMode:false,
+    });
+    hlsInst.loadSource(url);
+    hlsInst.attachMedia(v);
+    hlsInst.on(Hls.Events.MANIFEST_PARSED,()=>{
+      if(startTime>5) v.currentTime=startTime;
+      v.play().catch(()=>{});
+      $('plySpin').style.display='none'; showCtrl();
+    });
+    hlsInst.on(Hls.Events.ERROR,(_,d)=>{
+      if(d.fatal){ $('plySpin').style.display='none'; showCtrl(); }
+    });
+  } else if(nativeHls){
+    // Tizen TV / Safari — нативний HLS
+    v.src=url;
+    v.load();
+    const onReady=()=>{
+      v.removeEventListener('loadedmetadata',onReady);
+      if(startTime>5){
+        // Tizen: seek must happen AFTER canplay, not loadedmetadata
+        const doSeek=()=>{
+          v.currentTime=startTime;
+          // Verify seek actually worked after 300ms; retry if not
+          setTimeout(()=>{
+            if(Math.abs(v.currentTime-startTime)>3) v.currentTime=startTime;
+          },300);
+          v.removeEventListener('canplay',doSeek);
+        };
+        v.addEventListener('canplay',doSeek);
+      }
+      v.play().catch(()=>{});
+      $('plySpin').style.display='none'; showCtrl();
+    };
+    v.addEventListener('loadedmetadata',onReady);
+    v.addEventListener('error',()=>{
+      $('plySpin').style.display='none'; showCtrl();
+    },{once:true});
+  } else {
+    $('plySpin').style.display='none';
+    $('plyEpL').textContent='Формат видео не поддерживается';
+    showCtrl();
+  }
+  let _tuf=false;
+  v.ontimeupdate=()=>{ if(_tuf) return; _tuf=true; requestAnimationFrame(()=>{ _tuf=false;
+    if(!v.duration) return;
+    const pct=v.currentTime/v.duration*100;
+    $('plyFill').style.width=pct+'%';
+    $('plyTime').textContent=fmt(v.currentTime)+' / '+fmt(v.duration);
+    // save progress every 8s
+    if(!saveTimer) saveTimer=setTimeout(()=>{
+      const r=detRelease;
+      if(r&&ep){ Store.saveProgress(r.id,ep.id,v.currentTime,v.duration,ep.ordinal,playerEps.length||r.episodes_total||0); syncProgress(ep.id,v.currentTime); }
+      saveTimer=null;
+    },8000);
+    // skip opening
+    const skip=ep?.opening;
+    if(skip&&v.currentTime>=skip.start&&v.currentTime<skip.stop){
+      $('skipBtn').classList.add('on');
+    } else {
+      $('skipBtn').classList.remove('on','foc');
+      if(nav.plyZone==='skip'){ nav.plyZone='video'; }
+    }
+  }); };
+  v.onended=()=>{
+    const r=detRelease, p=ep; // use ep from closure, not playerEpIdx (may have changed)
+    if(r&&p){ Store.forceSaveProgress(r.id,p.id,v.duration,v.duration,p.ordinal,playerEps.length||r.episodes_total||0); syncProgress(p.id,v.duration, true); }
+    // auto-play next episode after 3s
+    if(playerEpIdx<playerEps.length-1){
+      let countdown=3;
+      const next=playerEps[playerEpIdx+1];
+      $('plyEpL').textContent=`Следующая: Серия ${next.ordinal||playerEpIdx+2} — через ${countdown}с`;
+      showCtrl();
+      const timer=setInterval(()=>{
+        countdown--;
+        if(countdown<=0){
+          clearInterval(timer);
+          playerEpIdx++;
+          openPlayerEp(playerEps[playerEpIdx]);
+        } else {
+          $('plyEpL').textContent=`Следующая: Серия ${next.ordinal||playerEpIdx+2} — через ${countdown}с`;
+        }
+      },1000);
+      // cancel on user interaction
+      const cancel=()=>{ clearInterval(timer); v.removeEventListener('play',cancel); };
+      v.addEventListener('play',cancel);
+    }
+  };
+}
+// ── Player zone helpers ────────────────────────────────────────────────────
+const PLY_BTNS = ['pcPrev','pcPlay','pcNext','pcQual','pcClose'];
+// Quality
+let currentEp=null, currentQual=null;
+const QUAL_LABELS={hls_1080:'1080p',hls_720:'720p',hls_480:'480p'};
+function getAvailableQuals(ep){
+  return ['hls_1080','hls_720','hls_480'].filter(k=>!!ep?.[k]);
+}
+function openQualMenu(){
+  if(!currentEp) return;
+  const quals=getAvailableQuals(currentEp);
+  if(quals.length<2) return; // нечего переключать
+  const menu=$('plyQualMenu');
+  menu.innerHTML='';
+  nav.plyQualI=quals.indexOf(currentQual);
+  quals.forEach((k,i)=>{
+    const btn=document.createElement('button');
+    btn.className='ply-qual-opt'+(k===currentQual?' cur':'');
+    btn.textContent=QUAL_LABELS[k];
+    btn.dataset.qual=k;
+    btn.addEventListener('click',()=>selectQual(k));
+    menu.appendChild(btn);
+  });
+  menu.classList.add('on');
+  nav.plyZone='qual';
+  applyQualFoc();
+  showCtrl();
+}
+function closeQualMenu(){
+  $('plyQualMenu').classList.remove('on');
+  nav.plyZone='ctrl';
+  applyPlyFoc();
+}
+function applyQualFoc(){
+  const opts=[...$('plyQualMenu').querySelectorAll('.ply-qual-opt')];
+  opts.forEach((o,i)=>o.classList.toggle('foc',i===nav.plyQualI));
+}
+function selectQual(key){
+  if(!currentEp||key===currentQual){closeQualMenu();return;}
+  const v=$('vid');
+  const savedTime=v.currentTime;
+  currentQual=key;
+  $('pcQual').textContent=QUAL_LABELS[key];
+  closeQualMenu();
+  const url=currentEp[key];
+  if(url) loadVideo(url.startsWith('http')?url:CDN+url, savedTime, currentEp);
+}
+function buildQualBtn(ep){
+  const quals=getAvailableQuals(ep);
+  // default: highest available
+  currentQual=quals[0]||null;
+  $('pcQual').textContent=currentQual?QUAL_LABELS[currentQual]:'—';
+  $('pcQual').style.display=quals.length>=2?'':'none';
+}
+
+function applyPlyFoc(){
+  const isCtrl=nav.plyZone==='ctrl', isEps=nav.plyZone==='eps';
+  PLY_BTNS.forEach((id,i)=>$(id)?.classList.toggle('foc',isCtrl&&i===nav.plyBtn));
+  if(isEps){
+    const strip=_$plyEps||$('plyEps');
+    strip.querySelectorAll('.pep.foc').forEach(p=>p.classList.remove('foc'));
+    const target=strip.querySelector(`.pep[data-gi="${nav.plyEp}"]`);
+    if(target){
+      target.classList.add('foc');
+      siv(target,{inline:'nearest',behavior:'smooth'});
+    }
+  }
+  $('skipBtn').classList.toggle('foc',nav.plyZone==='skip');
+}
+function plyEnterCtrl(){
+  nav.plyZone = 'ctrl';
+  showCtrl();
+  applyPlyFoc();
+}
+function plyLeaveCtrl(){
+  nav.plyZone = 'video';
+  PLY_BTNS.forEach(id => $(id)?.classList.remove('foc'));
+  document.querySelectorAll('.pep.foc').forEach(p => p.classList.remove('foc'));
+  // short delay then hide panel
+  clearTimeout(window._ctrlHideT);
+  window._ctrlHideT = setTimeout(() => $('plyOv').classList.remove('ctrl'), 1500);
+}
+function showCtrl(){
+  clearTimeout(ctrlTimer);
+  const _ov=_$plyOv||$('plyOv');
+  _ov.classList.add('ctrl');
+  if(nav.plyZone==='video'){
+    ctrlTimer=setTimeout(()=>_ov.classList.remove('ctrl'),5000);
+  }
+}
+function togglePlay(){
+  const v=$('vid'), ico=$('pcPlayIco');
+  if(v.paused){
+    v.play();
+    if(ico) ico.innerHTML='<path d="M6 19h4V5H6zm8-14v14h4V5z"/>'; // pause
+  } else {
+    v.pause();
+    if(ico) ico.innerHTML='<path d="M8 5v14l11-7z"/>'; // play
+  }
+  showCtrl();
+}
+function refreshDetActBtn(r){
+  const lastProg=Store.getReleaseProgress(r.id);
+  const hasProgress=lastProg&&lastProg.time>60;
+  if(hasProgress){
+    $('detActs').innerHTML=`<button class="btn btn-p det-play-btn" id="detPlay">▶ Продолжить</button><button class="btn btn-s det-reset-btn" id="detReset">↺ Сбросить прогресс</button>`;
+  } else {
+    $('detActs').innerHTML=`<button class="btn btn-p det-play-btn" id="detPlay">▶ Смотреть</button>`;
+  }
+  $('detPlay').addEventListener('click',()=>{
+    if(hasProgress&&lastProg.epId){
+      const idx=playerEps.findIndex(e=>String(e.id)===String(lastProg.epId));
+      playerEpIdx=idx>=0?idx:0;
+    }
+    startPlayer();
+  });
+  $('detReset')?.addEventListener('click',()=>{
+    Store.clearReleaseProgress(r.id);
+    document.querySelectorAll(`.card[data-rid="${r.id}"] .c-prog`).forEach(b=>b.remove());
+    refreshDetActBtn(r);
+    if(playerEps.length) renderDetailEps(r.id, playerEps);
+  });
+  clearFoc('.det-acts .btn'); $('detPlay').classList.add('foc');
+}
+
+function closePlayer(){
+  const v=$('vid');
+  const r=detRelease, ep=playerEps[playerEpIdx];
+  if(r&&ep&&v.currentTime>5) Store.forceSaveProgress(r.id,ep.id,v.currentTime,v.duration,ep.ordinal,playerEps.length||r.episodes_total||0);
+  v.pause(); v.src='';
+  if(hlsInst){hlsInst.destroy();hlsInst=null;}
+  clearTimeout(saveTimer); saveTimer=null;
+  $('plyOv').classList.remove('on','ctrl');
+  $('plyQualMenu').classList.remove('on');
+  nav.zone='det.acts';
+  // refresh episode list and play/continue button with updated progress
+  if(r&&playerEps.length) renderDetailEps(r.id, playerEps);
+  if(r) refreshDetActBtn(r);
+  // update progress bar on home/catalog cards for this release
+  if(r){
+    const epsTot=playerEps.length||r.episodes_total||0;
+    const pct=Store.getTotalProgress(r.id, epsTot);
+    document.querySelectorAll(`.card[data-rid="${r.id}"]`).forEach(card=>{
+      let bar=card.querySelector('.c-prog');
+      if(pct>0){
+        if(!bar){
+          bar=document.createElement('div'); bar.className='c-prog';
+          bar.innerHTML='<div class="c-prog-f"></div>';
+          card.appendChild(bar);
+        }
+        bar.querySelector('.c-prog-f').style.width=pct+'%';
+      } else if(bar){
+        bar.remove();
+      }
+    });
+  }
+}
+$('skipBtn').addEventListener('click',()=>{
+  const ep=playerEps[playerEpIdx];
+  if(ep?.opening) $('vid').currentTime=ep.opening.stop;
+  $('skipBtn').classList.remove('on','foc');
+  if(nav.plyZone==='skip'){ nav.plyZone='ctrl'; applyPlyFoc(); }
+});
+$('pcPlay').addEventListener('click',togglePlay);
+$('pcClose').addEventListener('click',closePlayer);
+// ── Accelerated seek on held arrow keys ─────────────────────────────────
+let _seekDir=0, _seekCount=0, _seekTimer=null, _seekRAF=null;
+function _seekAccel(dir){
+  const v=$('vid'); if(!v.duration) return;
+  if(dir!==_seekDir){ _seekDir=dir; _seekCount=0; clearTimeout(_seekTimer); }
+  _seekCount++;
+  // step grows: 5s → 10s → 30s after repeated presses
+  const step=_seekCount<=2?5:_seekCount<=5?10:30;
+  const t=Math.max(0,Math.min(v.duration,v.currentTime+dir*step));
+  v.currentTime=t;
+  // Update bar instantly without waiting for ontimeupdate
+  if(v.duration) $('plyFill').style.width=(t/v.duration*100)+'%';
+  showCtrl();
+  // Reset counter after 800ms of no presses
+  clearTimeout(_seekTimer);
+  _seekTimer=setTimeout(()=>{ _seekDir=0; _seekCount=0; },800);
+}
+$('pcPrev').addEventListener('click',()=>{if(playerEpIdx>0){playerEpIdx--;openPlayerEp(playerEps[playerEpIdx]);}});
+$('pcNext').addEventListener('click',()=>{if(playerEpIdx<playerEps.length-1){playerEpIdx++;openPlayerEp(playerEps[playerEpIdx]);}});
+$('plyOv').addEventListener('mousemove',showCtrl);
+// ── Timeline scrub (mouse + touch + TV remote) ──────────────────────────
+(()=>{
+  const bar=$('plyBar'), tip=$('seekTip');
+  let dragging=false, _raf=null;
+
+  function pctFromEvent(e){
+    const rect=bar.getBoundingClientRect();
+    const x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
+    return Math.max(0,Math.min(1,x/rect.width));
+  }
+  function applySeek(pct){
+    const v=$('vid'); if(!v.duration) return;
+    const t=pct*v.duration;
+    $('plyFill').style.width=(pct*100)+'%';
+    tip.textContent=fmt(t);
+    tip.style.left=(pct*100)+'%';
+    if(_raf) cancelAnimationFrame(_raf);
+    _raf=requestAnimationFrame(()=>{ v.currentTime=t; _raf=null; });
+  }
+  bar.addEventListener('mousedown',e=>{
+    const v=$('vid'); if(!v.duration) return;
+    dragging=true; bar.classList.add('scrubbing');
+    applySeek(pctFromEvent(e)); showCtrl(); e.preventDefault();
+  });
+  bar.addEventListener('touchstart',e=>{
+    const v=$('vid'); if(!v.duration) return;
+    dragging=true; bar.classList.add('scrubbing');
+    applySeek(pctFromEvent(e)); showCtrl(); e.preventDefault();
+  },{passive:false});
+  window.addEventListener('mousemove',e=>{
+    if(!dragging) return;
+    applySeek(pctFromEvent(e)); showCtrl();
+  });
+  window.addEventListener('touchmove',e=>{
+    if(!dragging) return;
+    applySeek(pctFromEvent(e)); e.preventDefault();
+  },{passive:false});
+  function endDrag(e){
+    if(!dragging) return;
+    dragging=false; bar.classList.remove('scrubbing');
+    applySeek(pctFromEvent(e));
+  }
+  window.addEventListener('mouseup',endDrag);
+  window.addEventListener('touchend',endDrag);
+  bar.addEventListener('mousemove',e=>{
+    if(dragging) return;
+    const pct=pctFromEvent(e);
+    const v=$('vid'); if(!v.duration) return;
+    tip.textContent=fmt(pct*v.duration);
+    tip.style.left=(pct*100)+'%';
+  });
+})();
+
+function lpApplyFoc(){
+  const LP=['lpL','lpP','lpOk','lpX'];
+  LP.forEach((id,i)=>{
+    const el=$(id);
+    if(!el) return;
+    el.classList.toggle('foc', i===nav.loginI);
+    // снимаем браузерный фокус с инпутов, чтобы не конфликтовал
+    if(i!==nav.loginI) el.blur();
+  });
+}
+function openLogin(){
+  $('lp').classList.add('on');
+  nav.zone='login';
+  nav.loginI=0;
+  lpApplyFoc();
+}
+function closeLogin(){
+  $('lp').classList.remove('on');
+  // убираем .foc со всех полей
+  ['lpL','lpP','lpOk','lpX'].forEach(id=>$(id)?.classList.remove('foc'));
+  nav.zone=pg.cur==='home'?'home.cards':'cat.grid';
+}
+$('loginBtn').addEventListener('click',openLogin);
+$('lpX').addEventListener('click',closeLogin);
+// после системной клавиатуры — возвращаем nav зону в login
+['lpL','lpP'].forEach((id,i)=>{
+  $(id).addEventListener('blur',()=>{
+    if($('lp').classList.contains('on')&&nav.zone!=='login'){
+      nav.zone='login'; nav.loginI=i; lpApplyFoc();
+    }
+  });
+});
+$('userPill').addEventListener('click',()=>{ openProfilePanel(); });
+function openProfilePanel(){
+  const user=Store.get('alv_user',null);
+  const nick=user?.nickname||user?.login||'Пользователь';
+  $('profileName').textContent='👤 '+nick;
+  $('profileStatus').textContent='Вы вошли в аккаунт AniLibria';
+  $('profilePanel').classList.add('on');
+}
+$('profileClose').addEventListener('click',()=>{ $('profilePanel').classList.remove('on'); });
+$('profileLogout').addEventListener('click',async()=>{
+  try{await api('/accounts/users/auth/logout',{method:'POST'});}catch(_){}
+  authToken=null;
+  Store.set('alv_token',null); Store.set('alv_user',null);
+  $('profilePanel').classList.remove('on');
+  $('userPill').classList.remove('on'); $('loginBtn').style.display='';
+  setStatus('ok','Вы вышли из аккаунта');
+});
+async function doLogin(l,p){
+  $('lpErr').textContent='';
+  try{
+    const d=await api('/accounts/users/auth/login',{method:'POST',body:JSON.stringify({login:l,password:p})});
+    authToken=d?.token;
+    Store.set('alv_token',authToken);
+    const me=await api('/accounts/users/me/profile');
+    Store.set('alv_user',me);
+    const nick=me?.nickname||me?.login||l;
+    $('userPill').classList.add('on'); $('uname').textContent=nick; $('loginBtn').style.display='none';
+    setStatus('ok','Вошли · '+nick); closeLogin();
+    await syncCollFromAPI();
+  }catch(e){
+    $('lpErr').textContent=e.code===401?'Неверный логин или пароль':e.code===422?'Некорректные данные':'Ошибка сети. Проверьте соединение.';
+  }
+}
+$('lpOk').addEventListener('click',()=>{
+  const l=$('lpL').value.trim(), p=$('lpP').value;
+  if(!l||!p){$('lpErr').textContent='Заполните все поля';return;}
+  doLogin(l,p);
+});
+
+function switchPage(name){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  const map={home:'pgHome',catalog:'pgCatalog',schedule:'pgSchedule',collections:'pgCollections'};
+  const el=$(map[name]); if(el) el.classList.add('on');
+  document.querySelectorAll('#nav .ntab').forEach(t=>{t.classList.toggle('cur',t.dataset.pg===name);t.classList.remove('foc');});
+  pg.cur=name;
+  // bg dimming for content pages
+  // lazy load
+  if(name==='catalog'&&!catLoading&&$('catGrid').children.length<=1) loadCatalog(true);
+  if(name==='schedule') loadSchedule();
+  if(name==='collections') renderCollTab(curCollTab);
+  // set zone
+  const zones={home:'home.cards',catalog:'cat.search',schedule:'sch',collections:'coll.tabs'};
+  nav.zone=zones[name]||'home.cards';
+  if(name==='home') focCard(nav.ci??0, activeRowI??0);
+  if(name==='catalog'){ nav.cg.r=0;nav.cg.c=0; focCatSearch(); }
+  if(name==='collections'){nav.collTab=0; focIdx('#collTabs .ctab',0);}
+}
+
+const CTX_COLLS=[
+  {k:'favorites', l:'Избранное',    ic:'❤'},
+  {k:'watching',  l:'Смотрю',   ic:'👁'},
+  {k:'planned',   l:'Запланировано',ic:'📅'},
+  {k:'completed', l:'Просмотрено',ic:'✓'},
+  {k:'abandoned', l:'Брошено',    ic:'✕'},
+];
+let ctxRelease=null, ctxItems=[], ctxIdx=0;
+
+function openCtxMenu(r){
+  if(!r){ return; }
+  ctxRelease=r;
+  nav.zone='ctx.menu';
+  // Force visibility
+  const ov=$('ctxOv');
+  ov.style.cssText='display:flex!important;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.8);align-items:center;justify-content:center;';
+  const coll=Store.getColl();
+  const url=getPoster(r);
+  $('ctxPoster').src=url||'';
+  $('ctxTitleEl').textContent=rName(r);
+  // Build items
+  ctxItems=[];
+  // Play/Continue
+  const prog=Store.getReleaseProgress(r.id);
+  const hasProg=prog&&prog.time>60;
+  ctxItems.push({l:hasProg?'Продолжить':'Смотреть', ic:'▶', action:'play'});
+  // separator
+  ctxItems.push({sep:true});
+  // Collections
+  CTX_COLLS.forEach(col=>{
+    const inColl=(coll[col.k]||[]).includes(r.id);
+    ctxItems.push({l:inColl?'Удалить из «'+col.l+'»':'Добавить в «'+col.l+'»', ic:col.ic, action:'coll:'+col.k, active:inColl});
+  });
+  // Remove from history (only when on history tab)
+  if(curCollTab==='history'){
+    ctxItems.push({sep:true});
+    ctxItems.push({l:'Удалить из истории', ic:'✕', action:'rm_history', danger:true});
+  }
+  // separator + reset
+  const hasProg2=Store.getTotalProgress(r.id, r.episodes_total||0)>0;
+  if(hasProg2){
+    ctxItems.push({sep:true});
+    ctxItems.push({l:'Сбросить прогресс', ic:'🗑', action:'reset', danger:true});
+  }
+  // Render
+  const el=$('ctxItems'); el.innerHTML='';
+  ctxItems.forEach((item,i)=>{
+    if(item.sep){const d=document.createElement('div');d.className='ctx-sep';el.appendChild(d);return;}
+    const d=document.createElement('div');
+    d.className='ctx-item'+(item.active?' active':'')+(item.danger?' danger':'');
+    d.dataset.idx=i;
+    d.innerHTML=`<span class="ctx-ic">${item.ic}</span><span>${item.l}</span>`;
+    d.addEventListener('click',()=>execCtxAction(i));
+    el.appendChild(d);
+  });
+  ctxIdx=0; applyCtxFoc();
+  $('ctxOv').classList.add('on'); $('ctxOv').style.display='flex';
+}
+function closeCtxMenu(){
+  $('ctxOv').style.cssText=''; $('ctxOv').classList.remove('on');
+  ctxRelease=null;
+  // restore previous zone
+  if($('detOv').classList.contains('on')) nav.zone='det.acts';
+  else if(pg.cur==='catalog') nav.zone='cat.grid';
+  else if(pg.cur==='collections') nav.zone='coll.grid';
+  else if(pg.cur==='schedule') nav.zone='sch';
+  else nav.zone='home.cards';
+}
+function applyCtxFoc(){
+  document.querySelectorAll('.ctx-item').forEach(el=>el.classList.remove('foc'));
+  // find real item by idx (skipping separators)
+  const visIdx=ctxItems.slice(0,ctxIdx+1).filter(x=>!x.sep).length-1;
+  const els=[...document.querySelectorAll('.ctx-item')];
+  if(els[visIdx]) els[visIdx].classList.add('foc');
+}
+function ctxNavStep(dir){
+  // move ctxIdx skipping seps
+  let i=ctxIdx+dir;
+  while(i>=0&&i<ctxItems.length&&ctxItems[i].sep) i+=dir;
+  if(i>=0&&i<ctxItems.length&&!ctxItems[i].sep) ctxIdx=i;
+  applyCtxFoc();
+}
+function execCtxAction(i){
+  const item=ctxItems[i]; if(!item||item.sep) return;
+  const r=ctxRelease; if(!r) return;
+  if(item.action==='play'){
+    closeCtxMenu();
+    // open detail or play directly
+    openDetailRelease(r);
+    return;
+  }
+  if(item.action==='rm_history'){
+    const c2=Store.getColl();
+    c2.history=c2.history.filter(x=>x!==r.id);
+    Store.set('alv_coll',c2);
+    closeCtxMenu();
+    // Remove card from grid immediately
+    document.querySelectorAll(`#collGrid .card[data-rid="${r.id}"]`).forEach(el=>el.remove());
+    // Show empty state if no cards left
+    if(!$('collGrid').querySelector('.card')){
+      $('collGrid').innerHTML='<div class="coll-empty"><div class="coll-empty-ic">🕐</div><div>Вы ещё ничего не смотрели</div></div>';
+    }
+    return;
+  }
+  if(item.action==='reset'){
+    Store.clearReleaseProgress(r.id);
+    document.querySelectorAll(`.card[data-rid="${r.id}"] .c-prog`).forEach(b=>b.remove());
+    closeCtxMenu();
+    return;
+  }
+  if(item.action.startsWith('coll:')){
+    const key=item.action.slice(5);
+    const coll=Store.getColl();
+    const arr=coll[key]||[];
+    const idx=arr.indexOf(r.id);
+    if(idx===-1){ arr.push(r.id); Store.cacheRelease(r); }
+    else arr.splice(idx,1);
+    coll[key]=arr; Store.set('alv_coll',coll);
+    syncCollToAPI(key, r.id, idx===-1);
+    const inNow=idx===-1;
+    // If we just removed from the currently viewed tab — remove card immediately
+    if(!inNow && key===curCollTab){
+      document.querySelectorAll(`#collGrid .card[data-rid="${r.id}"]`).forEach(el=>el.remove());
+      if(!$('collGrid').querySelector('.card')){
+        $('collGrid').innerHTML=`<div class="coll-empty"><div class="coll-empty-ic">📂</div><div>Коллекция пуста</div></div>`;
+      }
+      closeCtxMenu(); return;
+    }
+    const col=CTX_COLLS.find(c=>c.k===key);
+    if(col){ item.l=(inNow?'Удалить из «'+col.l+'»':'Добавить в «'+col.l+'»'); item.active=inNow; }
+    openCtxMenu(r); // re-render menu
+    return;
+  }
+}
+
+// Long-press detection for cards
+let _holdTimer=null;
+function startHold(r){ _holdTimer=setTimeout(()=>{ _holdTimer=null; openCtxMenu(r); },600); }
+function cancelHold(){ clearTimeout(_holdTimer); _holdTimer=null; }
+
+function handleKey(e){
+  const k=e.key;
+  const Z=nav.zone;
+
+  // If a real text input is focused — let browser handle typing, only intercept Escape/Enter
+  const activeTag=document.activeElement?.tagName;
+  const isInput=activeTag==='INPUT'||activeTag==='TEXTAREA';
+  if(isInput){
+    const isBack = k==='Escape' || k==='GoBack' || e.keyCode===10009 ||
+                   (k==='Backspace' && document.activeElement.value==='') ||
+                   k==='ArrowUp' || k==='ArrowDown' || k==='ArrowLeft' || k==='ArrowRight';
+    if(isBack){
+      document.activeElement.blur();
+      e.preventDefault();
+      return;
+    }
+    if(k==='Enter'&&document.activeElement.id==='catQ'){loadCatalog(true);e.preventDefault();}
+    else return; // let all other keys type normally
+    return;
+  }
+
+  // Always available: Tizen media keys
+  if(k==='MediaPlayPause'||k==='Pause'){if(Z==='player'){togglePlay();e.preventDefault();}return;}
+  if(k==='MediaFastForward'){if(Z==='player'){$('vid').currentTime+=10;e.preventDefault();}return;}
+  if(k==='MediaRewind'){if(Z==='player'){$('vid').currentTime-=10;e.preventDefault();}return;}
+
+  if(Z==='login'){
+    if(k==='Escape'||k==='Backspace'||k==='GoBack'||e.keyCode===10009){closeLogin();e.preventDefault();return;}
+    const LP=['lpL','lpP','lpOk','lpX'];
+    if(!nav.loginI) nav.loginI=0;
+    if(k==='ArrowDown'||k==='Tab'){
+      nav.loginI=Math.min(nav.loginI+1, LP.length-1);
+      lpApplyFoc(); e.preventDefault();
+    } else if(k==='ArrowUp'){
+      nav.loginI=Math.max(nav.loginI-1, 0);
+      lpApplyFoc(); e.preventDefault();
+    } else if(k==='ArrowRight'&&nav.loginI>=2){
+      nav.loginI=Math.min(nav.loginI+1, LP.length-1);
+      lpApplyFoc(); e.preventDefault();
+    } else if(k==='ArrowLeft'&&nav.loginI>=2){
+      nav.loginI=Math.max(nav.loginI-1, 2);
+      lpApplyFoc(); e.preventDefault();
+    } else if(k==='Enter'){
+      const el=$(LP[nav.loginI]);
+      if(nav.loginI===0||nav.loginI===1){
+        // фокус на инпут → системная клавиатура
+        const inputEl = nav.loginI===0 ? $('lpL') : $('lpP');
+        inputEl.focus();
+        inputEl.select?.();
+      } else {
+        el?.click();
+      }
+      e.preventDefault();
+    }
+    return;
+  }
+
+  if(Z==='player'){
+    showCtrl();
+    // Back завжди
+    if(k==='Escape'||k==='Backspace'||k==='GoBack'||e.keyCode===10009){
+      closePlayer(); e.preventDefault(); return;
+    }
+
+    // ── Режим просмотра ──────────────────────────────
+    if(nav.plyZone==='video'){
+      if(k==='ArrowRight'){ _seekAccel(+1); e.preventDefault(); return; }
+      if(k==='ArrowLeft') { _seekAccel(-1); e.preventDefault(); return; }
+      if(k==='Enter'||k===' '){
+        // якщо зараз іде опенінг — пропустити
+        if($('skipBtn').classList.contains('on')){
+          $('skipBtn').click();
+        } else {
+          togglePlay();
+        }
+        e.preventDefault(); return;
+      }
+      if(k==='ArrowUp'||k==='ArrowDown'){ plyEnterCtrl(); e.preventDefault(); return; }
+      e.preventDefault(); return;
+    }
+
+    // ── Режим кнопок (⏮ ▶ ⏭ ✕) ─────────────────────
+    if(nav.plyZone==='ctrl'){
+      if(k==='ArrowLeft') { nav.plyBtn=Math.max(nav.plyBtn-1,0); applyPlyFoc(); e.preventDefault(); return; }
+      if(k==='ArrowRight'){ nav.plyBtn=Math.min(nav.plyBtn+1,PLY_BTNS.length-1); applyPlyFoc(); e.preventDefault(); return; }
+      if(k==='ArrowDown'){
+        const peps=[...$('plyEps').querySelectorAll('.pep')];
+        if(peps.length){
+          nav.plyZone='eps';
+          nav.plyEp=playerEpIdx; // global index
+          showCtrl();
+          applyPlyFoc();
+        } else { plyLeaveCtrl(); }
+        e.preventDefault(); return;
+      }
+      if(k==='ArrowUp'){
+        // якщо кнопка skip видима — перейти до неї
+        if($('skipBtn').classList.contains('on')){
+          nav.plyZone='skip'; showCtrl(); applyPlyFoc();
+        } else { plyLeaveCtrl(); }
+        e.preventDefault(); return;
+      }
+      if(k==='Enter'||k===' '){
+        if(PLY_BTNS[nav.plyBtn]==='pcQual'){ openQualMenu(); }
+        else { $(PLY_BTNS[nav.plyBtn])?.click(); }
+        e.preventDefault(); return;
+      }
+      e.preventDefault(); return;
+    }
+
+    // ── Меню качества ──────────────────────────────────
+    if(nav.plyZone==='qual'){
+      const opts=[...$('plyQualMenu').querySelectorAll('.ply-qual-opt')];
+      if(k==='ArrowUp')  { nav.plyQualI=Math.max(nav.plyQualI-1,0); applyQualFoc(); e.preventDefault(); return; }
+      if(k==='ArrowDown'){ nav.plyQualI=Math.min(nav.plyQualI+1,opts.length-1); applyQualFoc(); e.preventDefault(); return; }
+      if(k==='Enter'||k===' '){ const key=opts[nav.plyQualI]?.dataset.qual; if(key) selectQual(key); e.preventDefault(); return; }
+      if(k==='Escape'||k==='Backspace'||k==='GoBack'){ closeQualMenu(); e.preventDefault(); return; }
+      e.preventDefault(); return;
+    }
+
+    // ── Кнопка пропустити опенінг ──────────────────────
+    if(nav.plyZone==='skip'){
+      if(k==='Enter'||k===' '){ $('skipBtn').click(); nav.plyZone='ctrl'; applyPlyFoc(); e.preventDefault(); return; }
+      if(k==='ArrowDown'||k==='Escape'||k==='Backspace'||k==='GoBack'){ nav.plyZone='ctrl'; applyPlyFoc(); e.preventDefault(); return; }
+      if(k==='ArrowUp'){ plyLeaveCtrl(); e.preventDefault(); return; }
+      e.preventDefault(); return;
+    }
+
+    // ── Режим серий ──────────────────────────────────
+    if(nav.plyZone==='eps'){
+      const total=playerEps.length;
+      if(k==='ArrowLeft'){
+        if(nav.plyEp>0){ nav.plyEp--; _ensureEpInStrip(); applyPlyFoc(); }
+        e.preventDefault(); return;
+      }
+      if(k==='ArrowRight'){
+        if(nav.plyEp<total-1){ nav.plyEp++; _ensureEpInStrip(); applyPlyFoc(); }
+        e.preventDefault(); return;
+      }
+      if(k==='ArrowUp')  { 
+        $('plyEps').querySelectorAll('.pep.foc').forEach(p=>p.classList.remove('foc'));
+        nav.plyZone='ctrl'; showCtrl(); applyPlyFoc(); e.preventDefault(); return; 
+      }
+      if(k==='ArrowDown'){ plyLeaveCtrl(); e.preventDefault(); return; }
+      if(k==='Enter'||k===' '){
+        playerEpIdx=nav.plyEp; openPlayerEp(playerEps[nav.plyEp]);
+        e.preventDefault(); return;
+      }
+      e.preventDefault(); return;
+    }
+
+    e.preventDefault(); return;
+  }
+
+  if(Z==='ctx.menu'){
+    if(k==='Escape'||k==='Backspace'){closeCtxMenu();e.preventDefault();return;}
+    if(k==='ArrowDown'){ctxNavStep(1);e.preventDefault();return;}
+    if(k==='ArrowUp'){ctxNavStep(-1);e.preventDefault();return;}
+    if(k==='Enter'){execCtxAction(ctxIdx);e.preventDefault();return;}
+    e.preventDefault(); return;
+  }
+  if(Z==='det.acts'||Z==='det.back'||Z==='det.coll'||Z==='det.eps'||Z==='det.related'){
+    navDetail(k); e.preventDefault(); return;
+  }
+
+  if(k==='Escape'||k==='Backspace'||e.keyCode===10009){
+    if($('detOv').classList.contains('on')){closeDetail();e.preventDefault();return;}
+    if($('lp').classList.contains('on')){closeLogin();e.preventDefault();return;}
+    if($('profilePanel').classList.contains('on')){$('profilePanel').classList.remove('on');e.preventDefault();return;}
+    if(Z!=='home.nav'&&Z!=='cat.search'&&Z!=='sch'){
+      const up={'home.cards':'home.nav','cat.grid':'cat.search','cat.flt':'cat.grid','coll.grid':'coll.tabs'};
+      if(up[Z]){ nav.zone=up[Z]; applyZoneFocus(); e.preventDefault(); return; }
+    }
+    // Double-back to exit
+    if($('exitOv').style.display==='flex'){
+      closeExit(); e.preventDefault(); return;
+    }
+    const now=Date.now();
+    if(window._lastBack&&now-window._lastBack<600){
+      $('exitOv').style.display='flex';
+      setTimeout(()=>{ $('exitYes').focus(); $('exitYes').classList.add('foc'); $('exitNo').classList.remove('foc'); }, 50); e.preventDefault(); return;
+    }
+    window._lastBack=now;
+    return;
+  }
+
+  if(Z==='home.nav') navHomeNav(k);
+  else if(Z==='home.login') navHomeLogin(k);
+  else if(Z==='home.hero') navHomeHero(k);
+  else if(Z==='home.cards') navHomeCards(k);
+  else if(Z==='cat.search') navCatSearch(k);
+  else if(Z==='cat.grid') navCatGrid(k);
+  else if(Z==='cat.flt') navCatFlt(k);
+  else if(Z==='sch') navSch(k);
+  else if(Z==='coll.tabs') navCollTabs(k);
+  else if(Z==='coll.grid') navCollGrid(k);
+
+  e.preventDefault();
+}
+
+function focLoginBtn(){
+  document.querySelectorAll('#nav .ntab').forEach(t=>t.classList.remove('foc'));
+  $('loginBtn').classList.add('foc');
+  nav.zone='home.login';
+}
+function navHomeNav(k){
+  const tabs=[...document.querySelectorAll('#nav .ntab')];
+  if(k==='ArrowRight'){
+    if(nav.ni<tabs.length-1) focNavTab(nav.ni+1);
+    else focLoginBtn(); // past last tab → login button
+  }
+  else if(k==='ArrowLeft') focNavTab(Math.max(nav.ni-1,0));
+  else if(k==='ArrowDown'){
+    document.querySelectorAll('#nav .ntab').forEach(t=>t.classList.remove('foc'));
+    if(pg.cur==='catalog'){ focCatSearch(); }
+    else if(pg.cur==='schedule'){nav.zone='sch';applyZoneFocus();}
+    else if(pg.cur==='collections'){nav.zone='coll.tabs';applyZoneFocus();}
+    else{nav.zone='home.cards';focCard(nav.ci);}
+  }
+  else if(k==='Enter'){
+    const pg=tabs[nav.ni]?.dataset?.pg;
+    if(pg) switchPage(pg);
+  }
+}
+function navHomeLogin(k){
+  if(k==='ArrowLeft'){$('loginBtn').classList.remove('foc');focNavTab(nav.ni);}
+  else if(k==='Enter'){$('loginBtn').classList.remove('foc');openLogin();}
+  else if(k==='ArrowDown'){$('loginBtn').classList.remove('foc');document.querySelectorAll('#nav .ntab').forEach(t=>t.classList.remove('foc'));nav.zone='home.cards';focCard(nav.ci);}
+}
+function navHomeHero(k){
+  if(k==='ArrowRight') focHeroBtn(Math.min(nav.hi+1,1));
+  else if(k==='ArrowLeft') focHeroBtn(Math.max(nav.hi-1,0));
+  else if(k==='ArrowUp'){clearFoc('.h-btns .btn');nav.zone='home.nav';focNavTab(0);}
+  else if(k==='ArrowDown'){clearFoc('.h-btns .btn');nav.zone='home.cards';focCard(nav.ci);}
+  else if(k==='Enter'){
+    if(nav.hi===0) openDetail(nav.ci);
+    else openDetail(nav.ci);
+  }
+}
+
+// Master clear: removes every focus mark in catalog UI
+function catClearFocus(){
+  $('catSrch').classList.remove('foc');
+  document.querySelectorAll('#catGrid .card.foc').forEach(c=>c.classList.remove('foc'));
+  document.querySelectorAll('.fchip.foc').forEach(c=>c.classList.remove('foc'));
+  document.querySelectorAll('.year-spin.foc').forEach(s=>s.classList.remove('foc'));
+  [$('fltApply'),$('fltReset')].forEach(b=>b?.classList.remove('foc'));
+}
+
+// Enter cat.search zone
+function focCatSearch(){
+  catClearFocus();
+  nav.zone='cat.search';
+  $('catSrch').classList.add('foc');
+}
+
+// Enter cat.grid zone
+function focCatGrid(r,c){
+  catClearFocus();
+  nav.zone='cat.grid';
+  if(r!==undefined) nav.cg.r=r;
+  if(c!==undefined) nav.cg.c=c;
+  const cards=[...document.querySelectorAll('#catGrid .card')];
+  if(!cards.length) return;
+  // clamp
+  const cols=catGetCols(cards);
+  const maxR=Math.floor((cards.length-1)/cols);
+  nav.cg.r=Math.max(0,Math.min(nav.cg.r,maxR));
+  nav.cg.c=Math.max(0,Math.min(nav.cg.c,cols-1));
+  let idx=nav.cg.r*cols+nav.cg.c;
+  if(idx>=cards.length){ idx=cards.length-1; nav.cg.r=Math.floor(idx/cols); nav.cg.c=idx%cols; }
+  cards[idx].classList.add('foc');
+  siv(cards[idx],{block:'nearest'});
+}
+
+// Enter cat.flt zone
+function focCatFlt(g,i){
+  catClearFocus();
+  nav.zone='cat.flt';
+  if(g!==undefined) nav.cf.g=g;
+  if(i!==undefined) nav.cf.i=i;
+  applyFltFocus();
+}
+
+function catGetCols(cards){
+  // Method 1: read computed grid columns from container
+  const grid=$('catGrid');
+  if(grid){
+    const cols=getComputedStyle(grid).gridTemplateColumns.trim().split(/\s+/).filter(Boolean).length;
+    if(cols>1) return cols;
+  }
+  // Method 2: card width vs container width
+  if(cards&&cards.length>=2){
+    const cw=cards[0].offsetWidth||214;
+    const gw=grid?grid.clientWidth:0;
+    if(cw>0&&gw>0) return Math.max(1,Math.round(gw/cw));
+  }
+  return 1;
+}
+
+function navCatSearch(k){
+  if(k==='ArrowDown')  { focCatGrid(0,0); }
+  else if(k==='ArrowRight') { focCatFlt(0,0); }
+  else if(k==='ArrowUp')    { catClearFocus(); nav.zone='home.nav'; focNavTab(1); }
+  else if(k==='Enter'){
+    // системная клавиатура — фокус на инпут
+    $('catQ').focus();
+    $('catQ').select?.();
+  }
+}
+
+function navCatGrid(k){
+  const cards=[...document.querySelectorAll('#catGrid .card')];
+  const n=cards.length; if(!n) return;
+  const cols=catGetCols(cards);
+  let r=nav.cg.r, c=nav.cg.c;
+
+  if(k==='ArrowRight'){
+    const idx=r*cols+c;
+    if(c<cols-1 && idx+1<n) c++;
+    else { focCatFlt(0,0); return; }
+  }
+  else if(k==='ArrowLeft'){
+    if(c>0) c--;
+    // stay at left edge
+  }
+  else if(k==='ArrowDown'){
+    const ni=(r+1)*cols+c;
+    if(ni<n) r++;
+    else loadCatalog(); // load more
+  }
+  else if(k==='ArrowUp'){
+    if(r>0) r--;
+    else { focCatSearch(); return; }
+  }
+  else if(k==='Enter'){
+    const ci=r*cols+c;
+    if(cards[ci]) cards[ci].click();
+    return;
+  }
+  else if(k==='ContextMenu'){
+    const ci=r*cols+c;
+    const rel=catReleases?.[ci]||null;
+    if(rel) openCtxMenu(rel);
+    return;
+  }
+
+  nav.cg.r=r; nav.cg.c=c;
+  catClearFocus();
+  nav.zone='cat.grid';
+  const newIdx=r*cols+c;
+  if(cards[newIdx]){
+    cards[newIdx].classList.add('foc');
+    siv(cards[newIdx],{block:'nearest'});
+  }
+}
+
+function getFltGroups(){
+  return [...document.querySelectorAll('.cat-flt-in .f-chips')];
+}
+function getYearGroupIdx(){
+  return getFltGroups().findIndex(g=>g.dataset.year==='1');
+}
+
+function navCatFlt(k){
+  const groups=getFltGroups();
+  const YEAR_G=getYearGroupIdx();   // index of year row in groups[]
+  const FOOT_G='footer';            // sentinel string
+  const g=nav.cf.g;
+  const isYear=(g===YEAR_G);
+  const isFooter=(g===FOOT_G);
+
+  // ── YEAR group ─────────────────────────────────────
+  if(isYear){
+    const field=nav.cf.i===0?'from':'to';
+    if(k==='ArrowRight')  yearStep(field,+1);
+    else if(k==='ArrowLeft')  yearStep(field,-1);
+    else if(k==='ArrowDown'){
+      if(nav.cf.i===0) nav.cf.i=1;          // from→to
+      else { nav.cf.g=YEAR_G+1<groups.length?YEAR_G+1:FOOT_G; nav.cf.i=0; }
+    }
+    else if(k==='ArrowUp'){
+      if(nav.cf.i===1) nav.cf.i=0;          // to→from
+      else if(YEAR_G>0){ nav.cf.g=YEAR_G-1; nav.cf.i=0; }
+      else { focCatSearch(); return; }
+    }
+    else if(k==='Enter'||k==='Backspace') yearClear(field);
+    applyFltFocus(); return;
+  }
+
+  // ── FOOTER group ────────────────────────────────────
+  if(isFooter){
+    if(k==='ArrowLeft')   nav.cf.i=0;
+    else if(k==='ArrowRight') nav.cf.i=1;
+    else if(k==='ArrowUp'){ nav.cf.g=YEAR_G; nav.cf.i=1; }
+    else if(k==='Enter'){
+      if(nav.cf.i===0) $('fltApply').click();
+      else $('fltReset').click();
+    }
+    applyFltFocus(); return;
+  }
+
+  // ── CHIP group ──────────────────────────────────────
+  const chips=[...groups[g].querySelectorAll('.fchip')];
+  function cpr(){
+    if(chips.length<2) return chips.length||1;
+    // Use offsetTop instead of getBoundingClientRect to avoid forced reflow
+    const t0=chips[0].offsetTop;
+    let cnt=1;
+    while(cnt<chips.length && Math.abs(chips[cnt].offsetTop-t0)<5) cnt++;
+    return cnt;
+  }
+
+  if(k==='ArrowDown'){
+    const next=nav.cf.i+cpr();
+    if(next<chips.length){ nav.cf.i=next; }
+    else if(g<groups.length-1){ nav.cf.g++; nav.cf.i=0; }
+    else { nav.cf.g='footer'; nav.cf.i=0; }
+  }
+  else if(k==='ArrowUp'){
+    const prev=nav.cf.i-cpr();
+    if(prev>=0){ nav.cf.i=prev; }
+    else if(g>0){ nav.cf.g--; nav.cf.i=0; }
+    else { focCatSearch(); return; }
+  }
+  else if(k==='ArrowRight'){
+    if(nav.cf.i<chips.length-1) nav.cf.i++;
+  }
+  else if(k==='ArrowLeft'){
+    if(nav.cf.i>0) nav.cf.i--;
+    else { focCatGrid(); return; }
+  }
+  else if(k==='Enter'&&chips[nav.cf.i]) chips[nav.cf.i].click();
+
+  applyFltFocus();
+  siv(chips[nav.cf.i],{block:'nearest'});
+}
+
+function applyFltFocus(){
+  catClearFocus();
+  nav.zone='cat.flt';
+  const groups=getFltGroups();
+  const YEAR_G=getYearGroupIdx();
+  const g=nav.cf.g;
+  if(g===YEAR_G){
+    if(nav.cf.i===0) $('fYearFromSpin').classList.add('foc');
+    else             $('fYearToSpin').classList.add('foc');
+  } else if(g==='footer'){
+    [$('fltApply'),$('fltReset')].forEach((b,i)=>b?.classList.toggle('foc',i===nav.cf.i));
+  } else {
+    const chips=[...groups[g]?.querySelectorAll('.fchip')||[]];
+    if(chips[nav.cf.i]) chips[nav.cf.i].classList.add('foc');
+  }
+}
+
+function navSch(k){
+  const days=[...document.querySelectorAll('.sch-day')];
+  if(!days.length) return;
+  const prevD=nav.schD;
+  if(k==='ArrowRight'){ nav.schD=Math.min(nav.schD+1,days.length-1); if(nav.schD!==prevD) nav.schI=0; }
+  else if(k==='ArrowLeft'){ nav.schD=Math.max(nav.schD-1,0); if(nav.schD!==prevD) nav.schI=0; }
+  else if(k==='ArrowDown'){
+    const cnt=days[nav.schD]?.querySelectorAll('.sch-item').length||0;
+    nav.schI=Math.min(nav.schI+1,cnt-1);
+  }
+  else if(k==='ArrowUp'){
+    if(nav.schI>0) nav.schI--;
+    else{nav.zone='home.nav';focNavTab(2);clearSchFoc();return;}
+  }
+  else if(k==='Enter'){
+    const its=[...days[nav.schD]?.querySelectorAll('.sch-item')||[]];
+    if(its[nav.schI]) its[nav.schI].click(); return;
+  }
+  else if(k==='ContextMenu'){
+    const its=[...days[nav.schD]?.querySelectorAll('.sch-item')||[]];
+    if(its[nav.schI]){ const id=its[nav.schI].dataset.rid; if(id) openCtxMenu(Store.getCachedRelease(Number(id))); }
+    return;
+  }
+  applySchFoc();
+}
+function clearSchFoc(){ document.querySelectorAll('.sch-item.foc').forEach(x=>x.classList.remove('foc')); }
+function applySchFoc(){
+  clearSchFoc();
+  const days=[...document.querySelectorAll('.sch-day')];
+  const items=[...days[nav.schD]?.querySelectorAll('.sch-item')||[]];
+  if(items[nav.schI]){ items[nav.schI].classList.add('foc'); siv(items[nav.schI],{block:'nearest'}); }
+}
+function navCollTabs(k){
+  const tabs=[...document.querySelectorAll('#collTabs .ctab')];
+  if(k==='ArrowRight') nav.collTab=Math.min(nav.collTab+1,tabs.length-1);
+  else if(k==='ArrowLeft') nav.collTab=Math.max(nav.collTab-1,0);
+  else if(k==='ArrowDown'){
+    // снимаем foc с табов перед переходом на грид
+    tabs.forEach(t=>t.classList.remove('foc'));
+    nav.zone='coll.grid'; nav.collI=0; applyZoneFocus(); return;
+  }
+  else if(k==='ArrowUp'){
+    tabs.forEach(t=>t.classList.remove('foc'));
+    nav.zone='home.nav'; focNavTab(3); return;
+  }
+  else if(k==='Enter') tabs[nav.collTab]?.click();
+  tabs.forEach((t,i)=>t.classList.toggle('foc',i===nav.collTab));
+}
+function navCollGrid(k){
+  const cards=[...document.querySelectorAll('#collGrid .card')];
+  const n=cards.length; if(!n){if(k==='ArrowUp'){nav.zone='coll.tabs';applyZoneFocus();}return;}
+  // compute grid columns from layout
+  const grid=$('collGrid');
+  const colW=cards[0]?.offsetWidth||160;
+  const cols=Math.max(1,Math.floor((grid.offsetWidth+8)/(colW+8)));
+  const row=Math.floor(nav.collI/cols);
+  if(k==='ArrowRight'){ if(nav.collI<n-1) nav.collI++; }
+  else if(k==='ArrowLeft'){ if(nav.collI>0) nav.collI--; }
+  else if(k==='ArrowDown'){
+    const ni=nav.collI+cols;
+    if(ni<n) nav.collI=ni;
+  }
+  else if(k==='ArrowUp'){
+    if(row>0) nav.collI=Math.max(0,nav.collI-cols);
+    else{
+      // снимаем foc с карточек перед возвратом на табы
+      cards.forEach(c=>c.classList.remove('foc'));
+      nav.zone='coll.tabs'; applyZoneFocus(); return;
+    }
+  }
+  else if(k==='Enter'){if(cards[nav.collI]) cards[nav.collI].click();return;}
+  else if(k==='ContextMenu'){const cds=[...document.querySelectorAll('#collGrid .card')];const el=cds[nav.collI];if(el) openCtxMenu(Store.getCachedRelease(Number(el.dataset.rid)||el.dataset.rid));return;}
+  cards.forEach((c,i)=>c.classList.toggle('foc',i===nav.collI));
+  if(cards[nav.collI]) siv(cards[nav.collI],{block:'nearest'});
+}
+
+function navDetail(k){
+  const Z=nav.zone;
+  const actBtns=[...document.querySelectorAll('.det-acts .btn')];
+  const collBtns=[...document.querySelectorAll('.det-cbtn')];
+  const epBtns=[...document.querySelectorAll('.dep')];
+  const relCards=[...document.querySelectorAll('.det-related .det-rel-card:not(.drc-current)')];
+
+  if(k==='Escape'||k==='Backspace'||k==='GoBack'){closeDetail();return;}
+  if(k==='ContextMenu'){openCtxMenu(detRelease);return;}
+
+  if(k==='ArrowDown'){
+    if(Z==='det.back'){nav.zone='det.acts';nav.detAct=0;applyDetFoc();}
+    else if(Z==='det.acts'){
+      if(collBtns.length){nav.zone='det.coll';nav.detColl=0;applyDetFoc();}
+      else if(epBtns.length){nav.zone='det.eps';nav.detEp=0;applyDetFoc();}
+    }
+    else if(Z==='det.coll'){
+      if(epBtns.length){nav.zone='det.eps';nav.detEp=0;applyDetFoc();}
+      else if(relCards.length){nav.zone='det.related';nav.detRel=0;applyDetFoc();}
+    }
+    else if(Z==='det.eps'){
+      const epCols=getEpCols(),ni=nav.detEp+epCols;
+      if(ni<epBtns.length){nav.detEp=ni;applyDetFoc();}
+      else if(relCards.length){nav.zone='det.related';nav.detRel=0;applyDetFoc();}
+    }
+    return;
+  }
+  if(k==='ArrowUp'){
+    if(Z==='det.back'){/* выше некуда */}
+    else if(Z==='det.acts'){nav.zone='det.back';applyDetFoc();}
+    else if(Z==='det.coll'){nav.zone='det.acts';applyDetFoc();}
+    else if(Z==='det.eps'){
+      const epCols=getEpCols(),ni=nav.detEp-epCols;
+      if(ni>=0){nav.detEp=ni;applyDetFoc();}
+      else{
+        const collBtnsUp=[...document.querySelectorAll('.det-cbtn')];
+        nav.zone=collBtnsUp.length?'det.coll':'det.acts';
+        nav.detColl=0; applyDetFoc();
+      }
+    }
+    else if(Z==='det.related'){nav.zone='det.eps';applyDetFoc();}
+    return;
+  }
+  if(k==='ArrowRight'){
+    if(Z==='det.acts') nav.detAct=Math.min(nav.detAct+1,actBtns.length-1);
+    else if(Z==='det.coll') nav.detColl=Math.min(nav.detColl+1,collBtns.length-1);
+    else if(Z==='det.eps') nav.detEp=Math.min(nav.detEp+1,epBtns.length-1);
+    else if(Z==='det.related') nav.detRel=Math.min((nav.detRel||0)+1,relCards.length-1);
+    applyDetFoc(); return;
+  }
+  if(k==='ArrowLeft'){
+    if(Z==='det.acts') nav.detAct=Math.max(nav.detAct-1,0);
+    else if(Z==='det.coll') nav.detColl=Math.max(nav.detColl-1,0);
+    else if(Z==='det.eps') nav.detEp=Math.max(nav.detEp-1,0);
+    else if(Z==='det.related') nav.detRel=Math.max((nav.detRel||0)-1,0);
+    applyDetFoc(); return;
+  }
+  if(k==='Enter'){
+    if(Z==='det.back') $('detBack')?.click();
+    else if(Z==='det.acts') actBtns[nav.detAct]?.click();
+    else if(Z==='det.coll') collBtns[nav.detColl]?.click();
+    else if(Z==='det.eps') epBtns[nav.detEp]?.click();
+    else if(Z==='det.related') relCards[nav.detRel||0]?.click();
+  }
+}
+function getEpCols(){
+  // measure episode grid column count from DOM
+  const ep0=document.querySelector('.dep');
+  const epList=document.querySelector('#detEps');
+  if(!ep0||!epList) return 6;
+  return Math.max(1,Math.floor((epList.offsetWidth+4)/(ep0.offsetWidth+4)));
+}
+function applyDetFoc(){
+  document.querySelectorAll('#detBack.foc,.det-acts .btn.foc,.det-cbtn.foc,.dep.foc,.det-related .det-rel-card.foc').forEach(x=>x.classList.remove('foc'));
+  const Z=nav.zone;
+  const actBtns=[...document.querySelectorAll('.det-acts .btn')];
+  const collBtns=[...document.querySelectorAll('.det-cbtn')];
+  const epBtns=[...document.querySelectorAll('.dep')];
+  const relCards=[...document.querySelectorAll('.det-related .det-rel-card:not(.drc-current)')];
+  if(Z==='det.back'){ $('detBack')?.classList.add('foc'); siv($('detBack'),{block:'nearest'}); }
+  else if(Z==='det.acts'&&actBtns[nav.detAct]) actBtns[nav.detAct].classList.add('foc');
+  else if(Z==='det.coll'&&collBtns[nav.detColl]) collBtns[nav.detColl].classList.add('foc');
+  else if(Z==='det.eps'&&epBtns[nav.detEp]){epBtns[nav.detEp].classList.add('foc');siv(epBtns[nav.detEp],{block:'nearest'});}
+  else if(Z==='det.related'&&relCards[nav.detRel||0]){relCards[nav.detRel||0].classList.add('foc');siv(relCards[nav.detRel||0],{block:'nearest'});}
+}
+function applyZoneFocus(){
+  const Z=nav.zone;
+  if(Z!=='home.nav') clearNavFoc();
+  if(Z==='cat.search') focCatSearch();
+  else if(Z==='cat.grid') focCatGrid();
+  else if(Z==='cat.flt') applyFltFocus();
+  else if(Z==='sch'){ applySchFoc(); }
+  else if(Z==='coll.tabs'){[...($('collTabs').children)].forEach((t,i)=>t.classList.toggle('foc',i===nav.collTab));}
+  else if(Z==='coll.grid'){const cards=[...$('collGrid').querySelectorAll('.card')];cards.forEach((c,i)=>c.classList.toggle('foc',i===nav.collI));}
+}
+
+// nav tab clicks
+document.querySelectorAll('#nav .ntab').forEach((t,i)=>{
+  t.addEventListener('click',()=>switchPage(t.dataset.pg));
+  t.addEventListener('mouseenter',()=>{nav.ni=i;});
+});
+$('loginBtn').addEventListener('mouseenter',()=>{nav.zone='home.nav';});
+
+const GP={prev:{}, repeatTime:{}, REPEAT_INITIAL:500, REPEAT_INTERVAL:150};
+const GP_MAP={12:'ArrowUp',13:'ArrowDown',14:'ArrowLeft',15:'ArrowRight',0:'Enter',1:'Backspace',4:'MediaRewind',5:'MediaFastForward'};
+// Pre-built arrays for pollGamepad — avoids Object.entries() allocation every rAF
+const _GP_BTN=Object.entries(GP_MAP); // [[idx,key],...]
+const _GP_AX_KEYS=['ArrowRight','ArrowLeft','ArrowDown','ArrowUp'];
+function pollGamepad(){
+  const gps=navigator.getGamepads?navigator.getGamepads():[];
+  const now=Date.now();
+  for(let gi=0;gi<gps.length;gi++){
+    const gp=gps[gi]; if(!gp) continue;
+    const id=gp.index;
+    for(let bi=0;bi<_GP_BTN.length;bi++){
+      const bidx=_GP_BTN[bi][0], bkey=_GP_BTN[bi][1];
+      const pressed=gp.buttons[bidx]?.pressed||false;
+      const k=id+'_'+bidx;
+      if(pressed){
+        if(!GP.prev[k]){ simulateKey(bkey); GP.repeatTime[k]=now+GP.REPEAT_INITIAL; }
+        else if(now>GP.repeatTime[k]){ simulateKey(bkey); GP.repeatTime[k]=now+GP.REPEAT_INTERVAL; }
+      }
+      GP.prev[k]=pressed;
+    }
+    const DEAD=0.6, ax=gp.axes[0]||0, ay=gp.axes[1]||0;
+    const aVals=[ax>DEAD,ax<-DEAD,ay>DEAD,ay<-DEAD];
+    for(let ai=0;ai<4;ai++){
+      const k=id+'_a'+ai;
+      if(aVals[ai]){
+        if(!GP.prev[k]){ simulateKey(_GP_AX_KEYS[ai]); GP.repeatTime[k]=now+GP.REPEAT_INITIAL; }
+        else if(now>GP.repeatTime[k]){ simulateKey(_GP_AX_KEYS[ai]); GP.repeatTime[k]=now+GP.REPEAT_INTERVAL; }
+      }
+      GP.prev[k]=aVals[ai];
+    }
+  }
+  // stop loop if no gamepads to save CPU
+  const _chk=navigator.getGamepads?navigator.getGamepads():[];
+  if([..._chk].some(g=>g)) requestAnimationFrame(pollGamepad);
+}
+function simulateKey(key){
+  handleKey({key,keyCode:key==='Backspace'?8:key==='Enter'?13:0,preventDefault:()=>{}});
+}
+window.addEventListener('gamepadconnected',()=>setStatus('ok','Геймпад подключён'));
+requestAnimationFrame(pollGamepad);
+
+document.addEventListener('mousemove',()=>document.body.classList.add('mouse'));
+// Delegation for cards
+_cardDelegation($('homeRows'));
+_cardDelegation($('catGrid'));
+_cardDelegation($('collGrid'));
+
+// ── Fullscreen ────────────────────────────────────────────────────────────
+function toggleFullscreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen().catch(()=>{});
+  } else {
+    document.exitFullscreen().catch(()=>{});
+  }
+}
+$('vid').addEventListener('dblclick', toggleFullscreen);
+
+document.addEventListener('keydown',e=>{
+  document.body.classList.remove('mouse');
+
+  // Exit dialog intercepts all keys
+  if($('exitOv').style.display==='flex'){
+    if(e.key==='Enter'||e.keyCode===13){
+      if(document.activeElement===$('exitNo')) closeExit();
+      else doExit();
+    }
+    else if(e.key==='ArrowLeft'||e.key==='ArrowRight'){
+      const btns=[$('exitYes'),$('exitNo')];
+      const ci=btns.indexOf(document.activeElement);
+      const ni=ci===0?1:0;
+      btns[ni].focus(); btns[ni].classList.add('foc'); btns[ci<0?0:ci].classList.remove('foc');
+    }
+    else closeExit();
+    e.preventDefault(); e.stopImmediatePropagation(); return;
+  }
+
+  // F або F11 — повноекранний режим
+  if(e.key==='f'||e.key==='F'||e.key==='F11'){ e.preventDefault(); toggleFullscreen(); return; }
+
+  if(e.keyCode===10009){e.preventDefault();handleKey({key:'Backspace',keyCode:10009,preventDefault:()=>{}});return;}
+  if(e.keyCode===457){e.preventDefault();handleKey({key:'ContextMenu',keyCode:457,preventDefault:()=>{}});return;} // Tizen INFO key
+  if(e.keyCode===403){openLogin();return;}
+  if(e.keyCode===404){switchPage('catalog');return;}
+  if(e.keyCode===405){switchPage('schedule');return;}
+  if(e.keyCode===406){switchPage('collections');return;}
+  // Hold Enter (400ms) → context menu; short tap → normal Enter on keyup
+  if(e.key==='Enter'){
+    e.preventDefault();
+    if(e.repeat) return;
+    clearTimeout(window._enterHold);
+    window._enterHoldFired=false;
+    window._enterHold=setTimeout(()=>{
+      window._enterHoldFired=true;
+      handleKey({key:'ContextMenu',keyCode:0,preventDefault:()=>{}});
+    },400);
+    return;
+  }
+  handleKey(e);
+});
+document.addEventListener('keyup',e=>{
+  if(e.key==='Enter'){
+    clearTimeout(window._enterHold);
+    if(!window._enterHoldFired){
+      handleKey({key:'Enter',keyCode:13,preventDefault:()=>{}});
+    }
+    window._enterHoldFired=false;
+  }
+});
+
+// Genre rows config (id=null means we load by filter)
+const HOME_GENRE_ROWS=[
+  {name:'Исекай',     id:null, slug:'isekai'},
+  {name:'Романтика',  id:null, slug:'romance'},
+  {name:'Фэнтези',    id:null, slug:'fantasy'},
+  {name:'Надприродне',id:null, slug:'supernatural'},
+  {name:'Фантастика', id:null, slug:'sci_fi'},
+  {name:'Приключения',    id:null, slug:'adventure'},
+  {name:'Жахи',       id:null, slug:'horror'},
+  {name:'Экшен',      id:null, slug:'action'},
+  {name:'Школа',      id:null, slug:'school'},
+  {name:'Комедия',    id:null, slug:'comedy'},
+  {name:'Драма',      id:null, slug:'drama'},
+  {name:'Спорт',      id:null, slug:'sports'},
+];
+
+// Paginated row fetch: returns {list, hasMore, nextPage}
+async function fetchRowPage(filters, page=1, limit=10){
+  try{
+    const p=new URLSearchParams();
+    p.set('limit',String(limit)); p.set('page',String(page));
+    Object.entries(filters).forEach(([k,v])=>{
+      if(k==='sorting') p.set('f[sorting]',v);
+      else if(k==='publish_statuses') p.set('f[publish_statuses]',Array.isArray(v)?v.join(','):v);
+      else if(k==='from_year') p.set('f[years][from_year]',String(v));
+      else if(k==='to_year') p.set('f[years][to_year]',String(v));
+      else if(k==='genres') p.set('f[genres]',Array.isArray(v)?v.join(','):v);
+      else if(k==='types') p.set('f[types]',Array.isArray(v)?v.join(','):v);
+      else p.set(`f[${k}]`,Array.isArray(v)?v.join(','):v);
+    });
+    const d=await api('/anime/catalog/releases?'+p.toString());
+    const list=Array.isArray(d)?d:(d?.data||d?.list||[]);
+    list.forEach(r=>Store.cacheRelease(r));
+    return {list, hasMore: list.length>=limit, nextPage: page+1};
+  }catch(_){ return {list:[],hasMore:false,nextPage:page+1}; }
+}
+// Legacy compat
+
+async function init(){
+  localStorage.removeItem('alv_coll_releases'); // legacy cleanup
+  updateYearDisplay(); // show default year values
+  // Hide preloader
+  setTimeout(()=>{ const p=document.getElementById('preloader'); if(p) p.classList.add('hide'); },900);
+  const savedUser=Store.get('alv_user',null);
+  if(authToken&&savedUser){
+    const nick=savedUser.nickname||savedUser.login||'User';
+    $('userPill').classList.add('on'); $('uname').textContent=nick; $('loginBtn').style.display='none';
+    setStatus('ok','Вошли · '+nick);
+    syncCollFromAPI(); // фонова синхронізація колекцій при старті
+  }
+  // load genres for catalog (before chips listeners)
+  const genresRaw=await loadGenres();
+  bindFchips();
+
+  // ── HOME ROWS: fully dynamic queue ──────────────────────────────────────
+  const wrap=$('homeRows'); wrap.innerHTML='';
+  homeRows.length=0; activeRowI=0;
+  rowPos.length=0;
+
+  const curYear=new Date().getFullYear();
+  const prevYear=curYear-1;
+
+  // Build the full row queue as descriptors (no data yet)
+  const GENRE_PRIORITY=[
+    'Ісекай','Романтика','Фентезі','Пригоди','Екшен','Комедія','Драма',
+    'Надприродне','Школа','Фантастика','Жахи','Спорт','Детектив','Меха',
+    'Музика','Психологічне','Повсякденність','Бойові мистецтва','Гарем',
+    'Ігри','Дзьосей','Сейнен','Сьодзьо','Сьонен','Триллер','Вампіри','Демони',
+  ];
+  const orderedGenres=[];
+  const usedIds=new Set();
+  GENRE_PRIORITY.forEach(name=>{
+    const g=(genresRaw||[]).find(g=>g.name===name||g.name.toLowerCase()===name.toLowerCase());
+    if(g&&!usedIds.has(g.id)){ orderedGenres.push(g); usedIds.add(g.id); }
+  });
+  (genresRaw||[]).forEach(g=>{ if(!usedIds.has(g.id)){ orderedGenres.push(g); usedIds.add(g.id); } });
+
+  // Row queue: each entry has {title, filters}
+  window._rowQueue=[
+    {title:'Онгоинги',       filters:{publish_statuses:'IS_ONGOING',sorting:'RATING_DESC'}},
+    {title:'Завершились в '+curYear, filters:{publish_statuses:'IS_NOT_ONGOING',from_year:curYear,to_year:curYear,sorting:'RATING_DESC'}},
+    {title:'Завершились в '+prevYear,filters:{publish_statuses:'IS_NOT_ONGOING',from_year:prevYear,to_year:prevYear,sorting:'RATING_DESC'}},
+    ...orderedGenres.map(g=>({title:g.name, filters:{genres:String(g.id),publish_statuses:'IS_NOT_ONGOING',sorting:'RATING_DESC'}}))
+  ];
+
+  // Add placeholder DOM rows immediately so navigation works
+  window._rowQueue.forEach((desc,qi)=>{
+    const ph=document.createElement('div'); ph.className='cards-sec home-row row-ph';
+    ph.dataset.qi=qi;
+    ph.innerHTML=`<div class="row-hdr"><div class="row-bar"></div><div class="row-ttl" style="opacity:.4">${desc.title}</div></div>
+      <div class="track-wrap" style="height:260px;align-items:center"><div style="padding:0 14px;color:var(--t3);font-size:12px">...</div></div>`;
+    wrap.appendChild(ph);
+    homeRows.push({releases:[],el:ph,stub:true,qi,hasMore:false,nextPage:2,filters:null,loading:false});
+  });
+
+  // Load first 3 rows immediately
+  await loadRowByQueueIdx(0);
+  await loadRowByQueueIdx(1);
+  focCard(0,0);
+  loadRowByQueueIdx(2); // preload row 2 in background
+}
+
+// Load a row by its queue index
+async function loadRowByQueueIdx(qi){
+  if(!window._rowQueue||qi>=window._rowQueue.length) return;
+  const rowI=homeRows.findIndex(r=>r.qi===qi);
+  if(rowI<0) return;
+  const row=homeRows[rowI];
+  if(!row.stub||row._loading||row.releases.length) return;
+  row._loading=true;
+  const desc=window._rowQueue[qi];
+  try{
+    const {list,hasMore}=await fetchRowPage(desc.filters, 1, CARDS_PER_PAGE);
+    if(!list||list.length<2){ row._loading=false; return; }
+    row.releases=list;
+    row.hasMore=hasMore;
+    row.nextPage=2;
+    row.filters=desc.filters;
+    row.stub=false;
+    const ph=row.el;
+    const sec=document.createElement('div'); sec.className='cards-sec home-row';
+    sec.innerHTML=`<div class="row-hdr"><div class="row-bar"></div><div class="row-ttl">${desc.title}</div></div>
+      <div class="track-wrap"><div class="track" id="track-${rowI}"></div></div>`;
+    row.el=sec;
+    ph.parentNode?.replaceChild(sec, ph);
+    renderCardWindow(rowI, 0);
+    if(rowI===0&&list[0]) releases=list;
+  }catch(e){ row._loading=false; }
+}
+
+// Load a row on demand when user navigates to it
+async function loadLazyRow(rowI){
+  const row=homeRows[rowI]; if(!row) return;
+  await loadRowByQueueIdx(row.qi);
+  setTimeout(()=>focCard(rowPos[rowI]??0,rowI),80);
+  // Pre-load ROW_PRELOAD rows ahead
+  ensureRowsLoaded(rowI+1);
+}
+
+
+// Tizen performance mode
+if(_isTizen){
+  const s=document.createElement('style');
+  s.textContent=
+    // Disable ALL transitions except track scroll — saves repaint on every focus change
+    '*{transition:none!important;animation:none!important;backdrop-filter:none!important;'+
+    '-webkit-backdrop-filter:none!important;box-shadow:none!important}'+
+    '.card.foc{transform:translateY(-4px)!important;border-color:var(--red)!important}'+
+    '.track{transition:transform .1s linear!important}'+
+    '';
+  document.head.appendChild(s);
+}
+
+// ── Cached DOM refs for hot paths ─────────────────────────────
+let _$homeRows, _$plyBar, _$plyOv, _$plyEps;
+function _cacheDOM(){
+  _$homeRows=$('homeRows');
+  _$plyBar=$('plyBar');
+  _$plyOv=$('plyOv');
+  _$plyEps=$('plyEps');
+}
+init().then(_cacheDOM).catch(_cacheDOM);
+// Exit dialog — elements exist in DOM before script runs now
+function doExit(){ if(window.tizen) try{ tizen.application.getCurrentApplication().exit(); }catch(_){} else window.close(); }
+function closeExit(){ $('exitOv').style.display='none'; $('exitYes').classList.remove('foc'); $('exitNo').classList.remove('foc'); window._lastBack=0; }
+$('exitYes').addEventListener('click', doExit);
+$('exitNo').addEventListener('click', closeExit);
+</script>
+</body>
+</html>
