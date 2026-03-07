@@ -3,7 +3,7 @@
     "type": "list",
     "headline": "AniLiberty — AniLibria для Smart TV",
     "version": "1.0.0",
-    "parameter": "content:http://aniliberty.netlify.app/start.json",
+    "parameter": "content:http://aniliberty.netlify.app/msx/start.json",
     "template": {
         "type": "separate",
         "layout": "0,0,2,3",
