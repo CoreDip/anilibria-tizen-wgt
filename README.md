@@ -1,73 +1,70 @@
 # 🎌 AniLiberty TV
 
-> Неофіційний клієнт [AniLibria](https://anilibria.tv) для **Samsung Smart TV (Tizen)**
+> Неофициальный клиент [AniLibria](https://anilibria.tv) для **Samsung Smart TV (Tizen)** и **MediaStationX**
 
-[![Build](https://github.com/YOUR_USERNAME/aniliberty-tv/actions/workflows/build.yml/badge.svg)](https://github.com/YOUR_USERNAME/aniliberty-tv/actions)
-[![Release](https://img.shields.io/github/v/release/YOUR_USERNAME/aniliberty-tv?label=download)](https://github.com/YOUR_USERNAME/aniliberty-tv/releases/latest)
-
----
-
-## ⬇️ Завантажити
-
-| Платформа | Посилання |
-|-----------|-----------|
-| **Samsung TV (.wgt)** | [Releases → AniLiberty.wgt](https://github.com/YOUR_USERNAME/aniliberty-tv/releases/latest) |
-| **MediaStationX / Web** | `https://YOUR_USERNAME.github.io/aniliberty-tv/` |
+[![Build](https://github.com/CoreDip/aniliberty-tv/actions/workflows/build.yml/badge.svg)](https://github.com/CoreDip/aniliberty-tv/actions)
+[![Release](https://img.shields.io/github/v/release/CoreDip/aniliberty-tv?label=скачать)](https://github.com/CoreDip/aniliberty-tv/releases/latest)
 
 ---
 
-## 📺 Встановлення на Samsung TV
+## ⬇️ Скачать
 
-### Варіант 1 — Developer Mode
-1. На TV: **Налаштування → Загальні → Системний менеджер → Режим розробника** → ввести IP ПК
-2. Перезавантажити TV
-3. У Tizen Studio: `Run As → Tizen Web Application` або встановити `.wgt` через `Package Manager`
-
-### Варіант 2 — USB (деякі моделі)
-Скопіювати `AniLiberty.wgt` на USB-флешку, вставити в TV → Apps → встановити
-
-### Варіант 3 — MediaStationX
-1. Відкрити MediaStationX на TV
-2. Додати URL: `https://YOUR_USERNAME.github.io/aniliberty-tv/`
+| Платформа | Ссылка |
+|-----------|--------|
+| **Samsung TV (.wgt)** | [Releases → AniLiberty.wgt](https://github.com/CoreDip/aniliberty-tv/releases/latest) |
+| **MediaStationX / Web** | `https://coredip.github.io/aniliberty-tv/` |
 
 ---
 
-## ✨ Можливості
+## 📺 Установка на Samsung TV
 
-- 🏠 Головна з рядами: нові серії, онгоінги, топ за рейтингом
-- 🔍 Каталог з пошуком і фільтрами
-- 📅 Розклад виходу серій
-- 📂 Колекції: Обране, Дивлюся, Заплановано, Переглянуто, Закинуто, Історія
-- ▶️ Плеєр з HLS, вибором якості, skip-опенінгу
-- 💾 Збереження прогресу (з синхронізацією з акаунтом)
-- 🎮 Повна підтримка пульта ДУ Samsung
-- ⚡ Оптимізовано для Tizen (без важких анімацій)
+### Вариант 1 — Developer Mode
+1. На TV: **Настройки → Общие → Системный менеджер → Режим разработчика** → ввести IP ПК
+2. Перезагрузить TV
+3. В Tizen Studio: `Run As → Tizen Web Application` или установить `.wgt` через `Package Manager`
+
+### Вариант 2 — MediaStationX
+1. Открыть MediaStationX на TV
+2. Добавить URL: `https://coredip.github.io/aniliberty-tv/`
 
 ---
 
-## 🛠️ Розробка
+## ✨ Возможности
+
+- 🏠 Главная с рядами: новые серии, онгоинги, топ по рейтингу
+- 🔍 Каталог с поиском и фильтрами
+- 📅 Расписание выхода серий
+- 📂 Коллекции: Избранное, Смотрю, Запланировано, Просмотрено, Брошено, История
+- ▶️ Плеер с HLS, выбором качества, скипом опенинга
+- 💾 Сохранение прогресса (с синхронизацией аккаунта)
+- 🎮 Полная поддержка пульта ДУ Samsung
+- ⚡ Оптимизировано для Tizen (без тяжёлых анимаций)
+
+---
+
+## 🛠️ Разработка
 
 ```bash
-# Клонувати
-git clone https://github.com/YOUR_USERNAME/aniliberty-tv.git
+# Клонировать
+git clone https://github.com/CoreDip/aniliberty-tv.git
 
-# Відкрити index.html у браузері для розробки
-# Або імпортувати папку tizen/ у Tizen Studio як Existing Project
+# Открыть index.html в браузере для разработки
+# Или импортировать папку tizen/ в Tizen Studio как Existing Project
 ```
 
 ### Структура
 ```
 aniliberty-tv/
-├── index.html          ← весь додаток (single-file)
+├── index.html          ← всё приложение (single-file)
 ├── tizen/
-│   ├── config.xml      ← Tizen manifest
+│   ├── config.xml      ← Tizen манифест
 │   └── icon.png
 └── .github/workflows/
-    └── build.yml       ← автозбірка .wgt + GitHub Pages
+    └── build.yml       ← автосборка .wgt + GitHub Pages
 ```
 
 ---
 
-## 📄 Ліцензія
+## 📄 Лицензия
 
-MIT — неофіційний проєкт, не пов'язаний з командою AniLibria
+MIT — неофициальный проект, не связан с командой AniLibria
