@@ -2,7 +2,6 @@
 
 > Неофициальный клиент [AniLibria](https://anilibria.tv) для **Samsung Smart TV (Tizen)** и **MediaStationX**
 
-[![Build](https://github.com/CoreDip/anilibria-tizen-wgt/actions/workflows/build.yml/badge.svg)](https://github.com/CoreDip/anilibria-tizen-wgt/actions)
 [![Release](https://img.shields.io/github/v/release/CoreDip/anilibria-tizen-wgt?label=скачать)](https://github.com/CoreDip/anilibria-tizen-wgt/releases/latest)
 
 ---
