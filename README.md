@@ -15,7 +15,7 @@
 | Платформа | |
 |-----------|---|
 | 📦 **Samsung TV (.wgt)** | [Скачать AniLiberty.wgt →](https://github.com/CoreDip/anilibria-tizen-wgt/releases/latest) |
-| 🌐 **Браузер** | `https://aniliberty.netlify.app/` |
+| 🌐 **Браузер** | [https://aniliberty.netlify.app →](https://aniliberty.netlify.app) |
 | 📺 **MediaStationX** | `aniliberty.netlify.app` |
 
 ---
