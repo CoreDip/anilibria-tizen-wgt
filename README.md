@@ -19,6 +19,19 @@
 
 ---
 
+## 📺 Установка
+
+### Вариант 1 — Developer Mode (Tizen)
+1. На TV: **Настройки → Общие → Системный менеджер → Режим разработчика** → ввести IP ПК
+2. Перезагрузить TV
+3. В Tizen Studio: `Run As → Tizen Web Application` или установить `.wgt` через `Package Manager`
+
+### Вариант 2 — MediaStationX
+1. Открыть MediaStationX на TV
+2. Добавить URL: `https://coredip.github.io/anilibria-tizen-wgt/`
+
+---
+
 ## 📸 Скриншоты
 
 ![main](https://github.com/user-attachments/assets/e6cde226-fbb3-4a8c-8aee-735f3621fdac)
@@ -74,19 +87,6 @@
 - Оптимизировано для Tizen: без тяжёлых анимаций и blur-эффектов
 - Виртуализация карточек в DOM
 - Кэширование данных в памяти
-
----
-
-## 📺 Установка
-
-### Вариант 1 — Developer Mode (Tizen)
-1. На TV: **Настройки → Общие → Системный менеджер → Режим разработчика** → ввести IP ПК
-2. Перезагрузить TV
-3. В Tizen Studio: `Run As → Tizen Web Application` или установить `.wgt` через `Package Manager`
-
-### Вариант 2 — MediaStationX
-1. Открыть MediaStationX на TV
-2. Добавить URL: `https://coredip.github.io/anilibria-tizen-wgt/`
 
 ---
 
