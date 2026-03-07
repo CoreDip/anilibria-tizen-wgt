@@ -1,17 +1,19 @@
 {
     "name": "AniLiberty TV",
+    "type": "list",
+    "headline": "AniLiberty — AniLibria для Smart TV",
     "version": "1.0.0",
-    "parameter": "content:http:aniliberty.netlify.app/start.json",
-    "pages": [
+    "parameter": "content:http://aniliberty.netlify.app/start.json",
+    "template": {
+        "type": "separate",
+        "layout": "0,0,2,3",
+        "color": "msx-glass"
+    },
+    "items": [
         {
-            "headline": "AniLiberty TV",
-            "items": [
-                {
-                    "label": "▶ Запустить AniLiberty",
-                    "type": "control",
-                    "action": "open:http:aniliberty.netlify.app"
-                }
-            ]
+            "title": "AniLiberty TV",
+            "image": "http://aniliberty.netlify.app/icon.png",
+            "action": "link:http://aniliberty.netlify.app"
         }
     ]
 }
