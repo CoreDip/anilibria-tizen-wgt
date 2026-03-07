@@ -1819,7 +1819,7 @@ async function openDetailRelease(r){
   const seasonName=seasonMap[r?.season?.value]||r?.season?.description||'';
   const genres=(r?.genres||[]).map(g=>g.name).join(' • ')||'—';
   const dur=r?.average_duration_of_episode;
-  const durStr=(dur&&dur>0)?`~${Math.round(dur/60)} мин`:null;
+  const durStr=(dur&&dur>=60)?`~${Math.round(dur/60)} мин`:null;
   const epsTotal=r?.episodes_total;
   const epsStr=epsTotal?`${epsTotal} эп.`:'?';
   $('detMeta').innerHTML=`
@@ -1945,7 +1945,7 @@ async function openDetailRelease(r){
       });
     }
     // update duration if detail has more data
-    if(detail?.average_duration_of_episode&&(!dur||dur<=0)){
+    if(detail?.average_duration_of_episode&&detail.average_duration_of_episode>=60&&(!dur||dur<60)){
       const d2=detail.average_duration_of_episode;
       if(d2>0){
         const durStr2=`~${Math.round(d2/60)} мин`;
@@ -3626,7 +3626,22 @@ async function fetchRowPage(filters, page=1, limit=10){
     const d=await api('/anime/catalog/releases?'+p.toString());
     const list=Array.isArray(d)?d:(d?.data||d?.list||[]);
     list.forEach(r=>Store.cacheRelease(r));
-    return {list, hasMore: list.length>=limit, nextPage: page+1};
+    // For completed rows: skip releases that clearly have no episodes
+    // Only filter if publish_statuses is IS_NOT_ONGOING (completed)
+    // episodes_total===0 might be stale — only filter if both total and _epsCount are 0
+    const filtered = (filters?.publish_statuses==='IS_NOT_ONGOING')
+      ? list.filter(r=>{
+          const tot=r.episodes_total||0;
+          const cnt=r._epsCount||0;
+          // Keep if total OR count > 0, OR if both are 0 but release is recent (might just be missing data)
+          if(tot>0||cnt>0) return true;
+          // Keep films/movies — they may have 0 episodes_total but still be watchable
+          const t=(r.type?.value||r.type||'').toLowerCase();
+          if(t==='movie'||t==='film') return true;
+          return false;
+        })
+      : list;
+    return {list:filtered, hasMore: list.length>=limit, nextPage: page+1};
   }catch(_){ return {list:[],hasMore:false,nextPage:page+1}; }
 }
 // Legacy compat
@@ -3673,8 +3688,7 @@ async function init(){
   // Row queue: each entry has {title, filters}
   window._rowQueue=[
     {title:'Онгоинги',       filters:{publish_statuses:'IS_ONGOING',sorting:'RATING_DESC'}},
-    {title:'Завершились в '+curYear, filters:{publish_statuses:'IS_NOT_ONGOING',from_year:curYear,to_year:curYear,sorting:'RATING_DESC'}},
-    {title:'Завершились в '+prevYear,filters:{publish_statuses:'IS_NOT_ONGOING',from_year:prevYear,to_year:prevYear,sorting:'RATING_DESC'}},
+    {title:'Лучшее за 5 лет', filters:{publish_statuses:'IS_NOT_ONGOING',from_year:curYear-4,to_year:curYear,sorting:'RATING_DESC'}},
     ...orderedGenres.map(g=>({title:g.name, filters:{genres:String(g.id),publish_statuses:'IS_NOT_ONGOING',sorting:'RATING_DESC'}}))
   ];
 
