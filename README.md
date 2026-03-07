@@ -2,8 +2,8 @@
 
 > Неофициальный клиент [AniLibria](https://anilibria.tv) для **Samsung Smart TV (Tizen)** и **MediaStationX**
 
-[![Build](https://github.com/CoreDip/aniliberty-tv/actions/workflows/build.yml/badge.svg)](https://github.com/CoreDip/aniliberty-tv/actions)
-[![Release](https://img.shields.io/github/v/release/CoreDip/aniliberty-tv?label=скачать)](https://github.com/CoreDip/aniliberty-tv/releases/latest)
+[![Build](https://github.com/CoreDip/anilibria-tizen-wgt/actions/workflows/build.yml/badge.svg)](https://github.com/CoreDip/anilibria-tizen-wgt/actions)
+[![Release](https://img.shields.io/github/v/release/CoreDip/anilibria-tizen-wgt?label=скачать)](https://github.com/CoreDip/anilibria-tizen-wgt/releases/latest)
 
 ---
 
@@ -11,8 +11,8 @@
 
 | Платформа | Ссылка |
 |-----------|--------|
-| **Samsung TV (.wgt)** | [Releases → AniLiberty.wgt](https://github.com/CoreDip/aniliberty-tv/releases/latest) |
-| **MediaStationX / Web** | `https://coredip.github.io/aniliberty-tv/` |
+| **Samsung TV (.wgt)** | [Releases → AniLiberty.wgt](https://github.com/CoreDip/anilibria-tizen-wgt/releases/latest) |
+| **MediaStationX / Web** | `https://coredip.github.io/anilibria-tizen-wgt/` |
 
 ---
 
@@ -25,7 +25,7 @@
 
 ### Вариант 2 — MediaStationX
 1. Открыть MediaStationX на TV
-2. Добавить URL: `https://coredip.github.io/aniliberty-tv/`
+2. Добавить URL: `https://coredip.github.io/anilibria-tizen-wgt/`
 
 ---
 
@@ -46,7 +46,7 @@
 
 ```bash
 # Клонировать
-git clone https://github.com/CoreDip/aniliberty-tv.git
+git clone https://github.com/CoreDip/anilibria-tizen-wgt.git
 
 # Открыть index.html в браузере для разработки
 # Или импортировать папку tizen/ в Tizen Studio как Existing Project
@@ -54,7 +54,7 @@ git clone https://github.com/CoreDip/aniliberty-tv.git
 
 ### Структура
 ```
-aniliberty-tv/
+anilibria-tizen-wgt/
 ├── index.html          ← всё приложение (single-file)
 ├── tizen/
 │   ├── config.xml      ← Tizen манифест
