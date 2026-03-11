@@ -165,6 +165,8 @@ body.mouse #fsBtn,body.is-mobile #fsBtn{display:inline-flex;align-items:center;}
 .c-rating{display:flex;align-items:center;gap:2px;color:var(--gold);font-size:10px;font-weight:700;margin-left:auto;}
 .c-new{position:absolute;top:6px;right:6px;background:var(--red);color:#fff;
   font-size:8px;font-weight:700;padding:2px 5px;border-radius:3px;letter-spacing:.8px;}
+/* push NEW badge below ongoing if both present */
+.c-badge-ongoing ~ .c-new,.c-badge-ongoing+.c-new{top:26px;}
 
 .c-prog{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.1);border-radius:0 0 10px 10px;overflow:hidden;}
 .c-prog-f{height:100%;background:var(--red);border-radius:0;transition:width .3s;}
@@ -201,7 +203,7 @@ body.mouse .card:hover{border-color:rgba(232,39,47,.5);transform:scale(1.03) tra
 #catQ{flex:1;background:transparent;border:none;color:var(--t1);font-size:17px;
   font-family:inherit;outline:none;padding:13px 0;}
 #catQ::placeholder{color:var(--t3);}
-.cat-grid{flex:1;overflow-y:auto;overflow-x:visible;
+.cat-grid{flex:1;overflow-y:auto;overflow-x:visible;padding-top:8px;
   display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
   gap:16px;padding:18px 8px 24px;align-content:start;margin-top:4px;}
 .cat-grid .card{width:auto;}
@@ -297,7 +299,7 @@ body.mouse .ys-arr:hover,.ys-arr:active{color:var(--red);}
 .det-side-grad{position:absolute;inset:0;
   background:linear-gradient(to right,transparent 30%,rgba(9,12,20,.99)),
   linear-gradient(to top,rgba(9,12,20,.7) 0%,transparent 30%);}
-.det-body{flex:1;padding:28px 52px 32px 40px;overflow-y:auto;display:flex;flex-direction:column;gap:0;
+.det-body{flex:1;padding:28px 52px 60px 40px;overflow-y:auto;display:flex;flex-direction:column;gap:0;
   max-height:100%;}
 .det-body::-webkit-scrollbar{width:3px;}
 .det-body::-webkit-scrollbar-thumb{background:var(--bg5);}
@@ -348,7 +350,7 @@ body.mouse .ys-arr:hover,.ys-arr:active{color:var(--red);}
 .det-eps::-webkit-scrollbar{height:3px;}
 
 /* ── Related releases block ── */
-.det-related-block{border-top:1px solid rgba(255,255,255,.07);padding-top:16px;display:none;}
+.det-related-block{border-top:1px solid rgba(255,255,255,.07);padding-top:16px;padding-bottom:80px;display:none;}
 .det-sec-hdr{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
   color:var(--t3);margin-bottom:12px;}
 .det-related{display:flex;gap:12px;flex-wrap:wrap;padding-bottom:4px;}
@@ -356,7 +358,7 @@ body.mouse .ys-arr:hover,.ys-arr:active{color:var(--red);}
 .det-related::-webkit-scrollbar-thumb{background:var(--bg5);}
 .det-rel-card{width:110px;flex-shrink:0;border-radius:10px;overflow:hidden;cursor:pointer;position:relative;
   background:var(--bg3);border:2px solid transparent;transition:border-color .13s;}
-.det-rel-card.drc-current{border-color:var(--red);cursor:default;}
+.det-rel-card.drc-current{border-color:var(--grn);cursor:default;}
 .drc-now{position:absolute;top:6px;left:6px;background:var(--red);color:#fff;
   font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.5px;}
 .det-rel-card img,.det-rel-card .drc-ph{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;}
@@ -369,14 +371,18 @@ body.mouse .ys-arr:hover,.ys-arr:active{color:var(--red);}
 body.mouse .det-rel-card:not(.drc-current):hover,.det-rel-card.foc{border-color:var(--red);}
 .dep{padding:7px 13px;border-radius:7px;font-size:12px;font-weight:600;font-family:inherit;
   cursor:pointer;outline:none;transition:color .13s,background .13s,border-color .13s;min-width:70px;text-align:center;
-  background:var(--bg3);color:var(--t2);border:2px solid transparent;position:relative;}
+  background:var(--bg3);color:var(--t2);border:2px solid transparent;position:relative;overflow:hidden;}
+/* Border overlay sits on top of progress bar */
+.dep::after{content:'';position:absolute;inset:0;border-radius:6px;border:2px solid transparent;pointer-events:none;transition:border-color .13s;}
 /* watched = green border; partial = red progress bar; current = gold */
-.dep.ep-done{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:rgba(134,239,172,.9);}
-.dep.ep-partial{background:rgba(234,179,8,.1);border-color:rgba(234,179,8,.4);color:rgba(253,224,71,.9);}
-.dep.ep-current{border-color:var(--gold);color:var(--gold);}
+/* episode: yellow=partial, green=done, green+thick=current */
+.dep.ep-done{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.45);color:rgba(110,231,183,.95);}
+.dep.ep-partial{background:rgba(234,179,8,.1);border-color:rgba(234,179,8,.5);color:rgba(253,224,71,.95);}
+.dep.ep-current{background:rgba(34,197,94,.2);border-color:rgba(34,197,94,.9);color:#86efac;font-weight:700;}
 .dep.foc,body.mouse .dep:hover{border-color:var(--red);color:var(--t1);background:rgba(232,39,47,.15);}
-.dep-pb{position:absolute;bottom:0;left:0;right:0;height:2px;border-radius:0 0 5px 5px;background:rgba(255,255,255,.08);}
-.dep-pf{height:100%;background:var(--red);}
+/* Progress bar sits inside, border ::after sits on top of it */
+.dep-pb{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.1);}
+.dep-pf{height:100%;background:var(--red);border-radius:0;}
 
 /* ===== PLAYER ===== */
 #plyOv{position:fixed;inset:0;z-index:300;background:#000;display:none;flex-direction:column;}
@@ -423,17 +429,22 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 .pep{padding:4px 10px;border-radius:5px;font-size:11px;font-weight:600;
   background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:var(--t2);
   cursor:pointer;outline:none;font-family:inherit;flex-shrink:0;transition:color .13s,background .13s,border-color .13s;}
-.pep.cur{border-color:var(--gold);color:var(--gold);}
-.pep.ep-done{border-color:rgba(34,197,94,.4);color:rgba(34,197,94,.7);}
+/* player strip: same color scheme */
+.pep.cur{background:rgba(34,197,94,.2);border-color:rgba(34,197,94,.9);color:#86efac;font-weight:700;}
+.pep.ep-done{border-color:rgba(34,197,94,.45);color:rgba(110,231,183,.95);}
+.pep.ep-partial{border-color:rgba(234,179,8,.5);color:rgba(253,224,71,.95);}
 .pep.foc,body.mouse .pep:hover{background:var(--red);border-color:var(--red);color:#fff;}
 .pep-dots{color:var(--t3);font-size:14px;padding:0 2px;line-height:1;}
-#skipBtn{position:absolute;bottom:105px;right:var(--pad);
-  padding:9px 22px;background:rgba(232,39,47,.88);color:#fff;
+#skipBtn,#skipNextBtn{position:absolute;right:var(--pad);
+  padding:9px 22px;color:#fff;
   border-radius:8px;font-size:14px;font-weight:700;font-family:inherit;
   border:none;cursor:pointer;outline:none;
   opacity:0;transition:opacity .18s;pointer-events:none;}
-#skipBtn.on{opacity:1;pointer-events:all;}
+#skipBtn{bottom:200px;background:rgba(232,39,47,.88);}
+#skipNextBtn{bottom:150px;background:rgba(59,130,246,.88);}
+#skipBtn.on,#skipNextBtn.on{opacity:1;pointer-events:all;}
 #skipBtn.foc{outline:3px solid rgba(232,39,47,.5);}
+#skipNextBtn.foc{outline:3px solid rgba(59,130,246,.5);}
 /* Quality selector */
 .ply-qual-btn{padding:6px 14px;border-radius:6px;font-size:13px;font-weight:700;
   background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
@@ -457,6 +468,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;}
 .sdot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blk 2s infinite;}
 .sdot.ok{background:var(--grn);animation:none;}
 .sdot.warn{background:#f59e0b;animation:none;}
+.sdot.sync{background:var(--gold);animation:blk .6s infinite;}
 @keyframes blk{0%,100%{opacity:1}50%{opacity:.22}}
 
 /* ===== PRELOADER ===== */
@@ -599,7 +611,8 @@ body.is-mobile .ply-ctrl{padding:12px 14px;}
 body.is-mobile .ply-ttl{font-size:16px;}
 body.is-mobile .pb{width:44px;height:44px;}
 body.is-mobile .pb.big{width:54px;height:54px;}
-body.is-mobile #skipBtn{right:14px;bottom:90px;}
+body.is-mobile #skipBtn{right:14px;bottom:175px;}
+body.is-mobile #skipNextBtn{right:14px;bottom:129px;}
 body.is-mobile .ply-eps{display:none!important;}
 body.is-mobile .ply-back-btn{top:14px;left:14px;}
 
@@ -682,6 +695,29 @@ body.is-mobile #schGrid{height:auto!important;}
   background:var(--red);border-color:var(--red);
   box-shadow:0 0 0 3px rgba(232,39,47,.35);transform:scale(1.1);
 }
+
+/* Timeline focused state */
+.ply-bar.bar-foc::before{height:7px!important;}
+.ply-bar.bar-foc .ply-fill{height:7px!important;}
+.ply-bar.bar-foc .ply-fill::after{
+  width:24px!important;height:24px!important;
+  right:-12px!important;top:-10px!important;
+  background:#fff!important;
+  box-shadow:0 0 0 3px var(--red)!important;
+  transform:scale(1)!important;
+}
+/* Disabled prev/next */
+.pb.pb-disabled{opacity:0.3;pointer-events:none;}
+
+.c-badge-ongoing{position:absolute;top:6px;right:6px;background:rgba(34,197,94,.85);color:#fff;
+  font-size:9px;font-weight:800;letter-spacing:.3px;padding:2px 7px;border-radius:4px;}
+.c-badge-coll{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.65);color:#fff;
+  font-size:11px;padding:2px 6px;border-radius:4px;backdrop-filter:blur(4px);}
+
+.drc-ongoing{position:absolute;top:4px;right:4px;background:rgba(34,197,94,.85);color:#fff;
+  font-size:8px;font-weight:800;padding:2px 5px;border-radius:3px;}
+.drc-coll{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.65);color:#fff;
+  font-size:10px;padding:1px 5px;border-radius:3px;}
 </style>
 </head>
 <body>
@@ -952,7 +988,7 @@ body.is-mobile #schGrid{height:auto!important;}
 
 <div id="plyOv">
   <div class="ply-wrap">
-    <video id="vid" autoplay playsinline></video>
+    <video id="vid" autoplay playsinline tabindex="-1"></video>
     <div class="ply-spin" id="plySpin"><div class="spin"></div><div style="color:var(--t2);font-size:13px">Загрузка...</div></div>
     <div class="ply-ui">
       <!-- Top-left back button -->
@@ -981,6 +1017,7 @@ body.is-mobile #schGrid{height:auto!important;}
     </div>
     <div class="ply-qual-menu" id="plyQualMenu"></div>
     <button id="skipBtn">⏩ Пропустить опенинг</button>
+    <button id="skipNextBtn">⏭ Следующая серия</button>
   </div>
 </div>
 
@@ -992,6 +1029,9 @@ body.is-mobile #schGrid{height:auto!important;}
 <script>
 'use strict';
 const _isTizen=!!window.tizen||/Tizen/i.test(navigator.userAgent);
+const PLY_BTNS_PC = ['pcPrev','pcPlay','pcNext','pcQual','pcFit','pcFullscreen'];
+const PLY_BTNS_TV = ['pcPrev','pcPlay','pcNext','pcQual'];
+let PLY_BTNS = _isTizen ? PLY_BTNS_TV : PLY_BTNS_PC;
 if(_isTizen){ document.documentElement.classList.add('tizen-tv'); document.body.classList.add('tizen-tv'); }
 
 // scrollIntoView wrapper — 'smooth' на Tizen надто дорого
@@ -1005,7 +1045,7 @@ const BASE2 = 'https://api.anilibria.app/api/v1';
 const CDN   = 'https://aniliberty.top';
 // Days: API uses 0=Sun,1=Mon,...6=Sat; we display Mon→Sun
 const DAYS_UK = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
-const DAYS_API = [1,2,3,4,5,6,0]; // display order → API day value
+const DAYS_API = [1,2,3,4,5,6,7]; // display order → API day value (1=Mon...7=Sun)
 
 const Store = {
   get(k, def=null){ try{ const v=localStorage.getItem(k); return v!=null?JSON.parse(v):def; }catch{return def;} },
@@ -1079,12 +1119,28 @@ const Store = {
   },
   _dirtyIdx(releaseId){ this._pidx=null; }, // null entire index → forces full rebuild on next access
   getTotalProgress(releaseId, episodesTotal){
-    const prog=this.getReleaseProgress(releaseId);
-    if(!prog) return 0;
-    const total=episodesTotal||prog.epsTotal||0;
+    this._buildIdx();
+    const keys=this._pidx[releaseId]||[];
+    if(!keys.length) return 0;
+    const prefix=`alv_p_${releaseId}_`;
+    // Count episodes watched >10% of duration (or time>30s)
+    let watched=0, maxOrdinal=0, bestEpsTotal=0;
+    for(const k of keys){
+      const v=this.get(k);
+      if(!v) continue;
+      if(v.epsTotal>bestEpsTotal) bestEpsTotal=v.epsTotal;
+      if(v.epOrdinal>maxOrdinal) maxOrdinal=v.epOrdinal;
+      // Use same logic as isEpDone: is_watched flag, 90%+, within 90s, or time>10min without duration
+      const done=v.is_watched===true
+        ||(v.duration>0&&(v.time>=v.duration||v.time>=v.duration-90||v.time/v.duration>=0.9))
+        ||(!v.duration&&v.time>600);
+      if(done) watched++;
+    }
+    const total=episodesTotal||bestEpsTotal||0;
     if(!(total>0)) return 0;
-    const ordinal=prog.epOrdinal||Number(prog.epId)||1;
-    return Math.min(100, Math.round(ordinal/total*100));
+    // Use watched count if we have it, else fall back to max ordinal
+    const pct=watched>0?Math.round(watched/total*100):Math.round(maxOrdinal/total*100);
+    return Math.min(100,pct);
   },
   getReleaseProgress(releaseId){
     this._buildIdx();
@@ -1106,7 +1162,7 @@ const Store = {
 
   // Collections: {favorites:[], watching:[], planned:[], completed:[], abandoned:[]}
   getColl(){ const d=this.get('alv_coll',{}); if(!d.favorites)d.favorites=[]; if(!d.watching)d.watching=[]; if(!d.planned)d.planned=[]; if(!d.completed)d.completed=[]; if(!d.abandoned)d.abandoned=[]; if(!d.history)d.history=[]; return d; },
-  inColl(type, id){ return (this.getColl()[type]||[]).includes(id); },
+  inColl(type, id){ const sid=String(id),nid=Number(id); return (this.getColl()[type]||[]).some(x=>x===sid||x===nid||String(x)===sid); },
   addHistory(id){
     if(!id) return;
     const c=this.getColl();
@@ -1124,7 +1180,8 @@ const Store = {
   toggleColl(type, id){
     const c=this.getColl();
     if(!c[type]) c[type]=[];
-    const idx=c[type].indexOf(id);
+    const sid=String(id), nid=Number(id);
+    const idx=c[type].findIndex(x=>x===sid||x===nid||String(x)===sid);
     if(idx===-1) c[type].unshift(id); else c[type].splice(idx,1);
     this.set('alv_coll',c);
     return idx===-1;
@@ -1155,7 +1212,7 @@ async function api(path, opts={}){
       });
       if(r.status===401){ const e=new Error('Unauthorized'); e.code=401; throw e; }
       if(r.status===422){ const e=new Error('Validation'); e.code=422; throw e; }
-      if(!r.ok) throw new Error('HTTP '+r.status);
+      if(!r.ok){ const e=new Error('HTTP '+r.status); e.code=r.status; throw e; }
       return await r.json();
     }catch(e){
       if(e.code===401||e.code===422) throw e;
@@ -1165,6 +1222,23 @@ async function api(path, opts={}){
 }
 
 // sync progress to API
+// ════════════════════════════════════════════════════════════
+// FULL CLOUD SYNC SYSTEM
+// - If logged in: read/write to API, local is cache
+// - If not logged in: local only
+// - On login: migrate all local data to cloud
+// ════════════════════════════════════════════════════════════
+
+const COLL_TYPE_MAP={
+  favorites: null,
+  watching:  'WATCHING',
+  planned:   'PLANNED',
+  completed: 'WATCHED',
+  abandoned: 'ABANDONED',
+};
+const API_TO_LOCAL={'WATCHING':'watching','PLANNED':'planned','WATCHED':'completed','ABANDONED':'abandoned','POSTPONED':'abandoned'};
+
+// ── Push single timecode to API ───────────────────────────────────────
 async function syncProgress(epId, time, isWatched=false){
   if(!authToken) return;
   try{ await api('/accounts/users/me/views/timecodes',{
@@ -1172,60 +1246,255 @@ async function syncProgress(epId, time, isWatched=false){
   }); }catch(_){}
 }
 
-// Map internal collection keys → API enum values
-const COLL_TYPE_MAP={
-  favorites: null,            // handled separately via /favorites endpoint
-  watching:  'WATCHING',
-  planned:   'PLANNED',
-  completed: 'WATCHED',       // API uses WATCHED, we call it completed
-  abandoned: 'ABANDONED',
-};
-
-
-// Завантажує всі колекції з API + кешує релізи (при логіні та при запуску)
-async function syncCollFromAPI(){
+// ── Pull all timecodes for a release from API ─────────────────────────
+async function pullTimecodes(releaseId){
   if(!authToken) return;
-  const c=Store.getColl();
-  const API_TO_LOCAL={'WATCHING':'watching','PLANNED':'planned','WATCHED':'completed','ABANDONED':'abandoned','POSTPONED':'abandoned'};
-  // 1. Favorites
+  // Don't pull if user just reset progress for this release
+  if(window._resetReleaseId===String(releaseId)){
+    window._resetReleaseId=null; return;
+  }
   try{
-    const favs=await api('/accounts/users/me/favorites/releases');
-    const list=Array.isArray(favs)?favs:(favs?.data||[]);
-    if(list.length){
-      c.favorites=[...new Set([...c.favorites,...list.map(r=>r.id)])];
-      list.forEach(r=>Store.cacheRelease(r));
-    }
-  }catch(_){}
-  // 2. Решта колекцій
-  try{
-    const colls=await api('/accounts/users/me/collections/releases?limit=200');
-    const list=Array.isArray(colls)?colls:(colls?.data||colls?.list||[]);
-    list.forEach(item=>{
-      const r=item?.release||item;
-      const localType=API_TO_LOCAL[item?.type_of_collection||item?.collection_type];
-      if(r?.id && localType){
-        if(!c[localType]) c[localType]=[];
-        if(!c[localType].includes(r.id)) c[localType].push(r.id);
-        Store.cacheRelease(r);
-      }
+    const tc=await api('/anime/releases/'+releaseId+'/episodes/timecodes');
+    const list=Array.isArray(tc)?tc:(tc?.data||tc?.list||[]);
+    list.forEach(t=>{
+      if(!t?.release_episode_id) return;
+      const epId=String(t.release_episode_id);
+      const cloudTime=t.time||0;
+      if(cloudTime<=0) return;
+      // Cloud is source of truth — always overwrite local
+      const existing=Store.getProgress(releaseId,epId);
+      // Preserve local duration if API doesn't return it
+      const dur=t.duration||existing?.duration||0;
+      Store.set(`alv_p_${releaseId}_${epId}`,{time:cloudTime,duration:dur,epOrdinal:t.ordinal||0,is_watched:!!t.is_watched,updated:Date.now()});
+      Store._dirtyIdx(String(releaseId));
     });
   }catch(_){}
-  Store.set('alv_coll',c);
 }
-// sync collection to API
+
+// ── Push ALL local timecodes to API (used on login migration) ─────────
+async function pushAllTimecodes(){
+  if(!authToken) return;
+  // Collect all local progress entries
+  const batch=[];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(!k?.startsWith('alv_p_')) continue;
+    try{
+      const v=JSON.parse(localStorage.getItem(k));
+      const parts=k.split('_'); // alv_p_{rid}_{epId}
+      const epId=parts.slice(3).join('_'); // epId may contain underscores
+      if(v?.time>0&&epId){
+        batch.push({release_episode_id:epId, time:Math.floor(v.time), is_watched:v.time>0&&v.duration>0&&(v.time/v.duration>=0.9||v.time>=v.duration-60)});
+      }
+    }catch(_){}
+  }
+  if(!batch.length) return;
+  // Send in chunks of 50
+  for(let i=0;i<batch.length;i+=50){
+    try{ await api('/accounts/users/me/views/timecodes',{method:'POST',body:JSON.stringify(batch.slice(i,i+50))}); }catch(_){}
+  }
+}
+
+// ── Pull all collections + favorites from API ─────────────────────────
+// API requires type_of_collection as required param — must fetch each type separately
+async function syncCollFromAPI(){
+  if(!authToken) return;
+  // Cloud is SOURCE OF TRUTH — replace local, don't merge
+  const c=Store.getColl();
+  const fresh={favorites:[], watching:[], planned:[], completed:[], abandoned:[], history:c.history||[]};
+  let anySuccess=false;
+
+  // 1. Favorites — replace
+  try{
+    let favPage=1;
+    while(true){
+      const favs=await api(`/accounts/users/me/favorites/releases?limit=50&page=${favPage}`);
+      const list=Array.isArray(favs)?favs:(favs?.data||favs?.list||[]);
+      list.forEach(r=>{ if(r?.id){ fresh.favorites.push(r.id); Store.cacheRelease(r); } });
+      if(list.length<50) break;
+      favPage++;
+      if(favPage>20) break;
+    }
+    anySuccess=true;
+  }catch(_){}
+
+  // 2. Each collection type — replace
+  const typeMap=[
+    ['WATCHING','watching'],['PLANNED','planned'],
+    ['WATCHED','completed'],['ABANDONED','abandoned'],['POSTPONED','abandoned']
+  ];
+  for(const [apiType, localType] of typeMap){
+    try{
+      let page=1; const pageSize=50;
+      while(true){
+        const res=await api('/accounts/users/me/collections/releases',{
+          method:'POST',
+          body:JSON.stringify({type_of_collection:apiType, page, limit:pageSize})
+        });
+        const list=Array.isArray(res)?res:(res?.data||res?.list||[]);
+        list.forEach(item=>{
+          if(item?.id&&!fresh[localType].includes(item.id)){
+            fresh[localType].push(item.id);
+            Store.cacheRelease(item);
+          }
+        });
+        if(list.length<pageSize) break;
+        page++;
+        if(page>20) break;
+      }
+      anySuccess=true;
+    }catch(_){}
+  }
+
+  // Only save if at least one request succeeded (avoid wiping on network error)
+  if(anySuccess){
+    Store.set('alv_coll', fresh);
+    if(pg.cur==='collections') renderCollTab(curCollTab);
+    // Refresh collection badges AND progress bars on all visible cards
+    document.querySelectorAll('.card[data-rid]').forEach(card=>{
+      const rid=card.dataset.rid;
+      refreshCardBadge(rid);
+      // Update progress bar — if in completed, show 100%
+      const r=Store.getCachedRelease(rid);
+      if(!r) return;
+      const epsTot=r.episodes_total||r._epsCount||0;
+      let pct=Store.getTotalProgress(rid,epsTot);
+      const coll=Store.getColl();
+      if((coll.completed||[]).includes(Number(rid)||(rid)) || (coll.completed||[]).includes(rid)) pct=100;
+      if(pct>0){
+        let bar=card.querySelector('.c-prog');
+        if(!bar){ bar=document.createElement('div'); bar.className='c-prog'; bar.innerHTML='<div class="c-prog-f"></div>'; card.appendChild(bar); }
+        bar.querySelector('.c-prog-f').style.width=pct+'%';
+      }
+    });
+  }
+}
+
+// ── Push all local collections to API (migration on login) ───────────
+async function pushAllCollections(){
+  if(!authToken) return;
+  const c=Store.getColl();
+  // Favorites
+  if(c.favorites?.length){
+    try{ await api('/accounts/users/me/favorites',{method:'POST',
+      body:JSON.stringify(c.favorites.map(id=>({release_id:id})))}); }catch(_){}
+  }
+  // Other collections
+  for(const [local, apiType] of Object.entries(COLL_TYPE_MAP)){
+    if(!apiType||!c[local]?.length) continue;
+    try{ await api('/accounts/users/me/collections',{method:'POST',
+      body:JSON.stringify(c[local].map(id=>({release_id:id,type_of_collection:apiType})))}); }catch(_){}
+  }
+}
+
+// ── Full migration: local → cloud (called once on login) ─────────────
+async function migrateLocalToCloud(){
+  setStatus('sync','Синхронизация...');
+  // STEP 1: pull cloud data first (most important — don't lose cloud data)
+  await Promise.all([syncCollFromAPI(), syncHistoryFromAPI()]);
+  // STEP 2: push only timecodes (safe — API merges, keeps highest time)
+  await pushAllTimecodes();
+  // STEP 3: push local collections that weren't in cloud (additive only)
+  await pushLocalOnlyCollections();
+  setStatus('ok','Синхронизировано');
+}
+
+// Push only local collection items that don't exist in cloud yet (additive, safe)
+async function pushLocalOnlyCollections(){
+  if(!authToken) return;
+  const c=Store.getColl();
+  // Favorites — just push all, API ignores duplicates
+  if(c.favorites?.length){
+    try{ await api('/accounts/users/me/favorites',{method:'POST',
+      body:JSON.stringify(c.favorites.map(id=>({release_id:id})))}); }catch(_){}
+  }
+  for(const [local,apiType] of Object.entries(COLL_TYPE_MAP)){
+    if(!apiType||!c[local]?.length) continue;
+    try{ await api('/accounts/users/me/collections',{method:'POST',
+      body:JSON.stringify(c[local].map(id=>({release_id:id,type_of_collection:apiType})))}); }catch(_){}
+  }
+}
+
+// ── Pull history from API ─────────────────────────────────────────────
+async function syncHistoryFromAPI(){
+  if(!authToken) return;
+  try{
+    const c=Store.getColl();
+    // History sorted by updated_at desc — each item is one watched episode
+    // Multiple items can belong to same release — deduplicate by release id
+    // Keep order: most recently watched release first
+    const seenReleases=new Set();
+    let page=1; const pageSize=10;
+    while(true){
+      const resp=await api(`/accounts/users/me/views/history?limit=${pageSize}&page=${page}`);
+      const list=Array.isArray(resp)?resp:(resp?.data||resp?.list||[]);
+      list.forEach(item=>{
+        // item: { id, time, is_watched, release_episode_id, release_episode: { ...ep fields, release: {...} } }
+        const ep=item?.release_episode;
+        const r=ep?.release;
+        if(!r?.id) return;
+        Store.cacheRelease(r);
+        // Save progress for this episode
+        if(ep?.id && item?.time>0){
+          const existing=Store.getProgress(r.id, String(ep.id));
+          if(!existing || item.time>existing.time){
+            Store.set(`alv_p_${r.id}_${ep.id}`,{
+              time:item.time, duration:ep.duration||existing?.duration||0,
+              epOrdinal:ep.ordinal||0, is_watched:!!item.is_watched,
+              updated:new Date(item.updated_at).getTime()||Date.now()
+            });
+            Store._dirtyIdx(String(r.id));
+          }
+        }
+        // Add release to history (deduplicated, order preserved)
+        if(!seenReleases.has(r.id)){
+          seenReleases.add(r.id);
+          if(!c.history.includes(r.id)) c.history.push(r.id);
+        }
+      });
+      if(list.length<pageSize) break;
+      page++;
+      if(page>10) break;
+    }
+    Store.set('alv_coll',c);
+    if(pg.cur==='collections'&&curCollTab==='history') renderCollTab('history');
+  }catch(_){}
+}
+
+// ── Throttled sync helper ────────────────────────────────────────────
+let _lastCollSync=0, _syncInProgress=false;
+async function _doCollSync(){
+  if(_syncInProgress) return;
+  _syncInProgress=true;
+  try{
+    await syncCollFromAPI();
+    await syncHistoryFromAPI();
+    _lastCollSync=Date.now();
+  } finally { _syncInProgress=false; }
+}
+
+// ── Full pull on startup ──────────────────────────────────────────────
+async function syncOnStartup(){
+  if(!authToken) return;
+  setStatus('sync','Загрузка данных...');
+  await _doCollSync();
+  setStatus('ok','Данные загружены');
+}
+
+// ── Single collection change to API ──────────────────────────────────
 async function syncCollToAPI(type, id, add){
   if(!authToken) return;
   try{
     if(type==='favorites'){
-      const endpoint='/accounts/users/me/favorites';
-      if(add) await api(endpoint,{method:'POST', body:JSON.stringify([{release_id:id}])});
-      else     await api(endpoint,{method:'DELETE',body:JSON.stringify([{release_id:id}])});
+      const ep='/accounts/users/me/favorites';
+      if(add) await api(ep,{method:'POST',body:JSON.stringify([{release_id:id}])});
+      else     await api(ep,{method:'DELETE',body:JSON.stringify([{release_id:id}])});
     } else {
-      const apiType=COLL_TYPE_MAP[type];
-      if(!apiType) return;
-      const endpoint='/accounts/users/me/collections';
-      if(add) await api(endpoint,{method:'POST', body:JSON.stringify([{release_id:id, type_of_collection:apiType}])});
-      else     await api(endpoint,{method:'DELETE',body:JSON.stringify([{release_id:id, type_of_collection:apiType}])});
+      const apiType=COLL_TYPE_MAP[type]; if(!apiType) return;
+      const ep='/accounts/users/me/collections';
+      if(add) await api(ep,{method:'POST',body:JSON.stringify([{release_id:id,type_of_collection:apiType}])});
+      else     await api(ep,{method:'DELETE',body:JSON.stringify([{release_id:id}])});
+      // Note: DELETE removes from ALL collections (API doesn't support per-type delete)
     }
   }catch(_){}
 }
@@ -1280,7 +1549,7 @@ function rAgeBadge(r){
   return `<span class="bdg bdg-age">${lbl}</span>`;
 }
 function setStatus(s,txt){
-  const d=$('sdot'); d.className='sdot'+(s==='ok'?' ok':s==='warn'?' warn':'');
+  const d=$('sdot'); d.className='sdot'+(s==='ok'?' ok':s==='warn'?' warn':s==='sync'?' sync':'');
   $('stxt').textContent=txt;
 }
 function tick(){const n=new Date();$('clk').textContent=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');}
@@ -1327,15 +1596,73 @@ function rRating(r){
   return '★ '+n;
 }
 
+
+// Returns short label if release is in any collection, null otherwise
+function getCollLabel(id){
+  const coll=Store.getColl();
+  const sid=String(id), nid=Number(id);
+  const has=(arr)=>(arr||[]).some(x=>x===sid||x===nid||String(x)===sid);
+  if(has(coll.favorites))  return '❤';
+  if(has(coll.watching))   return '👁';
+  if(has(coll.planned))    return '📅';
+  if(has(coll.completed))  return '✓';
+  if(has(coll.abandoned))  return '✕';
+  return null;
+}
+
+// Refresh collection badge on all cards for a release (after coll change)
+
+function _removeInvalidId(id){
+  const coll=Store.getColl();
+  const sid=String(id), nid=Number(id);
+  ['favorites','watching','planned','completed','abandoned','history'].forEach(k=>{
+    if(!coll[k]) return;
+    coll[k]=coll[k].filter(x=>x!==sid&&x!==nid&&String(x)!==sid);
+  });
+  Store.set('alv_coll',coll);
+}
+function refreshCardBadge(releaseId){
+  const lbl=getCollLabel(releaseId);
+  // Regular cards
+  document.querySelectorAll(`.card[data-rid="${releaseId}"]`).forEach(card=>{
+    let badge=card.querySelector('.c-badge-coll');
+    if(lbl){
+      if(!badge){ badge=document.createElement('div'); badge.className='c-badge-coll'; card.appendChild(badge); }
+      badge.textContent=lbl;
+    } else { badge?.remove(); }
+  });
+  // Related release cards (.det-rel-card) — identified by their stored _r object
+  document.querySelectorAll('.det-rel-card').forEach(card=>{
+    if(String(card._relId)!==String(releaseId)) return;
+    let badge=card.querySelector('.drc-coll');
+    if(lbl){
+      if(!badge){ badge=document.createElement('div'); badge.className='drc-coll'; card.appendChild(badge); }
+      badge.textContent=lbl;
+    } else { badge?.remove(); }
+  });
+}
 function buildCardInner(r, opts={}){
   const url = getPoster(r);
   const _epsTot=(r.episodes_total||r._epsCount||0);
-  const pct = Store.getTotalProgress(r.id, _epsTot);
+  let pct = Store.getTotalProgress(r.id, _epsTot);
+  // If in 'completed' collection — always 100%
+  if(!pct || pct<100){
+    const coll=Store.getColl();
+    if((coll.completed||[]).includes(r.id)) pct=100;
+  }
+  // For 1-ep releases (films), show per-episode progress if total progress = 0
+  if(!pct && _epsTot<=1){
+    const p=Store.getReleaseProgress(r.id);
+    if(p?.duration>0) pct=Math.round(p.time/p.duration*100);
+    else if(p?.time>30) pct=50;
+  }
   const rating = rRating(r);
   const ph = EMJ[(r.id||0)%EMJ.length];
   return `
     ${url?`<img class="c-img" decoding="async" src="${url}" alt="" loading="lazy">`:`<div class="c-ph">${ph}</div>`}
+    ${r?.is_ongoing?'<div class="c-badge-ongoing">Онгоинг</div>':''}
     ${opts.isNew?'<div class="c-new">NEW</div>':''}
+    ${(()=>{ const lbl=getCollLabel(r?.id); return lbl?`<div class="c-badge-coll">${lbl}</div>`:''; })()}
     <div class="c-body">
       <div class="c-name">${rName(r)}</div>
       <div class="c-foot">
@@ -1352,6 +1679,13 @@ function makeCard(r, onClick, isNew){
   el.dataset.rid=r.id; el.dataset.rdata=JSON.stringify({id:r.id,alias:r.alias||r.id});
   el._onClick=onClick; el._r=r;
   el.innerHTML=buildCardInner(r,{isNew});
+  // Apply collection badge immediately (collections may load after card renders)
+  const lbl=getCollLabel(r.id);
+  if(lbl){
+    let badge=el.querySelector('.c-badge-coll');
+    if(!badge){ badge=document.createElement('div'); badge.className='c-badge-coll'; el.appendChild(badge); }
+    badge.textContent=lbl;
+  }
   return el;
 }
 
@@ -1748,24 +2082,79 @@ async function renderCollTab(type){
   // Завантажуємо відсутні релізи по 4 паралельно
   const missing=ids.filter(id=>!Store.getCachedRelease(id));
   if(missing.length){
-    const CHUNK=4;
+    const CHUNK=8;
     for(let i=0;i<missing.length;i+=CHUNK){
       await Promise.allSettled(
-        missing.slice(i,i+CHUNK).map(id=>{
+        missing.slice(i,i+CHUNK).map(async id=>{
           const key=Store.getAlias(id)||id;
-          return api('/anime/releases/'+key)
-            .then(r=>{ if(r?.id) Store.cacheRelease(r); })
-            .catch(()=>{});
+          try{
+            const r=await api('/anime/releases/'+key);
+            if(r?.id) Store.cacheRelease(r);
+          } catch(e){
+            if(e?.code===404){ _removeInvalidId(id); }
+            else if(key!==id){
+              try{ const r=await api('/anime/releases/'+id); if(r?.id) Store.cacheRelease(r); }
+              catch(e2){ if(e2?.code===404) _removeInvalidId(id); }
+            }
+          }
         })
       );
     }
   }
   grid.innerHTML='';
+  let shown=0;
   ids.forEach(id=>{
     const r=Store.getCachedRelease(id);
-    if(r) appendCollCard(r,type);
-    else{ const el=document.createElement('div'); el.className='card skel'; grid.appendChild(el); }
+    if(!r) return;
+    appendCollCard(r,type);
+    shown++;
+    // Update progress bar immediately from local data
+    const epsTot=r.episodes_total||r._epsCount||0;
+    let pct=Store.getTotalProgress(String(id),epsTot);
+    // If in completed — always 100%
+    const rid=Number(id)||id;
+    if((coll.completed||[]).some(x=>String(x)===String(id))) pct=100;
+    if(pct>0){
+      const card=grid.lastElementChild;
+      if(card){
+        let bar=card.querySelector('.c-prog');
+        if(!bar){ bar=document.createElement('div'); bar.className='c-prog'; bar.innerHTML='<div class="c-prog-f"></div>'; card.appendChild(bar); }
+        bar.querySelector('.c-prog-f').style.width=pct+'%';
+      }
+    }
   });
+  if(!shown){
+    grid.innerHTML=`<div class="coll-empty"><div class="coll-empty-ic">${type==='history'?'🕐':'📂'}</div><div>${emptyMsg}</div></div>`;
+  }
+  // Pull timecodes in background for releases with no local progress data
+  // This updates progress bars without requiring user to open each anime
+  if(authToken && type!=='history'){
+    const needProgress=ids.filter(id=>{
+      Store._buildIdx();
+      return !(Store._pidx[String(id)]||[]).length;
+    });
+    if(needProgress.length){
+      (async()=>{
+        for(const id of needProgress.slice(0,10)){ // max 10 at a time
+          await pullTimecodes(id);
+          // Update card progress bar after pull
+          const r2=Store.getCachedRelease(id);
+          if(!r2) continue;
+          const epsTot=r2.episodes_total||r2._epsCount||0;
+          let pct=Store.getTotalProgress(String(id),epsTot);
+          const coll2=Store.getColl();
+          if((coll2.completed||[]).includes(id)||(coll2.completed||[]).map(String).includes(String(id))) pct=100;
+          if(pct>0){
+            const card=grid.querySelector(`.card[data-rid="${id}"]`);
+            if(!card) continue;
+            let bar=card.querySelector('.c-prog');
+            if(!bar){ bar=document.createElement('div'); bar.className='c-prog'; bar.innerHTML='<div class="c-prog-f"></div>'; card.appendChild(bar); }
+            bar.querySelector('.c-prog-f').style.width=pct+'%';
+          }
+        }
+      })();
+    }
+  }
 }
 function appendCollCard(r, type){
   const el=document.createElement('div'); el.className='card';
@@ -1794,6 +2183,7 @@ document.querySelectorAll('.ctab').forEach((t,i)=>{
     document.querySelectorAll('.ctab').forEach(x=>x.classList.remove('cur','foc'));
     t.classList.add('cur'); nav.collTab=i;
     renderCollTab(t.dataset.c);
+    // sync handled by interval and page open
   });
 });
 
@@ -1840,16 +2230,21 @@ async function openDetailRelease(r){
       const added=Store.toggleColl(type,r.id);
       b.classList.toggle('in',added);
       syncCollToAPI(type,r.id,added);
+
+      // When added to "completed": mark all episodes watched
+      if(type==='completed'&&added) markAllEpsWatched(r);
+
+      // Refresh coll badge on all visible cards
+      refreshCardBadge(r.id);
+
       // Одразу оновити collGrid якщо відкрита ця колекція
       if(type===curCollTab){
         const grid=$('collGrid');
         if(!added){
-          // Видалити картку
           grid.querySelectorAll(`.card[data-rid="${r.id}"]`).forEach(el=>el.remove());
           if(!grid.querySelector('.card'))
             grid.innerHTML=`<div class="coll-empty"><div class="coll-empty-ic">📂</div><div>Коллекция пуста</div></div>`;
         } else {
-          // Додати картку якщо її ще нема
           if(!grid.querySelector(`.card[data-rid="${r.id}"]`)){
             grid.querySelector('.coll-empty')?.remove();
             appendCollCard(r, type);
@@ -1858,25 +2253,26 @@ async function openDetailRelease(r){
       }
     });
   });
-  // Check for resume progress
-  const lastProg=Store.getReleaseProgress(r.id);
-  const hasProgress=lastProg&&lastProg.time>60;
-  if(hasProgress){
-    $('detActs').innerHTML=`<button class="btn btn-p det-play-btn" id="detPlay">▶ Продолжить</button><button class="btn btn-s det-reset-btn" id="detReset">↺ Сбросить прогресс</button>`;
-  } else {
-    $('detActs').innerHTML=`<button class="btn btn-p det-play-btn" id="detPlay">▶ Смотреть</button>`;
-  }
-  $('detPlay').addEventListener('click',()=>{
-    if(r) Store.addHistory(r.id);
-    if(hasProgress&&lastProg.epId){
-      const idx=playerEps.findIndex(e=>String(e.id)===String(lastProg.epId));
-      playerEpIdx=idx>=0?idx:0;
-    }
-    startPlayer();
-  });
-  $('detReset')?.addEventListener('click',()=>{
+  // [progress block moved below pullTimecodes]
+  $('detReset')?.addEventListener('click',async()=>{
+    // Collect ep IDs from localStorage index before clearing
+    Store._buildIdx();
+    const prefix=`alv_p_${r.id}_`;
+    const epIdsToDelete=(Store._pidx[String(r.id)]||[]).map(k=>k.slice(prefix.length));
+    // Set flag to prevent pullTimecodes from restoring data
+    window._resetReleaseId=String(r.id);
+    // Clear local
     Store.clearReleaseProgress(r.id);
     Store.removeHistory(r.id);
+    // Delete timecodes from cloud — await it
+    if(authToken){
+      const ids=epIdsToDelete.length?epIdsToDelete:playerEps.map(ep=>String(ep.id));
+      if(ids.length){
+        try{ await api('/accounts/users/me/views/timecodes',{method:'DELETE',
+          body:JSON.stringify(ids.map(id=>({release_episode_id:id})))
+        }); }catch(_){}
+      }
+    }
     // Remove from collGrid if history tab is open
     if(curCollTab==='history'){
       $('collGrid').querySelectorAll(`.card[data-rid="${r.id}"]`).forEach(el=>el.remove());
@@ -1890,30 +2286,32 @@ async function openDetailRelease(r){
   $('detEps').innerHTML='<div style="color:var(--t3);font-size:13px">Загрузка серий...</div>';
   $('detRelated').innerHTML=''; $('detRelBlock').style.display='none';
   $('detOv').classList.add('on');
+  // Save catalog scroll position
+  if(pg.cur==='catalog') window._catScrollSaved=$('catGrid').scrollTop;
   nav.zone='det.acts'; nav.detAct=0;
   clearFoc('.det-acts .btn'); $('detPlay').classList.add('foc');
   // load episodes
-  // Load timecodes from API for this release (sync progress across devices)
-  if(authToken){
-    try{
-      const tc=await api('/accounts/users/me/views/timecodes?release_id='+r.id);
-      const list=Array.isArray(tc)?tc:(tc?.data||tc?.list||[]);
-      list.forEach(t=>{
-        if(!t?.episode_id&&!t?.release_episode_id) return;
-        const epId=String(t.release_episode_id||t.episode_id);
-        const time=t.time||t.current_time||0;
-        const dur=t.duration||0;
-        if(time>0){
-          // Only update if newer than local or local missing
-          const existing=Store.getProgress(r.id, epId);
-          if(!existing||time>existing.time){
-            Store.set(`alv_p_${r.id}_${epId}`,{time,duration:dur,epOrdinal:t.ordinal||0,updated:Date.now()});
-            Store._dirtyIdx(String(r.id));
-          }
-        }
-      });
-    }catch(_){}
+  // Pull timecodes from cloud for this release
+  await pullTimecodes(r.id);
+  // Check for resume progress
+  const lastProg=Store.getReleaseProgress(r.id);
+  const hasProgress=lastProg&&lastProg.time>60;
+  if(hasProgress){
+    $('detActs').innerHTML=`<button class="btn btn-p det-play-btn" id="detPlay">▶ Продолжить</button><button class="btn btn-s det-reset-btn" id="detReset">↺ Сбросить прогресс</button>`;
+  } else {
+    $('detActs').innerHTML=`<button class="btn btn-p det-play-btn" id="detPlay">▶ Смотреть</button>`;
   }
+  $('detPlay').addEventListener('click',()=>{
+    if(r) Store.addHistory(r.id);
+    if(hasProgress&&lastProg.epId){
+      const idx=playerEps.findIndex(e=>String(e.id)===String(lastProg.epId));
+      playerEpIdx=idx>=0?idx:0;
+      // "Продолжить": always resume from exact saved time (no -20s logic)
+      window._forceStart=lastProg.time||0;
+    }
+    startPlayer();
+    window._forceStart=undefined;
+  });
   try{
     const detail=await api('/anime/releases/'+(r.alias||r.id));
     const eps=detail?.episodes||[];
@@ -1966,8 +2364,8 @@ async function openDetailRelease(r){
     }
     renderDetailEps(r.id, eps);
     playerEps=eps;
-    // Refresh button now that episodes are loaded — progress epId can now be matched
-    refreshDetActBtn(r);
+    // Refresh button now that episodes are loaded — but skip if player opened meanwhile
+    if(nav.zone!=='player') refreshDetActBtn(r);
   }catch(_){
     $('detEps').innerHTML=`<div style="color:var(--t3);font-size:13px">${authToken?'Не удалось загрузить серии':'Нужна авторизация для серий'}</div>`;
     playerEps=[];
@@ -2026,9 +2424,13 @@ async function openDetailRelease(r){
         const typeLabel=rel?.type?.description||rel?.type?.value||'';
         const el=document.createElement('div');
         el.className='det-rel-card'+(isCurrent?' drc-current':'');
+        el._relId=rel.id;
+        const relCollLbl=getCollLabel(rel.id);
         el.innerHTML=`
           ${rurl?`<img src="${rurl}" alt="">`:`<div class="drc-ph">${EMJ[rel.id%10]}</div>`}
-          ${isCurrent?'<div class="drc-now">▶ Сейчас</div>':''}
+          ${rel.is_ongoing?'<div class="drc-ongoing">Онгоинг</div>':''}
+
+          ${relCollLbl?`<div class="drc-coll">${relCollLbl}</div>`:''}
           <div class="drc-info">
             ${typeLabel?`<div class="drc-type">${typeLabel}</div>`:''}
             <div class="drc-n">${rName(rel)}</div>
@@ -2041,6 +2443,23 @@ async function openDetailRelease(r){
   }catch(e){ console.error('[related] error:', e); }
 }
 
+
+// Determine if episode is considered "done"
+// Done = reached ending start time, OR 90%+ watched if no ending data
+function isEpDone(prog, ep){
+  if(!prog) return false;
+  // Explicitly marked as watched (from API or markAllEpsWatched)
+  if(prog.is_watched===true) return true;
+  // time equals duration exactly — set by markAllEpsWatched
+  if(prog.duration>0 && prog.time>=prog.duration) return true;
+  // No duration info — if time > 10min assume watched (synced from cloud without duration)
+  if(!prog.duration||prog.duration<=0) return prog.time>600;
+  const pct=prog.time/prog.duration*100;
+  // If episode has ending data — done when reaching ending start
+  if(ep?.ending?.start>0 && prog.time>=ep.ending.start) return true;
+  // 90%+ or within 90s of end
+  return pct>=90||prog.time>=prog.duration-90;
+}
 function renderDetailEps(releaseId, eps){
   const wrap=$('detEps'); wrap.innerHTML='';
   if(!eps.length){ wrap.innerHTML='<div style="color:var(--t3);font-size:13px">Серии не найдены</div>'; return; }
@@ -2049,10 +2468,8 @@ function renderDetailEps(releaseId, eps){
     const epId=ep.id;
     const prog=Store.getProgress(releaseId,epId);
     const pct=prog&&prog.duration>0?(prog.time/prog.duration*100):0;
-    // "done" = watched to within 90s of end OR >95%
-    const isDone=prog&&prog.duration>0&&(prog.time>=prog.duration-60||pct>95);
-    // "partial" = started but not done, and more than 60s in
-    const isPartial=prog&&prog.time>60&&!isDone;
+    const isDone=isEpDone(prog,ep);
+    const isPartial=prog&&prog.time>10&&!isDone;
     const isCur=lastProg&&String(lastProg.epId)===String(epId);
     const b=document.createElement('button');
     b.className='dep'+(isDone?' ep-done':isPartial?' ep-partial':'')+(isCur?' ep-current':'');
@@ -2063,7 +2480,21 @@ function renderDetailEps(releaseId, eps){
     }
     if(isDone) inner+=`<br><span style="font-size:9px;opacity:.7">✓</span>`;
     b.innerHTML=inner;
-    b.addEventListener('click',()=>{ playerEpIdx=i; startPlayer(); });
+    // Store ids for long-press removal
+    b.dataset.releaseId=String(releaseId);
+    b.dataset.epId=String(epId);
+    let _depHold=null;
+    b.addEventListener('click',()=>{ if(window._depLongFired){ return; } playerEpIdx=i; startPlayer(); });
+    b.addEventListener('pointerdown',e=>{
+      if(e.pointerType==='mouse'&&e.button!==0) return;
+      window._depLongFired=false;
+      _depHold=setTimeout(()=>{
+        _depHold=null; window._depLongFired=true;
+        _removeEpProgress(b);
+      },600);
+    });
+    b.addEventListener('pointerup',()=>{ clearTimeout(_depHold); _depHold=null; });
+    b.addEventListener('pointerleave',()=>{ clearTimeout(_depHold); _depHold=null; });
     wrap.appendChild(b);
   });
 }
@@ -2074,6 +2505,10 @@ function closeDetail(){
   $('detOv').classList.remove('on');
   const zoneMap={home:'home.cards',catalog:'cat.grid',schedule:'sch',collections:'coll.grid'};
   nav.zone=zoneMap[pg.cur]||'home.cards';
+  // Restore catalog scroll
+  if(pg.cur==='catalog'&&window._catScrollSaved!=null){
+    requestAnimationFrame(()=>{ $('catGrid').scrollTop=window._catScrollSaved; });
+  }
   applyZoneFocus();
 }
 
@@ -2087,7 +2522,8 @@ function startPlayer(){
     $('plySpinner').style.display='none'; // actually show it
     $('plySpin').style.display='flex';
     $('plyEpL').textContent=authToken?'Не удалось загрузить серии':'Авторизуйтесь для просмотра';
-    nav.zone='player'; nav.plyZone='video'; nav.plyBtn=1; showCtrl();
+    nav.zone='player'; nav.plyZone='video'; nav.plyBtn=1;
+  setTimeout(()=>{ if(document.activeElement&&document.activeElement!==document.body) document.activeElement.blur(); },0);
     return;
   }
   const ep=playerEps[playerEpIdx]; if(!ep) return;
@@ -2099,24 +2535,54 @@ function openPlayerEp(ep){
   const v=$('vid');
   if(currentEp&&r&&v.currentTime>5) Store.forceSaveProgress(r.id,currentEp.id,v.currentTime,v.duration,currentEp.ordinal,playerEps.length||r.episodes_total||0);
   clearTimeout(saveTimer); saveTimer=null;
+  window._skipDismissed=false;
   currentEp=ep;
   $('plyTtl').textContent=rName(r)||'';
   $('plyEpL').textContent=`Серия ${ep.ordinal||playerEpIdx+1}${ep.name?' — '+ep.name:''}`;
   $('plySpin').style.display='flex';
   $('plyOv').classList.add('on');
   nav.zone='player'; nav.plyZone='video'; nav.plyBtn=1;
+  // Hide UI immediately
+  clearTimeout(ctrlTimer);
+  (_$plyOv||$('plyOv')).classList.remove('ctrl');
+  // Blur DOM focus
+  setTimeout(()=>{ if(document.activeElement&&document.activeElement!==document.body) document.activeElement.blur(); },0);
+  startPlyWatchdog();
   buildEpStrip();
   buildQualBtn(ep);
   // check saved progress
   const prog=r&&ep?Store.getProgress(r.id,ep.id):null;
   const url=currentEp[currentQual]||ep.hls_1080||ep.hls_720||ep.hls_480;
-  if(url){ loadVideo(url.startsWith('http')?url:CDN+url, prog?.time||0, ep); }
+  let _st=0;
+  if(window._forceStart!==undefined){
+    _st=window._forceStart;
+  } else if(prog&&prog.duration>0){
+    const done=isEpDone(prog, playerEps.find(e=>String(e.id)===String(ep.id)));
+    _st=done?Math.max(0,prog.duration-20):prog.time;
+  }
+  if(url){ loadVideo(url.startsWith('http')?url:CDN+url, _st, ep); }
   else{
     $('plySpin').style.display='none';
     $('plyEpL').textContent='HLS URL отсутствует (нужен токен)';
     showCtrl();
   }
 }
+// Open episode from list with smart resume
+function openPlayerEpFromList(ep){
+  if(!ep) return;
+  const r=detRelease;
+  const prog=r?Store.getProgress(r.id,ep.id):null;
+  let startT=0;
+  if(prog&&prog.duration>0){
+    const done=isEpDone(prog, playerEps.find(e=>String(e.id)===String(ep.id)));
+    startT=done?Math.max(0,prog.duration-20):prog.time;
+  }
+  window._forceStart=startT;
+  openPlayerEp(ep);
+  window._forceStart=undefined;
+  // UI starts hidden (handled in openPlayerEp)
+}
+
 // Rebuild strip if nav.plyEp scrolled outside the current window
 function _ensureEpInStrip(){
   const strip=_$plyEps||$('plyEps');
@@ -2140,11 +2606,13 @@ function buildEpStrip(){
   for(let realI=start;realI<end;realI++){
     const ep=playerEps[realI];
     const prog=r?Store.getProgress(r.id,ep.id):null;
-    const isDone=prog&&prog.duration>0&&(prog.time>=prog.duration-60||prog.time/prog.duration>0.95);
+    const isDone=isEpDone(prog,ep);
     const b=document.createElement('button');
-    b.className='pep'+(realI===playerEpIdx?' cur':isDone?' ep-done':'');
+    const isPartialP=prog&&prog.time>10&&!isDone;
+    b.className='pep'+(realI===playerEpIdx?' cur':isDone?' ep-done':isPartialP?' ep-partial':'');
     b.dataset.gi=realI;
     b.textContent=ep.ordinal||realI+1;
+    b.tabIndex=-1; // prevent browser auto-focus
     b.addEventListener('click',()=>{playerEpIdx=realI;nav.plyEp=realI;openPlayerEp(playerEps[realI]);});
     strip.appendChild(b);
   }
@@ -2179,10 +2647,10 @@ function _loadVideo(url, startTime, ep){
     hlsInst.on(Hls.Events.MANIFEST_PARSED,()=>{
       if(startTime>5) v.currentTime=startTime;
       v.play().catch(()=>{});
-      $('plySpin').style.display='none'; showCtrl();
+      $('plySpin').style.display='none';
     });
     hlsInst.on(Hls.Events.ERROR,(_,d)=>{
-      if(d.fatal){ $('plySpin').style.display='none'; showCtrl(); }
+      if(d.fatal){ $('plySpin').style.display='none'; }
     });
   } else if(nativeHls){
     // Tizen TV / Safari — нативний HLS
@@ -2203,7 +2671,7 @@ function _loadVideo(url, startTime, ep){
         v.addEventListener('canplay',doSeek);
       }
       v.play().catch(()=>{});
-      $('plySpin').style.display='none'; showCtrl();
+      $('plySpin').style.display='none';
     };
     v.addEventListener('loadedmetadata',onReady);
     v.addEventListener('error',()=>{
@@ -2212,7 +2680,6 @@ function _loadVideo(url, startTime, ep){
   } else {
     $('plySpin').style.display='none';
     $('plyEpL').textContent='Формат видео не поддерживается';
-    showCtrl();
   }
   let _tuf=false;
   v.ontimeupdate=()=>{ if(_tuf) return; _tuf=true; requestAnimationFrame(()=>{ _tuf=false;
@@ -2223,15 +2690,37 @@ function _loadVideo(url, startTime, ep){
     // save progress every 8s
     if(!saveTimer) saveTimer=setTimeout(()=>{
       const r=detRelease;
-      if(r&&ep){ Store.saveProgress(r.id,ep.id,v.currentTime,v.duration,ep.ordinal,playerEps.length||r.episodes_total||0); syncProgress(ep.id,v.currentTime); }
+      if(r&&ep){ Store.saveProgress(r.id,ep.id,v.currentTime,v.duration,ep.ordinal,playerEps.length||r.episodes_total||0); syncProgress(ep.id,v.currentTime,isEpDone({time:v.currentTime,duration:v.duration},ep)); }
       saveTimer=null;
     },8000);
-    // skip opening
-    const skip=ep?.opening;
-    if(skip&&v.currentTime>=skip.start&&v.currentTime<skip.stop){
-      $('skipBtn').classList.add('on');
+    // skip opening / ending
+    const skipOp=ep?.opening, skipEd=ep?.ending;
+    const inOpening=skipOp&&v.currentTime>=skipOp.start&&v.currentTime<skipOp.stop;
+    const inEnding=skipEd&&v.currentTime>=skipEd.start&&v.currentTime<skipEd.stop;
+    // Skip next episode button — show during ending if there's a next ep
+    const hasNext=playerEpIdx<playerEps.length-1;
+    const snb=$('skipNextBtn');
+    if(inEnding&&hasNext){
+      if(!snb.classList.contains('on')) snb.classList.add('on');
     } else {
+      snb.classList.remove('on','foc');
+    }
+
+    if((inOpening||inEnding)&&!window._skipDismissed){
+      const _sb=$('skipBtn');
+      const label=inEnding?'⏩ Пропустить эндинг':'⏩ Пропустить опенинг';
+      if(!_sb.classList.contains('on')||_sb.textContent!==label){
+        _sb.textContent=label;
+        _sb.classList.add('on');
+        window._skipTarget=inEnding?skipEd.stop:skipOp.stop;
+        if(!(_$plyOv||$('plyOv')).classList.contains('ctrl')){
+          nav.plyZone='skip'; _sb.classList.add('foc');
+        }
+      }
+    } else if(!inOpening&&!inEnding){
+      window._skipDismissed=false;
       $('skipBtn').classList.remove('on','foc');
+      if(nav.plyZone==='skip') nav.plyZone='video';
       if(nav.plyZone==='back'){
       if(k==='ArrowRight'||k==='Escape'||k==='Backspace'||k==='GoBack'){
         $('pcClose')?.classList.remove('foc'); nav.plyZone='ctrl'; nav.plyBtn=0; applyPlyFoc(); e.preventDefault(); return;
@@ -2250,7 +2739,6 @@ function _loadVideo(url, startTime, ep){
       let countdown=3;
       const next=playerEps[playerEpIdx+1];
       $('plyEpL').textContent=`Следующая: Серия ${next.ordinal||playerEpIdx+2} — через ${countdown}с`;
-      showCtrl();
       const timer=setInterval(()=>{
         countdown--;
         if(countdown<=0){
@@ -2268,7 +2756,7 @@ function _loadVideo(url, startTime, ep){
   };
 }
 // ── Player zone helpers ────────────────────────────────────────────────────
-const PLY_BTNS = ['pcPrev','pcPlay','pcNext','pcQual','pcFit','pcFullscreen'];
+// PLY_BTNS_PC, PLY_BTNS_TV, PLY_BTNS defined at script start
 // Quality
 let currentEp=null, currentQual=null;
 const QUAL_LABELS={hls_1080:'1080p',hls_720:'720p',hls_480:'480p'};
@@ -2313,6 +2801,14 @@ function selectQual(key){
   closeQualMenu();
   const url=currentEp[key];
   if(url) loadVideo(url.startsWith('http')?url:CDN+url, savedTime, currentEp);
+  // After quality: go to ctrl zone btn 1, then hide UI
+  setTimeout(()=>{
+    nav.plyZone='ctrl'; nav.plyBtn=1;
+    PLY_BTNS.forEach((id,i)=>$(id)?.classList.toggle('foc',i===1));
+    $('plyBar').classList.remove('bar-foc');
+    clearTimeout(ctrlTimer);
+    $('plyOv').classList.remove('ctrl');
+  },200);
 }
 function buildQualBtn(ep){
   const quals=getAvailableQuals(ep);
@@ -2323,8 +2819,11 @@ function buildQualBtn(ep){
 }
 
 function applyPlyFoc(){
-  const isCtrl=nav.plyZone==='ctrl', isEps=nav.plyZone==='eps';
+  const isCtrl=nav.plyZone==='ctrl', isEps=nav.plyZone==='eps', isBar=nav.plyZone==='bar';
   PLY_BTNS.forEach((id,i)=>$(id)?.classList.toggle('foc',isCtrl&&i===nav.plyBtn));
+  $('pcPrev')?.classList.toggle('pb-disabled',playerEpIdx<=0);
+  $('pcNext')?.classList.toggle('pb-disabled',playerEpIdx>=playerEps.length-1);
+  $('plyBar').classList.toggle('bar-foc',isBar);
   if(isEps){
     const strip=_$plyEps||$('plyEps');
     strip.querySelectorAll('.pep.foc').forEach(p=>p.classList.remove('foc'));
@@ -2336,8 +2835,22 @@ function applyPlyFoc(){
   }
   $('skipBtn').classList.toggle('foc',nav.plyZone==='skip');
 }
+
+function _plyHideUI(){
+  clearTimeout(ctrlTimer);
+  (_$plyOv||$('plyOv')).classList.remove('ctrl');
+  PLY_BTNS.forEach(id=>$(id)?.classList.remove('foc'));
+  $('plyBar').classList.remove('bar-foc');
+  document.querySelectorAll('.pep.foc').forEach(p=>p.classList.remove('foc'));
+  if($('skipBtn').classList.contains('on')) window._skipDismissed=true;
+  $('skipBtn').classList.remove('on','foc');
+  $('skipNextBtn')?.classList.remove('on','foc');
+  nav.plyZone='video';
+}
 function plyEnterCtrl(){
   nav.plyZone = 'ctrl';
+  // If current button is disabled, move to Play (index 1)
+  if($(PLY_BTNS[nav.plyBtn])?.classList.contains('pb-disabled')) nav.plyBtn=1;
   showCtrl();
   applyPlyFoc();
 }
@@ -2353,9 +2866,17 @@ function showCtrl(){
   clearTimeout(ctrlTimer);
   const _ov=_$plyOv||$('plyOv');
   _ov.classList.add('ctrl');
-  if(nav.plyZone==='video'){
-    ctrlTimer=setTimeout(()=>_ov.classList.remove('ctrl'),5000);
-  }
+  ctrlTimer=setTimeout(()=>{
+    if(nav.plyZone==='qual') return;
+    _ov.classList.remove('ctrl');
+    PLY_BTNS.forEach(id=>$(id)?.classList.remove('foc'));
+    $('plyBar').classList.remove('bar-foc');
+    document.querySelectorAll('.pep.foc').forEach(p=>p.classList.remove('foc'));
+    nav.plyZone='video';
+    // Re-focus skip if still active
+    const sb=$('skipBtn');
+    if(sb?.classList.contains('on')){ nav.plyZone='skip'; sb.classList.add('foc'); }
+  },5000);
 }
 function togglePlay(){
   const v=$('vid'), ico=$('pcPlayIco');
@@ -2381,12 +2902,27 @@ function refreshDetActBtn(r){
     if(hasProgress&&lastProg.epId){
       const idx=playerEps.findIndex(e=>String(e.id)===String(lastProg.epId));
       playerEpIdx=idx>=0?idx:0;
+      // "Продолжить": always resume from exact saved time (no -20s logic)
+      window._forceStart=lastProg.time||0;
     }
     startPlayer();
+    window._forceStart=undefined;
   });
-  $('detReset')?.addEventListener('click',()=>{
+  $('detReset')?.addEventListener('click',async()=>{
+    Store._buildIdx();
+    const prefix2=`alv_p_${r.id}_`;
+    const epIds2=(Store._pidx[String(r.id)]||[]).map(k=>k.slice(prefix2.length));
+    window._resetReleaseId=String(r.id);
     Store.clearReleaseProgress(r.id);
     Store.removeHistory(r.id);
+    if(authToken){
+      const ids2=epIds2.length?epIds2:playerEps.map(ep=>String(ep.id));
+      if(ids2.length){
+        try{ await api('/accounts/users/me/views/timecodes',{method:'DELETE',
+          body:JSON.stringify(ids2.map(id=>({release_episode_id:id})))
+        }); }catch(_){}
+      }
+    }
     // Remove from collGrid if history tab is open
     if(curCollTab==='history'){
       $('collGrid').querySelectorAll(`.card[data-rid="${r.id}"]`).forEach(el=>el.remove());
@@ -2397,10 +2933,14 @@ function refreshDetActBtn(r){
     refreshDetActBtn(r);
     if(playerEps.length) renderDetailEps(r.id, playerEps);
   });
-  clearFoc('.det-acts .btn'); $('detPlay').classList.add('foc');
+  // Don't steal focus if player is already open
+  if(nav.zone!=='player'){
+    clearFoc('.det-acts .btn'); $('detPlay').classList.add('foc');
+  }
 }
 
 function closePlayer(){
+  clearInterval(_plyFocusWatchdog); _plyFocusWatchdog=null;
   const v=$('vid');
   const r=detRelease, ep=playerEps[playerEpIdx];
   if(r&&ep&&v.currentTime>5) Store.forceSaveProgress(r.id,ep.id,v.currentTime,v.duration,ep.ordinal,playerEps.length||r.episodes_total||0);
@@ -2432,38 +2972,77 @@ function closePlayer(){
     });
   }
 }
+$('skipNextBtn').addEventListener('click',()=>{
+  $('skipNextBtn').classList.remove('on','foc');
+  if(playerEpIdx<playerEps.length-1){ playerEpIdx++; openPlayerEp(playerEps[playerEpIdx]); }
+});
 $('skipBtn').addEventListener('click',()=>{
   const ep=playerEps[playerEpIdx];
-  if(ep?.opening) $('vid').currentTime=ep.opening.stop;
+  // Use stored target (opening or ending stop time)
+  if(window._skipTarget) $('vid').currentTime=window._skipTarget;
+  else if(ep?.opening) $('vid').currentTime=ep.opening.stop;
+  window._skipTarget=null;
+  window._skipDismissed=true;
   $('skipBtn').classList.remove('on','foc');
-  if(nav.plyZone==='skip'){ nav.plyZone='ctrl'; applyPlyFoc(); }
+  if(nav.plyZone==='skip') nav.plyZone='video';
 });
 $('pcPlay').addEventListener('click',togglePlay);
 $('pcClose').addEventListener('click',closePlayer);
+// Prevent player buttons/video from getting DOM focus
+['pcPrev','pcPlay','pcNext','pcQual','pcFit','pcFullscreen','pcClose','skipBtn','skipNextBtn'].forEach(id=>{
+  const el2=document.getElementById(id); if(el2) el2.tabIndex=-1;
+  const el=document.getElementById(id);
+  if(el) el.addEventListener('mousedown',e=>{ if(nav.zone==='player') e.preventDefault(); });
+});
 // ── Accelerated seek on held arrow keys ─────────────────────────────────
-let _seekDir=0, _seekCount=0, _seekTimer=null, _seekRAF=null;
+let _seekDir=0, _seekCount=0, _seekTimer=null;
+let _seekPausedByUs=false;
 function _seekAccel(dir){
   const v=$('vid'); if(!v.duration) return;
-  if(dir!==_seekDir){ _seekDir=dir; _seekCount=0; clearTimeout(_seekTimer); }
+  if(dir!==_seekDir){ _seekDir=dir; _seekCount=0; }
   _seekCount++;
-  // step grows: 5s → 10s → 30s after repeated presses
-  const step=_seekCount<=2?5:_seekCount<=5?10:30;
+  const step=_seekCount<=2?10:_seekCount<=5?15:30;
   const t=Math.max(0,Math.min(v.duration,v.currentTime+dir*step));
+  // Pause for freeze-frame
+  if(!v.paused&&!_seekPausedByUs){ v.pause(); _seekPausedByUs=true; }
   v.currentTime=t;
-  // Update bar instantly without waiting for ontimeupdate
-  if(v.duration) $('plyFill').style.width=(t/v.duration*100)+'%';
-  showCtrl();
-  // Reset counter after 800ms of no presses
+  if(v.duration){ $('plyFill').style.width=(t/v.duration*100)+'%'; $('plyTime').textContent=fmt(t)+' / '+fmt(v.duration); }
   clearTimeout(_seekTimer);
-  _seekTimer=setTimeout(()=>{ _seekDir=0; _seekCount=0; },800);
+  _seekTimer=setTimeout(()=>{
+    _seekDir=0; _seekCount=0;
+    if(_seekPausedByUs){ v.play(); _seekPausedByUs=false; }
+  },700);
 }
 $('pcPrev').addEventListener('click',()=>{if(playerEpIdx>0){playerEpIdx--;openPlayerEp(playerEps[playerEpIdx]);}});
 $('pcNext').addEventListener('click',()=>{if(playerEpIdx<playerEps.length-1){playerEpIdx++;openPlayerEp(playerEps[playerEpIdx]);}})
 $('pcQual').addEventListener('click',()=>{ openQualMenu(); });;
 $('plyOv').addEventListener('mousemove',showCtrl);
+$('plyOv').addEventListener('keydown',e=>{
+  if(nav.zone==='player'){ handleKey(e); e.preventDefault(); }
+},{capture:true});
+// While player is open, prevent any child from holding DOM focus
+$('plyOv').addEventListener('focusin',e=>{
+  if(nav.zone==='player') setTimeout(()=>{ if(document.activeElement&&document.activeElement!==document.body) document.activeElement.blur(); },0);
+});
+// Watchdog: while player is open, keep DOM focus clear so keyboard works
+let _plyFocusWatchdog=null;
+function startPlyWatchdog(){
+  clearInterval(_plyFocusWatchdog);
+  _plyFocusWatchdog=setInterval(()=>{
+    if(nav.zone!=='player'){ clearInterval(_plyFocusWatchdog); _plyFocusWatchdog=null; return; }
+    if(document.activeElement&&document.activeElement!==document.body) document.activeElement.blur();
+  },100);
+}
 $('plyOv').addEventListener('click',e=>{
-  if($('plyQualMenu').classList.contains('on')&&!e.target.closest('#plyQualMenu')&&!e.target.closest('#pcQual'))
-    closeQualMenu();
+  if($('plyQualMenu').classList.contains('on')&&!e.target.closest('#plyQualMenu')&&!e.target.closest('#pcQual')){
+    closeQualMenu(); return;
+  }
+  // Click on video area (not on controls/buttons) = play/pause
+  if(!_isTizen && !e.target.closest('.ply-ctrl') && !e.target.closest('.ply-back-btn')
+     && !e.target.closest('#skipBtn') && !e.target.closest('#skipNextBtn')
+     && !e.target.closest('#plyQualMenu')){
+    togglePlay(); showCtrl();
+  }
 });
 // ── Timeline scrub (mouse + touch + TV remote) ──────────────────────────
 (()=>{
@@ -2484,14 +3063,17 @@ $('plyOv').addEventListener('click',e=>{
     if(_raf) cancelAnimationFrame(_raf);
     _raf=requestAnimationFrame(()=>{ v.currentTime=t; _raf=null; });
   }
+  let _scrubbingWasPlaying=false;
   bar.addEventListener('mousedown',e=>{
     const v=$('vid'); if(!v.duration) return;
     dragging=true; bar.classList.add('scrubbing');
+    if(!v.paused){v.pause();_scrubbingWasPlaying=true;}
     applySeek(pctFromEvent(e)); showCtrl(); e.preventDefault();
   });
   bar.addEventListener('touchstart',e=>{
     const v=$('vid'); if(!v.duration) return;
     dragging=true; bar.classList.add('scrubbing');
+    if(!v.paused){v.pause();_scrubbingWasPlaying=true;}
     applySeek(pctFromEvent(e)); showCtrl(); e.preventDefault();
   },{passive:false});
   window.addEventListener('mousemove',e=>{
@@ -2506,6 +3088,7 @@ $('plyOv').addEventListener('click',e=>{
     if(!dragging) return;
     dragging=false; bar.classList.remove('scrubbing');
     applySeek(pctFromEvent(e));
+    if(_scrubbingWasPlaying){ $('vid').play(); _scrubbingWasPlaying=false; }
   }
   window.addEventListener('mouseup',endDrag);
   window.addEventListener('touchend',endDrag);
@@ -2595,7 +3178,7 @@ async function doLogin(l,p){
     const nick=me?.nickname||me?.login||l;
     $('userPill').classList.add('on'); $('uname').textContent=nick; $('loginBtn').style.display='none';
     setStatus('ok','Вошли · '+nick); closeLogin();
-    await syncCollFromAPI();
+    await migrateLocalToCloud();
   }catch(e){
     $('lpErr').textContent=e.code===401?'Неверный логин или пароль':e.code===422?'Некорректные данные':'Ошибка сети. Проверьте соединение.';
   }
@@ -2619,7 +3202,11 @@ function switchPage(name){
   // lazy load
   if(name==='catalog'&&!catLoading&&$('catGrid').children.length<=1) loadCatalog(true);
   if(name==='schedule') loadSchedule();
-  if(name==='collections') renderCollTab(curCollTab);
+  if(name==='collections'){
+    renderCollTab(curCollTab);
+    // Sync only if stale (>60s since last sync)
+    if(authToken&&Date.now()-_lastCollSync>60000) _doCollSync();
+  }
   // set zone
   const zones={home:'home.cards',catalog:'cat.search',schedule:'sch',collections:'coll.tabs'};
   nav.zone=zones[name]||'home.cards';
@@ -2779,11 +3366,15 @@ function execCtxAction(i){
     const coll=Store.getColl();
     const arr=coll[key]||[];
     const idx=arr.indexOf(r.id);
-    if(idx===-1){ arr.push(r.id); Store.cacheRelease(r); }
+    if(idx===-1){ arr.unshift(r.id); Store.cacheRelease(r); }
     else arr.splice(idx,1);
     coll[key]=arr; Store.set('alv_coll',coll);
     syncCollToAPI(key, r.id, idx===-1);
     const inNow=idx===-1;
+    // When added to completed: mark all eps watched
+    if(key==='completed'&&inNow) markAllEpsWatched(r);
+    // Refresh coll badge on all visible cards
+    refreshCardBadge(r.id);
     // If we just removed from the currently viewed tab — remove card immediately
     if(!inNow && key===curCollTab){
       document.querySelectorAll(`#collGrid .card[data-rid="${r.id}"]`).forEach(el=>el.remove());
@@ -2796,6 +3387,64 @@ function execCtxAction(i){
     if(col){ item.l=(inNow?'Удалить из «'+col.l+'»':'Добавить в «'+col.l+'»'); item.active=inNow; }
     openCtxMenu(r); // re-render menu
     return;
+  }
+}
+
+
+// Mark all episodes of a release as watched and update cards everywhere
+async function markAllEpsWatched(r){
+  if(!r) return;
+  Store.addHistory(r.id);
+  // Use playerEps if already loaded for this release, else fetch episodes
+  let eps=[];
+  if(detRelease&&String(detRelease.id)===String(r.id)&&playerEps.length){
+    eps=playerEps;
+  } else {
+    try{
+      const detail=await api('/anime/releases/'+(r.alias||r.id));
+      eps=detail?.episodes||[];
+    }catch(_){}
+  }
+  if(!eps.length){
+    // No episodes loaded — at least mark progress bar as 100%
+    document.querySelectorAll(`.card[data-rid="${r.id}"]`).forEach(card=>{
+      let bar=card.querySelector('.c-prog');
+      if(!bar){ bar=document.createElement('div'); bar.className='c-prog'; bar.innerHTML='<div class="c-prog-f"></div>'; card.appendChild(bar); }
+      bar.querySelector('.c-prog-f').style.width='100%';
+    });
+    return;
+  }
+  const batch=[];
+  eps.forEach(ep=>{
+    const existing=Store.getProgress(r.id,ep.id);
+    const dur=ep.duration||existing?.duration||1440;
+    Store.forceSaveProgress(r.id,ep.id,dur,dur,ep.ordinal||0,eps.length);
+    if(authToken) batch.push({release_episode_id:ep.id,time:dur,is_watched:true});
+  });
+  // Push all to cloud at once
+  if(batch.length&&authToken){
+    api('/accounts/users/me/views/timecodes',{method:'POST',body:JSON.stringify(batch)}).catch(()=>{});
+  }
+  // Update all cards with this release id on the page
+  document.querySelectorAll(`.card[data-rid="${r.id}"]`).forEach(card=>{
+    let bar=card.querySelector('.c-prog');
+    if(!bar){ bar=document.createElement('div'); bar.className='c-prog'; bar.innerHTML='<div class="c-prog-f"></div>'; card.appendChild(bar); }
+    bar.querySelector('.c-prog-f').style.width='100%';
+  });
+  // Refresh coll badge on cards
+  refreshCardBadge(r.id);
+  // If 'completed' tab is open, add card there
+  if(curCollTab==='completed'){
+    const grid=$('collGrid');
+    if(!grid.querySelector(`.card[data-rid="${r.id}"]`)){
+      grid.querySelector('.coll-empty')?.remove();
+      appendCollCard(r,'completed');
+    }
+  }
+  // Refresh detail page if open for this release
+  if(detRelease&&String(detRelease.id)===String(r.id)){
+    renderDetailEps(r.id,eps);
+    refreshDetActBtn(r);
   }
 }
 
@@ -2862,114 +3511,142 @@ function handleKey(e){
   }
 
   if(Z==='player'){
-    showCtrl();
-    // Back завжди
+    e.preventDefault(); // always prevent default in player
+
+    const _ov=_$plyOv||$('plyOv');
+    const uiOn=_ov.classList.contains('ctrl');
+    const pz=nav.plyZone;
+
+    // ── Back/Escape ───────────────────────────────────
     if(k==='Escape'||k==='Backspace'||k==='GoBack'||e.keyCode===10009){
-      closePlayer(); e.preventDefault(); return;
+      if(pz==='qual')  { closeQualMenu(); return; }
+      if(pz==='bar')   { plyEnterCtrl(); _plyHideUI(); return; } // bar Back → ctrl + hide UI
+      if(pz==='eps')   { $('plyEps').querySelectorAll('.pep.foc').forEach(p=>p.classList.remove('foc')); plyEnterCtrl(); return; }               // eps Back → ctrl
+      if(pz==='skip')    { window._skipDismissed=true; $('skipBtn').classList.remove('on','foc'); nav.plyZone='video'; return; }
+      if(pz==='skipnext'){ $('skipNextBtn').classList.remove('foc'); nav.plyZone='video'; return; }
+      if(uiOn)         { _plyHideUI(); return; }                 // UI visible → hide
+      closePlayer(); return;                                      // UI hidden → close
     }
 
-    // ── Режим просмотра ──────────────────────────────
-    if(nav.plyZone==='video'){
-      if(k==='ArrowRight'){ _seekAccel(+1); e.preventDefault(); return; }
-      if(k==='ArrowLeft') { _seekAccel(-1); e.preventDefault(); return; }
-      if(k==='Enter'||k===' '){
-        // якщо зараз іде опенінг — пропустити
-        if($('skipBtn').classList.contains('on')){
-          $('skipBtn').click();
-        } else {
-          togglePlay();
-        }
-        e.preventDefault(); return;
-      }
-      if(k==='ArrowUp'||k==='ArrowDown'){ plyEnterCtrl(); e.preventDefault(); return; }
-      e.preventDefault(); return;
-    }
-
-    // ── Режим кнопок (⏮ ▶ ⏭ ✕) ─────────────────────
-    if(nav.plyZone==='ctrl'){
-      if(k==='ArrowLeft'){
-        if(nav.plyBtn===0){
-          PLY_BTNS.forEach(id=>$(id)?.classList.remove('foc'));
-          $('pcClose')?.classList.add('foc');
-          nav.plyZone='back'; e.preventDefault(); return;
-        }
-        nav.plyBtn=Math.max(nav.plyBtn-1,0); applyPlyFoc(); e.preventDefault(); return;
-      }
-      if(k==='ArrowRight'){ nav.plyBtn=Math.min(nav.plyBtn+1,PLY_BTNS.length-1); applyPlyFoc(); e.preventDefault(); return; }
+    // ── Skip opening ──────────────────────────────────
+    if(pz==='skip'){
+      if(k==='Enter'||k===' ')          { $('skipBtn').click(); nav.plyZone='video'; return; }
       if(k==='ArrowDown'){
-        const peps=[...$('plyEps').querySelectorAll('.pep')];
-        if(peps.length){
-          nav.plyZone='eps';
-          nav.plyEp=playerEpIdx; // global index
-          showCtrl();
-          applyPlyFoc();
-        } else { plyLeaveCtrl(); }
-        e.preventDefault(); return;
+        // If skipNextBtn visible, focus it
+        if($('skipNextBtn').classList.contains('on')){
+          $('skipBtn').classList.remove('foc'); $('skipNextBtn').classList.add('foc');
+          nav.plyZone='skipnext'; return;
+        }
+        $('skipBtn').classList.remove('foc'); plyEnterCtrl(); return;
       }
-      if(k==='ArrowUp'){
-        // якщо кнопка skip видима — перейти до неї
-        if($('skipBtn').classList.contains('on')){
-          nav.plyZone='skip'; showCtrl(); applyPlyFoc();
-        } else { plyLeaveCtrl(); }
-        e.preventDefault(); return;
+      if(k==='ArrowUp'){ $('skipBtn').classList.remove('foc'); plyEnterCtrl(); return; }
+      if(k==='ArrowLeft'||k==='ArrowRight'){
+        // seek silently, show bar briefly without changing zone
+        _seekAccel(k==='ArrowRight'?+1:-1);
+        $('skipBtn').classList.remove('foc');
+        _ov.classList.add('ctrl');
+        clearTimeout(ctrlTimer);
+        ctrlTimer=setTimeout(()=>{ _ov.classList.remove('ctrl'); if(nav.plyZone==='video'){ const sb=$('skipBtn'); if(sb.classList.contains('on')){ nav.plyZone='skip'; sb.classList.add('foc'); } } },2500);
+        return;
       }
-      if(k==='Enter'||k===' '){
-        if(PLY_BTNS[nav.plyBtn]==='pcQual'){ openQualMenu(); }
-        else { $(PLY_BTNS[nav.plyBtn])?.click(); }
-        e.preventDefault(); return;
-      }
-      e.preventDefault(); return;
+      return;
     }
 
-    // ── Меню качества ──────────────────────────────────
-    if(nav.plyZone==='qual'){
+    // ── Skip next episode button ──────────────────────
+    if(pz==='skipnext'){
+      if(k==='Enter'||k===' '){ $('skipNextBtn').click(); nav.plyZone='video'; return; }
+      if(k==='ArrowUp'){ $('skipNextBtn').classList.remove('foc'); $('skipBtn').classList.add('foc'); nav.plyZone='skip'; return; }
+      if(k==='ArrowDown'){ $('skipNextBtn').classList.remove('foc'); plyEnterCtrl(); return; }
+      return;
+    }
+
+    // ── UI hidden ─────────────────────────────────────
+    if(!uiOn){
+      if(k==='ArrowLeft'||k==='ArrowRight'){
+        _seekAccel(k==='ArrowRight'?+1:-1);
+        nav.plyZone='bar'; showCtrl(); applyPlyFoc(); return;
+      }
+      if(k==='ArrowUp')            { plyEnterCtrl(); return; }
+      if(k==='ArrowDown')          { nav.plyZone='eps'; nav.plyEp=playerEpIdx; showCtrl(); applyPlyFoc(); return; }
+      if(k==='Enter'||k===' ')     { togglePlay(); plyEnterCtrl(); return; }
+      return;
+    }
+
+    // ── Quality menu ──────────────────────────────────
+    if(pz==='qual'){
       const opts=[...$('plyQualMenu').querySelectorAll('.ply-qual-opt')];
-      if(k==='ArrowUp')  { nav.plyQualI=Math.max(nav.plyQualI-1,0); applyQualFoc(); e.preventDefault(); return; }
-      if(k==='ArrowDown'){ nav.plyQualI=Math.min(nav.plyQualI+1,opts.length-1); applyQualFoc(); e.preventDefault(); return; }
-      if(k==='Enter'||k===' '){ const key=opts[nav.plyQualI]?.dataset.qual; if(key) selectQual(key); e.preventDefault(); return; }
-      if(k==='Escape'||k==='Backspace'||k==='GoBack'){ closeQualMenu(); e.preventDefault(); return; }
-      e.preventDefault(); return;
+      if(k==='ArrowUp')   { nav.plyQualI=Math.max(nav.plyQualI-1,0); applyQualFoc(); return; }
+      if(k==='ArrowDown') { nav.plyQualI=Math.min(nav.plyQualI+1,opts.length-1); applyQualFoc(); return; }
+      if(k==='Enter'||k===' '){ const key=opts[nav.plyQualI]?.dataset.qual; if(key) selectQual(key); return; }
+      return;
     }
 
-    // ── Кнопка пропустити опенінг ──────────────────────
-    if(nav.plyZone==='back'){
-      if(k==='ArrowRight'||k==='Escape'||k==='Backspace'||k==='GoBack'){
-        $('pcClose')?.classList.remove('foc'); nav.plyZone='ctrl'; nav.plyBtn=0; applyPlyFoc(); e.preventDefault(); return;
+    // ── Timeline bar ──────────────────────────────────
+    if(pz==='bar'){
+      if(k==='ArrowLeft') { _seekAccel(-1); showCtrl(); return; }
+      if(k==='ArrowRight'){ _seekAccel(+1); showCtrl(); return; }
+      if(k==='ArrowDown') { plyEnterCtrl(); return; }
+      if(k==='ArrowUp'){
+        // Focus skip/next buttons if visible, else nothing (already top)
+        const snb=$('skipNextBtn');
+        const sb=$('skipBtn');
+        if(snb?.classList.contains('on')){
+          $('plyBar').classList.remove('bar-foc');
+          snb.classList.add('foc'); nav.plyZone='skipnext'; return;
+        }
+        if(sb?.classList.contains('on')){
+          $('plyBar').classList.remove('bar-foc');
+          sb.classList.add('foc'); nav.plyZone='skip'; return;
+        }
+        return; // already at top
       }
-      if(k==='Enter'){ $('pcClose').click(); e.preventDefault(); return; }
-      e.preventDefault(); return;
-    }
-    if(nav.plyZone==='skip'){
-      if(k==='Enter'||k===' '){ $('skipBtn').click(); nav.plyZone='ctrl'; applyPlyFoc(); e.preventDefault(); return; }
-      if(k==='ArrowDown'||k==='Escape'||k==='Backspace'||k==='GoBack'){ nav.plyZone='ctrl'; applyPlyFoc(); e.preventDefault(); return; }
-      if(k==='ArrowUp'){ plyLeaveCtrl(); e.preventDefault(); return; }
-      e.preventDefault(); return;
+      if(k==='Enter'||k===' '){ togglePlay(); showCtrl(); return; }
+      return;
     }
 
-    // ── Режим серий ──────────────────────────────────
-    if(nav.plyZone==='eps'){
-      const total=playerEps.length;
+    // ── Control buttons ───────────────────────────────
+    if(pz==='ctrl'){
       if(k==='ArrowLeft'){
-        if(nav.plyEp>0){ nav.plyEp--; _ensureEpInStrip(); applyPlyFoc(); }
-        e.preventDefault(); return;
+        let btn=nav.plyBtn-1;
+        while(btn>=0 && $(PLY_BTNS[btn])?.classList.contains('pb-disabled')) btn--;
+        if(btn>=0){ nav.plyBtn=btn; applyPlyFoc(); showCtrl(); }
+        return;
       }
       if(k==='ArrowRight'){
-        if(nav.plyEp<total-1){ nav.plyEp++; _ensureEpInStrip(); applyPlyFoc(); }
-        e.preventDefault(); return;
+        let btn=nav.plyBtn+1;
+        while(btn<PLY_BTNS.length && $(PLY_BTNS[btn])?.classList.contains('pb-disabled')) btn++;
+        if(btn<PLY_BTNS.length){ nav.plyBtn=btn; applyPlyFoc(); showCtrl(); }
+        return;
       }
-      if(k==='ArrowUp')  { 
-        $('plyEps').querySelectorAll('.pep.foc').forEach(p=>p.classList.remove('foc'));
-        nav.plyZone='ctrl'; showCtrl(); applyPlyFoc(); e.preventDefault(); return; 
+      if(k==='ArrowUp')   { nav.plyZone='bar'; showCtrl(); applyPlyFoc(); return; }
+      if(k==='ArrowDown') {
+        const peps=[...$('plyEps').querySelectorAll('.pep')];
+        if(peps.length){ nav.plyZone='eps'; nav.plyEp=playerEpIdx; showCtrl(); applyPlyFoc(); }
+        else { plyLeaveCtrl(); }
+        return;
       }
-      if(k==='ArrowDown'){ plyLeaveCtrl(); e.preventDefault(); return; }
       if(k==='Enter'||k===' '){
-        playerEpIdx=nav.plyEp; openPlayerEp(playerEps[nav.plyEp]);
-        e.preventDefault(); return;
+        showCtrl();
+        const id=PLY_BTNS[nav.plyBtn];
+        if(id==='pcQual') openQualMenu();
+        else if(id==='pcFit') { cycleFit(); applyPlyFoc(); }
+        else $(id)?.click();
+        return;
       }
-      e.preventDefault(); return;
+      return;
     }
 
-    e.preventDefault(); return;
+    // ── Episode list ──────────────────────────────────
+    if(pz==='eps'){
+      const total=playerEps.length;
+      if(k==='ArrowLeft') { if(nav.plyEp>0){ nav.plyEp--; _ensureEpInStrip(); applyPlyFoc(); showCtrl(); } return; }
+      if(k==='ArrowRight'){ if(nav.plyEp<total-1){ nav.plyEp++; _ensureEpInStrip(); applyPlyFoc(); showCtrl(); } return; }
+      if(k==='ArrowUp')   { $('plyEps').querySelectorAll('.pep.foc').forEach(p=>p.classList.remove('foc')); plyEnterCtrl(); return; }
+      if(k==='Enter'||k===' '){ playerEpIdx=nav.plyEp; openPlayerEpFromList(playerEps[nav.plyEp]); return; }
+      return;
+    }
+
+    return;
   }
 
   if(Z==='ctx.menu'){
@@ -3114,7 +3791,19 @@ function focCatGrid(r,c){
   let idx=nav.cg.r*cols+nav.cg.c;
   if(idx>=cards.length){ idx=cards.length-1; nav.cg.r=Math.floor(idx/cols); nav.cg.c=idx%cols; }
   cards[idx].classList.add('foc');
-  siv(cards[idx],{block:'nearest'});
+  if(nav.cg.r===0){
+    $('catGrid').scrollTop=0;
+  } else {
+    // Scroll with extra space above so card isn't hidden under search bar
+    const card=cards[idx];
+    const grid=$('catGrid');
+    const cardTop=card.offsetTop;
+    const cardBottom=cardTop+card.offsetHeight;
+    const visTop=grid.scrollTop;
+    const visBottom=visTop+grid.clientHeight;
+    if(cardTop<visTop+10) grid.scrollTop=cardTop-8;
+    else if(cardBottom>visBottom-10) grid.scrollTop=cardBottom-grid.clientHeight+8;
+  }
 }
 
 // Enter cat.flt zone
@@ -3437,7 +4126,66 @@ function navDetail(k){
     else if(Z==='det.eps') epBtns[nav.detEp]?.click();
     else if(Z==='det.related') relCards[nav.detRel||0]?.click();
   }
+  if(k==='LongEnter'){
+    if(Z==='det.eps'){
+      const btn=epBtns[nav.detEp];
+      if(btn) _removeEpProgress(btn);
+    }
+  }
 }
+
+// Direct ep progress removal (called from long-press mouse or keyboard)
+function _removeEpProgress(btn){
+  const releaseId=btn.dataset.releaseId;
+  const epId=btn.dataset.epId;
+  if(!releaseId||!epId) return;
+  // Block any click event for 500ms after long press
+  window._depLongFired=true;
+  clearTimeout(window._depLongFiredTimer);
+  window._depLongFiredTimer=setTimeout(()=>{ window._depLongFired=false; },500);
+  localStorage.removeItem(`alv_p_${releaseId}_${epId}`);
+  Store._dirtyIdx(String(releaseId));
+  if(authToken) api('/accounts/users/me/views/timecodes',{method:'DELETE',
+    body:JSON.stringify([{release_episode_id:String(epId)}])}).catch(()=>{});
+  // Re-render
+  if(detRelease&&String(detRelease.id)===String(releaseId)){
+    renderDetailEps(Number(releaseId),playerEps);
+    const pct=Store.getTotalProgress(releaseId,playerEps.length);
+    document.querySelectorAll(`.card[data-rid="${releaseId}"] .c-prog-f`).forEach(el=>el.style.width=pct+'%');
+    if(!pct) document.querySelectorAll(`.card[data-rid="${releaseId}"] .c-prog`).forEach(el=>el.remove());
+  }
+}
+
+// Long-press Enter/OK detection for episode buttons
+let _detEpKeyTimer=null, _detEpLongFired=false;
+document.addEventListener('keydown',e=>{
+  if((e.key==='Enter'||e.keyCode===13)&&nav.zone==='det.eps'){
+    if(e.repeat) return; // ignore held-key repeats
+    _detEpLongFired=false;
+    _detEpKeyTimer=setTimeout(()=>{
+      _detEpKeyTimer=null;
+      _detEpLongFired=true;
+      navDetail('LongEnter');
+    },700);
+    // Don't let this keydown propagate to handleKey (prevents click on first press)
+    // We'll fire click on keyup if no long press
+    e.stopImmediatePropagation();
+    e.preventDefault();
+  }
+},{capture:true}); // capture=true to intercept before handleKey
+document.addEventListener('keyup',e=>{
+  if(e.key==='Enter'||e.keyCode===13){
+    if(_detEpKeyTimer){
+      clearTimeout(_detEpKeyTimer); _detEpKeyTimer=null;
+      // Short press — fire click only if long press did NOT fire
+      if(!_detEpLongFired && !window._depLongFired && nav.zone==='det.eps'){
+        const epBtns=[...document.querySelectorAll('.dep')];
+        epBtns[nav.detEp]?.click();
+      }
+    }
+    _detEpLongFired=false;
+  }
+},{capture:true});
 function getEpCols(){
   // measure episode grid column count from DOM
   const ep0=document.querySelector('.dep');
@@ -3452,11 +4200,28 @@ function applyDetFoc(){
   const collBtns=[...document.querySelectorAll('.det-cbtn')];
   const epBtns=[...document.querySelectorAll('.dep')];
   const relCards=[...document.querySelectorAll('.det-related .det-rel-card:not(.drc-current)')];
-  if(Z==='det.back'){ $('detBack')?.classList.add('foc'); siv($('detBack'),{block:'nearest'}); }
-  else if(Z==='det.acts'&&actBtns[nav.detAct]) actBtns[nav.detAct].classList.add('foc');
-  else if(Z==='det.coll'&&collBtns[nav.detColl]) collBtns[nav.detColl].classList.add('foc');
+  if(Z==='det.back'){
+    $('detBack')?.classList.add('foc');
+    // Scroll to very top of detail body
+    const db=document.querySelector('.det-body');
+    if(db) db.scrollTop=0;
+  }
+  else if(Z==='det.acts'&&actBtns[nav.detAct]){ actBtns[nav.detAct].classList.add('foc'); siv(actBtns[nav.detAct],{block:'nearest'}); }
+  else if(Z==='det.coll'&&collBtns[nav.detColl]){ collBtns[nav.detColl].classList.add('foc'); siv(collBtns[nav.detColl],{block:'nearest'}); }
   else if(Z==='det.eps'&&epBtns[nav.detEp]){epBtns[nav.detEp].classList.add('foc');siv(epBtns[nav.detEp],{block:'nearest'});}
-  else if(Z==='det.related'&&relCards[nav.detRel||0]){relCards[nav.detRel||0].classList.add('foc');siv(relCards[nav.detRel||0],{block:'nearest'});}
+  else if(Z==='det.related'&&relCards[nav.detRel||0]){
+    const card=relCards[nav.detRel||0];
+    card.classList.add('foc');
+    // Scroll det-body to show card + padding below
+    const db=document.querySelector('.det-body');
+    if(db){
+      const cardBottom=card.getBoundingClientRect().bottom;
+      const bodyBottom=db.getBoundingClientRect().bottom;
+      if(cardBottom > bodyBottom - 20){
+        db.scrollTop += (cardBottom - bodyBottom + 60);
+      }
+    }
+  }
 }
 function applyZoneFocus(){
   const Z=nav.zone;
@@ -3544,6 +4309,11 @@ $('vid').addEventListener('dblclick', toggleFullscreen);
 
 document.addEventListener('keydown',e=>{
   document.body.classList.remove('mouse');
+  // Prevent browser from scrolling page with arrow keys
+  if((e.key==='ArrowUp'||e.key==='ArrowDown'||e.key==='ArrowLeft'||e.key==='ArrowRight')
+    &&document.activeElement?.tagName!=='INPUT'&&document.activeElement?.tagName!=='TEXTAREA'){
+    e.preventDefault();
+  }
 
   // Exit dialog intercepts all keys
   if($('exitOv').style.display==='flex'){
@@ -3561,6 +4331,12 @@ document.addEventListener('keydown',e=>{
     e.preventDefault(); e.stopImmediatePropagation(); return;
   }
 
+  // Space — play/pause in player
+  if(e.key===' '&&nav.zone==='player'){
+    e.preventDefault();
+    handleKey({key:' ',keyCode:32,preventDefault:()=>{}});
+    return;
+  }
   // F або F11 — повноекранний режим
   if(e.key==='f'||e.key==='F'||e.key==='F11'){ e.preventDefault(); toggleFullscreen(); return; }
 
@@ -3657,7 +4433,9 @@ async function init(){
     const nick=savedUser.nickname||savedUser.login||'User';
     $('userPill').classList.add('on'); $('uname').textContent=nick; $('loginBtn').style.display='none';
     setStatus('ok','Вошли · '+nick);
-    syncCollFromAPI(); // фонова синхронізація колекцій при старті
+    syncOnStartup(); // pull all cloud data on startup
+    // Real-time sync: pull collections every 2 minutes
+    setInterval(()=>{ if(authToken) _doCollSync(); }, 2*60*1000);
   }
   // load genres for catalog (before chips listeners)
   const genresRaw=await loadGenres();
@@ -3980,7 +4758,12 @@ function togglePlyFs(){
     (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen).call(document);
   }
 }
-if(!_isTizen){ $('pcFullscreen').addEventListener('click', togglePlyFs); } else { $('pcFullscreen').style.display='none'; }
+if(!_isTizen){
+  $('pcFullscreen').addEventListener('click', togglePlyFs);
+} else {
+  $('pcFullscreen').style.display='none';
+  $('pcFit').style.display='none';
+}
 document.addEventListener('fullscreenchange',()=>{
   const ico=$('pcFsIco');
   if(document.fullscreenElement){
