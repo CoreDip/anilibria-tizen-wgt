@@ -60,6 +60,8 @@ body.mouse{cursor:default;}
 #fsBtn{display:none;background:none;border:1px solid rgba(255,255,255,.15);cursor:pointer;color:var(--t2);padding:5px 10px;border-radius:8px;font-size:16px;line-height:1;transition:color .15s,background .15s;}
 #fsBtn:hover{color:var(--t1);background:var(--bg3);}
 body.mouse #fsBtn,body.is-mobile #fsBtn{display:inline-flex;align-items:center;}
+body.is-app #fsBtn{display:none!important;}
+body.is-app #pcFullscreen{display:none!important;}
 #userPill{display:none;align-items:center;gap:7px;padding:5px 14px;border-radius:20px;
   color:var(--grn);border:2px solid rgba(34,197,94,.35);background:rgba(34,197,94,.08);
   font-size:13px;font-weight:700;cursor:pointer;outline:none;
@@ -387,8 +389,8 @@ body.mouse .det-rel-card:not(.drc-current):hover,.det-rel-card.foc{border-color:
 /* ===== PLAYER ===== */
 #plyOv{position:fixed;inset:0;z-index:300;background:#000;display:none;flex-direction:column;}
 #plyOv.on{display:flex;}
-.ply-wrap{flex:1;position:relative;overflow:hidden;}
-video{width:100%;height:100%;object-fit:contain;display:block;}
+.ply-wrap{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+video{width:100%;height:100%;object-fit:contain;display:block;max-height:100%;}
 .ply-spin{position:absolute;inset:0;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:12px;}
 .spin{width:52px;height:52px;border:4px solid rgba(255,255,255,.1);
@@ -518,7 +520,10 @@ body.is-mobile #main{top:var(--hh);bottom:56px;left:0;right:0;}
 
 /* Home rows */
 body.is-mobile .home-rows{padding:4px 0 8px;}
-body.is-mobile .track-wrap{padding:0 10px;}
+body.is-mobile .track-wrap{padding:0 10px;overflow-x:auto;overflow-y:visible;
+  scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+body.is-mobile .track-wrap::-webkit-scrollbar{display:none;}
+body.is-mobile .track-wrap .card{scroll-snap-align:start;flex-shrink:0;}
 body.is-mobile .row-hdr{padding:0 14px;}
 
 /* Bottom navigation */
@@ -1029,6 +1034,8 @@ body.is-mobile #schGrid{height:auto!important;}
 <script>
 'use strict';
 const _isTizen=!!window.tizen||/Tizen/i.test(navigator.userAgent);
+const _isApp=new URLSearchParams(location.search).has('app');
+if(_isApp) document.body.classList.add('is-app');
 const PLY_BTNS_PC = ['pcPrev','pcPlay','pcNext','pcQual','pcFit','pcFullscreen'];
 const PLY_BTNS_TV = ['pcPrev','pcPlay','pcNext','pcQual'];
 let PLY_BTNS = _isTizen ? PLY_BTNS_TV : PLY_BTNS_PC;
@@ -1695,9 +1702,9 @@ const homeRows=[];
 let activeRowI=0;
 const rowPos=[]; // per-row last card index
 
-const CARD_WIN=15;      // cards rendered in DOM per row
+const CARD_WIN=Math.max(15, Math.ceil(window.innerWidth/170)+8);
 const ROW_PRELOAD=2;    // rows to preload ahead of current
-const CARDS_PER_PAGE=15;// cards fetched per API call
+const CARDS_PER_PAGE=window.innerWidth<=768?15:25;
 
 function buildRow(title, list, isNew){
   if(!list.length) return null;
@@ -1713,6 +1720,12 @@ function buildRow(title, list, isNew){
   homeRows[idx].el=sec;
   sec.querySelector('.arr-l').addEventListener('click',e=>{e.stopPropagation();const ri=parseInt(e.currentTarget.dataset.ri);activeRowI=ri;nav.rowI=ri;nav.zone='home.cards';focCard(Math.max(0,(rowPos[ri]??0)-3),ri);updateRowArrows(ri);});
   sec.querySelector('.arr-r').addEventListener('click',e=>{e.stopPropagation();const ri=parseInt(e.currentTarget.dataset.ri);activeRowI=ri;nav.rowI=ri;nav.zone='home.cards';const row=homeRows[ri];focCard(Math.min((row?.releases?.length??1)-1,(rowPos[ri]??0)+3),ri);updateRowArrows(ri);});
+  const tw=sec.querySelector('.track-wrap');
+  if(tw) tw.addEventListener('scroll',()=>{
+    if(!document.body.classList.contains('is-mobile')) return;
+    const row=homeRows[idx]; if(!row||!row.hasMore||row.loading) return;
+    if(tw.scrollLeft+tw.clientWidth>=tw.scrollWidth-200) maybeLoadMoreCards(idx);
+  },{passive:true});
   renderCardWindow(idx,0);
   return sec;
 }
@@ -1720,12 +1733,23 @@ function buildRow(title, list, isNew){
 function renderCardWindow(rowI, focusIdx){
   const row=homeRows[rowI]; if(!row||row.stub) return;
   const list=row.releases;
+  const track=document.getElementById('track-'+rowI); if(!track) return;
+  if(document.body.classList.contains('is-mobile')){
+    const already=track.querySelectorAll('.card').length;
+    if(already>=list.length) return;
+    track.innerHTML='';
+    for(let i=0;i<list.length;i++){
+      const r=list[i];
+      const el=makeCard(r,()=>{ activeRowI=rowI; nav.ci=i; nav.rowI=rowI; openDetailRelease(r); },false);
+      el.dataset.ri=rowI; el.dataset.ci=i; track.appendChild(el);
+    }
+    return;
+  }
   const half=Math.floor(CARD_WIN/2);
   const start=Math.max(0, focusIdx-half);
   const end=Math.min(list.length, start+CARD_WIN);
-  if(row.winStart===start && document.getElementById('track-'+rowI)?.children.length) return;
+  if(row.winStart===start && track.children.length) return;
   row.winStart=start;
-  const track=document.getElementById('track-'+rowI); if(!track) return;
   track.innerHTML='';
   const cw=160+10;
   if(start>0){
@@ -1758,6 +1782,7 @@ async function maybeLoadMoreCards(rowI){
       row.releases.push(...list);
       row.hasMore=hasMore;
       row.nextPage=nextPage;
+      renderCardWindow(rowI, rowPos[rowI]??0);
     } else {
       row.hasMore=false;
     }
@@ -1797,9 +1822,10 @@ function focCard(i, rowI){
     if(card) card.classList.add('foc');
     scrollRowTo(rowI,i);
   }
-  scrollHomeToRow(rowI);
+  // Scroll page to row only on keyboard/TV nav, not on mouse clicks
+  if(!document.body.classList.contains('mouse')) scrollHomeToRow(rowI);
   // Preload more cards if near end
-  if(i>=list.length-3) maybeLoadMoreCards(rowI);
+  if(i>=list.length-8) maybeLoadMoreCards(rowI);
   if(rowI===0&&list[i]&&!_isTizen){
     clearTimeout(window._heroT);
   }
@@ -1886,11 +1912,20 @@ async function loadGenres(){
     return list;
   }catch(_){ return []; }
 }
+let _scheduleLoaded=false;
 async function loadSchedule(){
+  if(_scheduleLoaded) return; // don't reload — preserves scroll
   try{
     const d=await api('/anime/schedule/week');
     const items=Array.isArray(d)?d:(d?.data||[]);
     renderSchedule(items);
+    _scheduleLoaded=true;
+    // Restore scroll position after render
+    if(_pageScrollPos['schedule']!=null){
+      requestAnimationFrame(()=>{
+        const el=$('pgSchedule'); if(el) el.scrollTop=_pageScrollPos['schedule'];
+      });
+    }
   }catch(_){renderSchedule([]);}
 }
 
@@ -3189,19 +3224,26 @@ $('lpOk').addEventListener('click',()=>{
   doLogin(l,p);
 });
 
+const _pageScrollPos={};
 function switchPage(name){
-  // Close detail overlay if open (mobile nav tap)
   if($('detOv').classList.contains('on')) closeDetail();
+  const _sm={home:'pgHome',catalog:'pgCatalog',schedule:'pgSchedule',collections:'pgCollections'};
+  const curEl=_sm[pg.cur]?$(_sm[pg.cur]):null;
+  if(curEl) _pageScrollPos[pg.cur]=curEl.scrollTop;
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
   const map={home:'pgHome',catalog:'pgCatalog',schedule:'pgSchedule',collections:'pgCollections'};
   const el=$(map[name]); if(el) el.classList.add('on');
   document.querySelectorAll('#nav .ntab').forEach(t=>{t.classList.toggle('cur',t.dataset.pg===name);t.classList.remove('foc');});
   document.querySelectorAll('#mobileNav .mnav-btn').forEach(t=>t.classList.toggle('cur',t.dataset.pg===name));
   pg.cur=name;
+  document.body.classList.remove('show-last-foc');
+  const _sm2={home:'pgHome',catalog:'pgCatalog',schedule:'pgSchedule',collections:'pgCollections'};
+  if(_pageScrollPos[name]!=null&&name!=='schedule'){const el2=$(_sm2[name]);if(el2) requestAnimationFrame(()=>{el2.scrollTop=_pageScrollPos[name];});}
   // bg dimming for content pages
   // lazy load
   if(name==='catalog'&&!catLoading&&$('catGrid').children.length<=1) loadCatalog(true);
   if(name==='schedule') loadSchedule();
+  if(name==='schedule'&&document.body.classList.contains('is-mobile')) nav.zone='sch'; // zone set but no focus
   if(name==='collections'){
     renderCollTab(curCollTab);
     // Sync only if stale (>60s since last sync)
@@ -4013,6 +4055,7 @@ function navSch(k){
 }
 function clearSchFoc(){ document.querySelectorAll('.sch-item.foc').forEach(x=>x.classList.remove('foc')); }
 function applySchFoc(){
+  if(document.body.classList.contains('is-mobile')) return; // no focus on mobile
   clearSchFoc();
   const days=[...document.querySelectorAll('.sch-day')];
   const items=[...days[nav.schD]?.querySelectorAll('.sch-item')||[]];
@@ -4520,6 +4563,13 @@ async function loadRowByQueueIdx(qi){
       </div>`;
     sec.querySelector('.arr-l').addEventListener('click',e=>{e.stopPropagation();const ri=parseInt(e.currentTarget.dataset.ri);activeRowI=ri;nav.rowI=ri;nav.zone='home.cards';focCard(Math.max(0,(rowPos[ri]??0)-3),ri);updateRowArrows(ri);});
     sec.querySelector('.arr-r').addEventListener('click',e=>{e.stopPropagation();const ri=parseInt(e.currentTarget.dataset.ri);activeRowI=ri;nav.rowI=ri;nav.zone='home.cards';const row=homeRows[ri];focCard(Math.min((row?.releases?.length??1)-1,(rowPos[ri]??0)+3),ri);updateRowArrows(ri);});
+    // Mobile scroll trigger for dynamic loading
+    const tw2=sec.querySelector('.track-wrap');
+    if(tw2) tw2.addEventListener('scroll',()=>{
+      if(!document.body.classList.contains('is-mobile')) return;
+      const r2=homeRows[rowI]; if(!r2||!r2.hasMore||r2.loading) return;
+      if(tw2.scrollLeft+tw2.clientWidth>=tw2.scrollWidth-300) maybeLoadMoreCards(rowI);
+    },{passive:true});
     row.el=sec;
     ph.parentNode?.replaceChild(sec, ph);
     renderCardWindow(rowI, 0);
@@ -4594,6 +4644,7 @@ document.addEventListener('touchcancel',()=>{ clearTimeout(_tHoldTimer); },{pass
 (function(){
   let sx=0, sy=0, rowI=-1, swiped=false;
   function onTouchStart(e){
+    if(document.body.classList.contains('is-mobile')) return;
     const tw=e.target.closest('.track-wrap'); if(!tw) return;
     const tid=tw.querySelector('[id^="track-"]')?.id;
     rowI=tid?parseInt(tid.replace('track-','')):-1;
