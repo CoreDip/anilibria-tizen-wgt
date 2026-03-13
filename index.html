@@ -191,6 +191,17 @@ body.is-app #pcFullscreen{display:none!important;}
 .ctx-sep{height:1px;background:var(--bg4);margin:4px 0;}
 
 .card.foc{border-color:var(--red);transform:scale(1.06) translateY(-8px) translateZ(0);z-index:10;}
+body.is-mobile .card.foc{border-color:transparent!important;transform:none!important;z-index:auto!important;}
+body.is-mobile.show-last-foc .card.foc{border-color:rgba(232,39,47,.6)!important;transform:scale(1.02) translateY(-3px)!important;}
+/* Suppress all focus UI on mobile */
+body.is-mobile .foc{outline:none!important;}
+body.is-mobile .ntab.foc,body.is-mobile .btn.foc,body.is-mobile .dep.foc,
+body.is-mobile .pep.foc,body.is-mobile .det-rel-card.foc,body.is-mobile .sch-item.foc,
+body.is-mobile .fchip.foc,body.is-mobile .ctx-item.foc,body.is-mobile .ctab.foc,
+body.is-mobile #detBack.foc,body.is-mobile .det-cbtn.foc{
+  outline:none!important;border-color:transparent!important;
+  background:transparent!important;color:var(--t1)!important;transform:none!important;}
+body.is-mobile .ply-bar.bar-foc{background:transparent;}
 body.mouse .card:hover{border-color:rgba(232,39,47,.5);transform:scale(1.03) translateY(-4px) translateZ(0);}
 /* skeleton */
 .skel{width:var(--cw);aspect-ratio:2/3;background:var(--bg3);border-radius:10px;flex-shrink:0;}
@@ -4275,6 +4286,7 @@ function applyDetFoc(){
   }
 }
 function applyZoneFocus(){
+  if(document.body.classList.contains('is-mobile')) return; // no focus on mobile
   const Z=nav.zone;
   if(Z!=='home.nav') clearNavFoc();
   if(Z==='cat.search') focCatSearch();
