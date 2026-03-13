@@ -15,8 +15,8 @@
 | Платформа | |
 |-----------|---|
 | 📦 **Samsung TV (.wgt)** | [Скачать AniLiberty.wgt →](https://github.com/CoreDip/anilibria-tizen-wgt/releases/latest) |
-| 🌐 **Браузер / ПК / Телефон** | [https://aniliberty.netlify.app →](https://aniliberty.netlify.app) |
-| 📺 **MediaStationX** | `aniliberty.netlify.app` |
+| 🌐 **Браузер / ПК / Телефон** | [https://coredip.github.io/anilibria-tizen-wgt/ →](https://coredip.github.io/anilibria-tizen-wgt/) |
+| 📺 **MediaStationX** | `anilibria-tizen-wgt.dipcoremail.workers.dev` |
 
 ---
 
@@ -29,11 +29,15 @@
 
 ### Вариант 2 — MediaStationX
 1. Открыть MediaStationX на TV
-2. Добавить URL: `aniliberty.netlify.app`
+2. Добавить URL: `anilibria-tizen-wgt.dipcoremail.workers.dev`
 
 ### Вариант 3 — ПК / Планшет / Браузер / Телефон
-Просто открыть [aniliberty.netlify.app](https://aniliberty.netlify.app) — адаптивный интерфейс подстраивается под устройство автоматически.
+Просто открыть [https://coredip.github.io/anilibria-tizen-wgt/](https://coredip.github.io/anilibria-tizen-wgt/) — адаптивный интерфейс подстраивается под устройство автоматически.
 
+### Вариант 4 — Android Планшет / Телефон
+[![Release](https://img.shields.io/github/v/release/CoreDip/anilibria-tizen-wgt?label=последняя+версия&color=red)](https://github.com/CoreDip/anilibria-tizen-wgt/releases/latest)
+
+---
 ---
 
 ## 📸 Скриншоты
