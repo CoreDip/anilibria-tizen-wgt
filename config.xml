@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="http://yourdomain/AniLibriaTizenApp" version="1.0.0" height="1080" width="1920" viewmodes="fullscreen">
+<widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="https://coredip.github.io/anilibria-tizen-wgt/" version="1.0.0" height="1080" width="1920" viewmodes="fullscreen">
     <tizen:application id="872yxfxKm1.AniLibriaTizenApp" package="872yxfxKm1" required_version="2.3"/>
     <author>Dipcore</author>
     <content src="index.html"/>
