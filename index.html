@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, viewport-fit=cover">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22white%22%20viewBox%3D%220%200%201174%201174%22%3E%3Cpath%20d%3D%22M698%20245c0-7%208-12%2014-9l169%2077c4%202%206%206%206%209v395c0%206%204%2010%2010%2010h248c6%200%2011%206%209%2012-25.3%2094.2-73.6%20180.7-140.7%20251.5-67.1%2070.9-150.8%20123.9-243.5%20154.2-92.7%2030.4-191.5%2037.2-287.5%2019.8-96-17.4-186.2-58.5-262.3-119.5-3-3-4-8-2-12l34-58c3-5%2010-7%2015-3%2051.5%2043.1%20111.1%2075.4%20175.4%2094.9%2064.2%2019.6%20131.7%2025.9%20198.5%2018.7%2066.7-7.2%20131.4-27.8%20190-60.5%2058.6-32.8%20110-77%20151.1-130.1%205-7%201-16-8-16h-93c-4%200-7-2-9-5L699%20574l-1-5z%22%2F%3E%3Cpath%20d%3D%22M422%20240c4-7%2014-7%2018%200l360%20624c4%207-1%2015-8%2015H628c-4%200-7-2-9-5l-43-75c-2-3-5-5-9-5H373c-7%200-12-8-8-15l65-113c1-3%205-5%208-5h41c7%200%2012-8%208-15l-47-83c-4-7-14-7-18%200L211%20929v1l-23%2039-1%201-10%2019c-4%206-12%207-16%202-36-38-67-82-92-128-2-3-2-7%200-10l10-19%202-2v-1z%22%2F%3E%3Cpath%20d%3D%22M587%200c83.2.1%20165.5%2017.8%20241.3%2052.1%2075.8%2034.3%20143.5%2084.2%20198.5%20146.7%2055.1%2062.4%2096.2%20135.8%20120.7%20215.3s31.8%20163.3%2021.5%20245.9c0%205-4%209-9%209h-67c-6%200-11-6-10-12%2020.8-146.3-24-294.3-122.5-404.5C862.1%20142.4%20720%2081.3%20572.3%2085.6%20424.6%2090%20286.3%20159.3%20194.5%20275%20102.7%20390.8%2066.6%20541.2%2096%20686l-1%207-47%2081c-5%207-15%206-18-2C.5%20683.8-7.6%20589.8%206.4%20497.8c14-91.9%2049.6-179.2%20104.1-254.7%2054.4-75.4%20126-136.8%20208.9-179.1C402.2%2021.7%20494-.2%20587%200z%22%2F%3E%3C%2Fsvg%3E">
 <title>AniLiberty TV</title>
 <style>
@@ -400,7 +400,7 @@ video{width:100%;height:100%;object-fit:contain;display:block;max-height:100%;}
   background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,0) 45%);
   opacity:0;transition:opacity .22s;pointer-events:none;}
 #plyOv.ctrl .ply-ui{opacity:1;pointer-events:all;}
-.ply-ctrl{padding:20px var(--pad);}
+.ply-ctrl{padding:20px var(--pad);padding-right:max(var(--pad), calc(var(--pad) + env(safe-area-inset-right)));padding-left:max(var(--pad), calc(var(--pad) + env(safe-area-inset-left)));padding-bottom:max(20px, calc(20px + env(safe-area-inset-bottom)));}
 .ply-ttl{font-size:24px;font-weight:700;margin-bottom:2px;}
 .ply-ep{font-size:13px;color:var(--t2);margin-bottom:12px;}
 .ply-bar{height:20px;background:transparent;border-radius:2px;margin-bottom:14px;
@@ -442,8 +442,8 @@ video{width:100%;height:100%;object-fit:contain;display:block;max-height:100%;}
   border-radius:8px;font-size:14px;font-weight:700;font-family:inherit;
   border:none;cursor:pointer;outline:none;
   opacity:0;transition:opacity .18s;pointer-events:none;}
-#skipBtn{bottom:200px;background:rgba(232,39,47,.88);}
-#skipNextBtn{bottom:150px;background:rgba(59,130,246,.88);}
+#skipBtn{bottom:200px;background:rgba(232,39,47,.88);right:max(var(--pad),calc(var(--pad) + env(safe-area-inset-right)));}
+#skipNextBtn{bottom:150px;background:rgba(59,130,246,.88);right:max(var(--pad),calc(var(--pad) + env(safe-area-inset-right)));}
 #skipBtn.on,#skipNextBtn.on{opacity:1;pointer-events:all;}
 #skipBtn.foc{outline:3px solid rgba(232,39,47,.5);}
 #skipNextBtn.foc{outline:3px solid rgba(59,130,246,.5);}
@@ -612,14 +612,21 @@ body.is-mobile .det-body{
 body.is-mobile .det-ttl{font-size:22px;}
 
 /* ── Player ── */
-body.is-mobile .ply-ctrl{padding:12px 14px;}
+body.is-mobile .ply-ctrl{padding:12px 14px 12px;}
+body.is-mobile .ply-row{gap:6px;flex-wrap:nowrap;overflow:hidden;}
+body.is-mobile .pb{width:40px;height:40px;}
+body.is-mobile .pb.big{width:50px;height:50px;}
 body.is-mobile .ply-ttl{font-size:16px;}
 body.is-mobile .pb{width:44px;height:44px;}
 body.is-mobile .pb.big{width:54px;height:54px;}
 body.is-mobile #skipBtn{right:14px;bottom:175px;}
 body.is-mobile #skipNextBtn{right:14px;bottom:129px;}
 body.is-mobile .ply-eps{display:none!important;}
-body.is-mobile .ply-back-btn{top:14px;left:14px;}
+@media(max-width:900px) and (orientation:landscape){
+  body.is-mobile .ply-eps{display:flex!important;}
+  body.is-mobile .pep{padding:3px 8px;font-size:10px;}
+}
+body.is-mobile .ply-back-btn{top:max(14px,calc(14px + env(safe-area-inset-top)));left:max(14px,calc(14px + env(safe-area-inset-left)));}
 
 /* ── Mobile filter drawer (top-level, not inside media) ── */
 #catFlt.mob-drawer{
@@ -672,11 +679,8 @@ body.is-mobile .ply-back-btn{top:14px;left:14px;}
 
 /* ── Fit button active indicator ── */
 .ply-fit-btn{position:relative;}
-.ply-fit-btn .fit-label{
-  position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);
-  font-size:9px;font-weight:700;letter-spacing:.5px;color:var(--gold);
-  white-space:nowrap;pointer-events:none;
-}
+@media(max-width:600px) and (orientation:portrait){#pcFit{display:none!important;}}
+.ply-fit-btn .fit-label{display:none;}
 
 /* ── Tizen TV scale +30% ── */
 html.tizen-tv{ zoom:1.3; }
@@ -2976,6 +2980,10 @@ function refreshDetActBtn(r){
 
 function closePlayer(){
   clearInterval(_plyFocusWatchdog); _plyFocusWatchdog=null;
+  // Exit fullscreen first if active — prevents UI freeze on mobile
+  if(document.fullscreenElement||document.webkitFullscreenElement){
+    (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen)?.call(document).catch(()=>{});
+  }
   const v=$('vid');
   const r=detRelease, ep=playerEps[playerEpIdx];
   if(r&&ep&&v.currentTime>5) Store.forceSaveProgress(r.id,ep.id,v.currentTime,v.duration,ep.ordinal,playerEps.length||r.episodes_total||0);
