@@ -5,7 +5,6 @@
 <img width="128" height="128" alt="icon" src="https://github.com/user-attachments/assets/407c0839-b1e4-42c7-866f-8ce6797173e3" />
 
 [![Release](https://img.shields.io/github/v/release/CoreDip/anilibria-tizen-wgt?label=последняя+версия&color=red)](https://github.com/CoreDip/anilibria-tizen-wgt/releases/latest)
-[![Netlify](https://img.shields.io/badge/Netlify-открыть-blue)](https://aniliberty.netlify.app/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ---
