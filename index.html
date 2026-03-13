@@ -195,12 +195,17 @@ body.is-mobile .card.foc{border-color:transparent!important;transform:none!impor
 body.is-mobile.show-last-foc .card.foc{border-color:rgba(232,39,47,.6)!important;transform:scale(1.02) translateY(-3px)!important;}
 /* Suppress all focus UI on mobile */
 body.is-mobile .foc{outline:none!important;}
-body.is-mobile .ntab.foc,body.is-mobile .btn.foc,body.is-mobile .dep.foc,
+body.is-mobile .ntab.foc,body.is-mobile .dep.foc,
 body.is-mobile .pep.foc,body.is-mobile .det-rel-card.foc,body.is-mobile .sch-item.foc,
 body.is-mobile .fchip.foc,body.is-mobile .ctx-item.foc,body.is-mobile .ctab.foc,
 body.is-mobile #detBack.foc,body.is-mobile .det-cbtn.foc{
   outline:none!important;border-color:transparent!important;
   background:transparent!important;color:var(--t1)!important;transform:none!important;}
+/* btn.foc on mobile — only remove outline, keep background */
+body.is-mobile .btn.foc:not(.btn-p):not(.btn-s):not(.btn-c):not(.btn-g){
+  outline:none!important;background:transparent!important;transform:none!important;}
+body.is-mobile .btn-p.foc,body.is-mobile .btn-s.foc,body.is-mobile .btn-c.foc{
+  outline:none!important;transform:none!important;}
 body.is-mobile .ply-bar.bar-foc{background:transparent;}
 body.mouse .card:hover{border-color:rgba(232,39,47,.5);transform:scale(1.03) translateY(-4px) translateZ(0);}
 /* skeleton */
