@@ -4406,7 +4406,11 @@ document.addEventListener('keydown',e=>{
     return;
   }
   // F або F11 — повноекранний режим
-  if(e.key==='f'||e.key==='F'||e.key==='F11'){ e.preventDefault(); toggleFullscreen(); return; }
+  if(e.key==='f'||e.key==='F'||e.key==='F11'){
+    const tag=document.activeElement&&document.activeElement.tagName;
+    if(tag==='INPUT'||tag==='TEXTAREA') return;
+    e.preventDefault(); toggleFullscreen(); return;
+  }
 
   if(e.keyCode===10009){e.preventDefault();handleKey({key:'Backspace',keyCode:10009,preventDefault:()=>{}});return;}
   if(e.keyCode===457){e.preventDefault();handleKey({key:'ContextMenu',keyCode:457,preventDefault:()=>{}});return;} // Tizen INFO key
