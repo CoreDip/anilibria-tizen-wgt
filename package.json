@@ -1,0 +1,11 @@
+{
+  "name": "anilibria-tizen-wgt",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:tizen": "node tools/build-tizen.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}
