@@ -26,6 +26,19 @@
 2. Перезагрузить TV
 3. В Tizen Studio: `Run As → Tizen Web Application` или установить `.wgt` через `Package Manager`
 
+### Сборка .wgt для старых телевизоров (Tizen 5.x и ниже)
+Движок Tizen 5.5 и старше основан на Chromium 69 и не понимает часть современного синтаксиса
+(`?.`, `??` и т.п.), поэтому исходный `index.html` на таких телевизорах не запускается
+(ошибка `Unexpected token`). Для них есть отдельная сборка, исходники при этом не меняются:
+
+```sh
+npm install
+npm run build:tizen
+```
+
+В папке `dist/` окажется копия приложения, где все скрипты переведены в синтаксис Chromium 69.
+Её и нужно упаковывать в `.wgt` (Tizen Studio: `tizen package -t wgt -- dist`).
+
 ### Вариант 2 — MediaStationX
 1. Открыть MediaStationX на TV
 2. Добавить URL: `anilibria-tizen-wgt.dipcoremail.workers.dev`
